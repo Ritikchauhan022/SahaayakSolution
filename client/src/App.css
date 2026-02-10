@@ -1,0 +1,2667 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*Header Section ki css */
+.navbar{
+  display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 12px 65px;
+   /* border-top: 1px solid rgb(184, 172, 172); */
+   /* border-bottom: 1px solid rgb(184, 172, 172); */
+    border-bottom: 1px solid #e5e5e5;
+   background-color: white;
+
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 22px;
+  /* color: #000; */
+}
+.nav-logo img{
+   width: 80px;
+   height: auto;
+   object-fit: contain;
+}
+
+.nav-links{
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links li{
+  cursor: pointer;
+  font-size: 20px;
+  color: #686060;
+  transition: color 0.3s ease;
+}
+
+.nav-links li:hover{
+    color: #000;
+
+}
+
+/* Hero Section ki css */
+.hero{
+ text-align: center;
+ padding: 100px 20px 60px; 
+ background: linear-gradient(to bottom, 
+    #ffffff, /* from-background */
+    rgba(203, 213, 225, 0.2) /* to-muted/20 */
+  );
+}
+
+.hero h1{
+  font-size: 35px;
+   font-weight: 600;
+   color: #111;
+   margin-bottom: 20px;
+}
+
+.hero p{
+  font-size: 16px;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.hero-buttons{
+  display: flex;
+  justify-content: center;
+   gap: 20px;
+}
+
+.hero-buttons .btn{
+   padding: 12px 24px;
+   border-radius: 8px;
+   border: none;
+   cursor: pointer;
+   font-size: 15px;
+   width: auto;
+}
+
+.hero-buttons .btn.primary{
+   background-color: #111;
+   color: #fff;
+}
+
+.hero-buttons .btn.secondary{
+  background-color: #f5f5f5;
+  color: #111;
+   border: 1px solid #ddd;
+}
+
+/* Why Choose Section ki css */
+.whychoose{
+  text-align: center;
+  padding: 60px 20px;
+   background-color: #fff;
+}
+
+.whychoose h2{
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.whychoose p{
+  font-size: 1rem;
+   color: #666;
+   max-width: 700px;
+   margin: 0 auto 40px;
+   line-height: 1.6;
+}
+
+.features-grid{
+   display: grid;
+   grid-template-columns: repeat(3, 1fr); /* 🔥 fixed 3 columns */
+   gap: 35px 50px; /* vertical aur horizontal gap badhaya */
+   justify-items: center;
+     align-items: stretch;
+     max-width: 1100px; /* ye center alignment ke liye */
+     margin: 0 auto; /* grid ko center me rakhega */
+}
+
+.feature-card{
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px 25px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover{
+  transform: translateY(-6px);
+   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon{
+  font-size: 2rem;
+   margin-bottom: 12px;
+}
+
+.feature-card h3{
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.feature-card p{
+  font-size: 0.95rem;
+   color: #555;
+   line-height: 1.4;
+}
+@media (max-width: 900px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .features-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+
+
+/* 4. How It Works Section ki css */
+.how-it-works{
+  padding: 5rem 0;
+ background-color: #fbfcfe;
+  max-width: 100%; /* puri width li */
+}
+
+.how-it-works-header{
+ text-align: center;
+ margin-bottom: 2rem;
+}
+
+.how-it-works-header h2{
+  font-size: 2.25rem;
+  /* font-weight: 700; */
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.how-it-works-header p{
+  font-size: 1.25rem;
+  color: #6b7280; /* Gray-500 */
+}
+
+/* --- Process Flow Layout --- */
+.process-flow-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem; /* Horizontal spacing for the columns */
+}
+
+.process-column{
+ flex: 1; /* Both columns take equal width */
+  text-align: left;
+}
+
+.process-column h3{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  /* margin-bottom: 2.5rem; */
+  /* Figma से प्रेरित रंग: मालिक के लिए हल्का भूरा और शेफ के लिए हल्का नीला/हरा हो सकता है */
+    color: var(--color-text);
+}
+
+/* --- Individual Step Styles --- */
+.process-step{
+  display: flex;
+  align-items: flex-start;
+  /* margin-bottom: 2rem; */
+  gap: 1.5rem; /* Space between number and text */
+}
+
+.step-number{
+  /* गोलाकार पृष्ठभूमि */
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  flex-shrink: 0; 
+  font-size: 1rem;
+  position: relative;
+  top: 5px;
+  background-color: #1f2937; /* Very Light Gray */ 
+  border: 1px solid #1f2937; /* Gray-400 */ 
+  color: #ffffff; /* Gray-600 */
+  margin-top: 1rem;
+}
+
+.step-content{
+  flex-grow: 1;
+}
+
+.step-content h4{
+ font-size: 1.1rem;
+ font-weight: 600; 
+ margin-bottom: 0.5rem; 
+ line-height: 1.3; 
+}
+
+.step-content p{
+  font-size: 0.95rem;
+  color: #6b7280; /* Gray-500 */
+  line-height: 1.4;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 900px){
+  .process-flow-container{
+    flex-direction: column; /* Stacking columns on smaller screens */
+    padding: 0 1rem;
+  }
+
+  .process-column{
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Footer Styling */
+.footer{
+  background-color: #111; /* Dark professional theme */
+  color: #fff;
+  padding: 60px 20px 20px;
+  margin-top: 80px;
+}
+
+.footer-container{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+}
+
+.footer-logo{
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   margin-bottom: 20px;
+}
+.footer-logo img {
+  width: 36px;
+  height: auto;
+  object-fit: contain;
+}
+
+.footer-brand h3{
+  font-size: 24px;
+  color: #fbbf24; /* Bakery theme se match karta Yellow/Gold color */
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.footer-brand p{
+  color: #9ca3af;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-column h4{
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+
+.footer-column ul{
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li, .footer-column p{
+  color: #9ca3af;
+  font-size: 14px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-column ul li a{
+  color: inherit;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-column ul li:hover, .footer-column ul li a:hover{
+  color: #fff;
+  padding-left: 2px; /* Chota sa slide effect */
+}
+
+
+.footer-bottom{
+  border-top: 1px solid #4b5563; /* Thoda visible border */
+  margin-top: 40px;
+  padding-top: 25px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .footer-container{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* yha se LoginSignup ki css hai */
+.ls-container{
+width: 100%;
+min-height: 100vh;
+background: #f8f9fc;
+padding-bottom: 20px;
+}
+
+.ls-header{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.ls-back-btn{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ls-box {
+   max-width: 420px;
+   margin: auto;
+   background: #fff;
+   padding: 25px;
+   border-radius: 12px;
+   box-shadow: 0 4px 15px rgba(0,0,0,0.09);
+   text-align: center;
+}
+
+.ls-user-type-icon{
+   width: 70px;
+   height: 70px;
+   margin: auto;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.ls-title{
+  font-size: 22px;
+  margin-top: 12px;
+}
+
+.ls-desc{
+  font-size: 14px;
+   color: #666;
+   margin-bottom: 20px;
+}
+
+.ls-tabs{
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  }
+
+  .ls-tabs button{
+     flex: 1;
+     padding: 10px;
+     background: #f4f4f4;
+     border: none;
+     cursor: pointer;
+     font-weight: 500;
+  }
+
+  .ls-tabs .active{
+    background: #fff;
+    color: #111;
+    font-weight: bold;
+  }
+
+  .ls-error {
+    background: #ffe4e4;
+    color: #c00000;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+
+  .ls-form{
+    text-align: left;
+  }
+
+  .ls-form label{
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .ls-form input{
+    width: 100%;
+    padding: 10px;
+    margin: 7px 0 15px 0;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+  }
+
+  .ls-password-box{
+    position: relative;
+  }
+
+  .ls-password-box span{
+     position: absolute;
+     right: 10px;
+     top: 13px;
+     cursor: pointer;
+     color: #555;
+  }
+
+  .ls-submit-btn{
+    width: 100%;
+    padding: 12px;
+    background: #2d7dff;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+  }
+
+  /* --- Browser Default Password Icons Fix --- */
+
+  /* Microsoft Edge ka eye icon hatane ke liye */
+  .ls-password-box input::-ms-reveal,
+  .ls-password-box input::-ms-clear{
+    display: none;
+  }
+
+  /* Chrome aur baki browsers ke auto-fill icons hatane ke liye (Safely) */
+  .ls-password-box input::-webkit-contacts-auto-fill-button,
+  .ls-password-box input::-webkit-credentials-auto-fill-button{
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+  }
+
+
+  /*Yha se OwnerInformation.js file ki CSS hai*/
+   .owner-container{
+    background: #f8f9fa;
+    min-height: 100vh;
+    padding-bottom: 40px;
+   }
+
+   .owner-header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 25px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+   /* border-top: 1px solid rgb(184, 172, 172); */
+   /* border-bottom: 1px solid rgb(184, 172, 172); */
+
+   }
+
+   .back-btn{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+   }
+
+   .header-title{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 600;
+   }
+
+   .header-icon{
+     color: #4a4aff;
+   }
+
+   .owner-card{
+    background: white;
+    width: 90%;
+    max-width: 650px;
+    margin: 35px auto;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+   }
+
+   .owner-title{
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+   }
+
+   .owner-desc{
+    color: #666;
+    margin-top: 15px;
+    margin-bottom: 20px;
+   }
+
+   /* Form */
+   .owner-form label{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-align: left;
+    display: block;
+   }
+
+   .owner-form input,
+   .owner-form select{
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #cfcfcf;
+    outline: none;
+    font-size: 14px;
+    margin-top: 6px;  /* Naya: Label se thoda gap */
+    margin-bottom: 12px;   /* Thoda kam kiya taaki clean lage */
+    box-sizing: border-box; /* Zaroori: Taaki padding width se bahar na jaye */
+   }
+
+   .owner-form input:focus,
+   .owner-form select:focus{
+    border-color: #4a4aff;
+    box-shadow: 0 0 3px rgba(74, 74, 255, 0.4);
+   }
+
+   .section-title{
+    font-size: 18px;
+    margin-top: 25px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-align: left;
+    display: block;
+   }
+
+   .grid-2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px; /* Horizontal gap */
+    margin-bottom: 10px;  /* Agle section ya row se gap */
+   }
+
+   .password-wrapper{
+     position: relative;
+     width: 100%; /* Ensure full width inside grid */
+   }
+
+   .eye-icon{
+    position: absolute;
+    right: 12px;
+    top: 40%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+   }
+   
+   /* Upload Box */
+   .upload-box{
+    text-align: center;
+    border: 2px dashed #ccc;
+    padding: 25px;
+    border-radius: 10px;
+   }
+
+   .upload-box:hover{
+    border-color: #4a4aff;
+   }
+
+   .upload-icon{
+    font-size: 30px;
+    color: #555;
+    /* margin-bottom: 10px; */
+   }
+
+   .upload-btn{
+    display: inline-flex !important;
+    width: auto !important;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border: 1px solid #888;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+   }
+  
+   .upload-btn:hover{
+    background: #f0f0ff;
+   }
+
+   /* Buttons */
+   .btn-row{
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+   }
+
+   .primary-btn {
+    flex: 1;
+    padding: 12px;
+    background: #4a4aff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+   }
+
+   .cancel-btn{
+    padding: 12px 20px;
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    cursor: pointer;      
+   }
+
+   /* OwnerInformation.css - Browser eye icon fix */
+   .password-wrapper input::-ms-reveal,
+   .password-wrapper input::-ms-clear {
+    display: none;
+   }
+   /* Chrome/Safari ke liye safety */
+   .password-wrapper input::-webkit-contacts-auto-fill-button,
+   .password-wrapper input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+   }
+
+
+   @media (max-width: 600px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-card {
+    width: 95%;
+    margin: 20px auto;
+    padding: 18px;
+  }
+
+  .btn-row {
+    flex-direction: column;
+  }
+
+  .primary-btn, .cancel-btn {
+    width: 100%;
+  }
+}
+
+
+/*Yha se BasicInformation.css file ka code hai*/
+/* Page layout */
+.bi-container{
+  background: #f8f9fa;
+  padding-bottom: 40px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+}
+
+/* Header */
+.bi-header{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 25px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  /* margin-bottom: 18px; */
+}
+
+.bi-back{
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  background: transparent;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.bi-page-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Card */
+.bi-card{
+  width: 90%;
+  max-width: 650px;
+  margin: 35px auto;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 6px 22px rgba(17, 24, 39, 0.03);
+}
+
+.bi-card-header h2{
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.bi-sub{
+  margin-top: 15px;
+  margin-bottom: 20px;
+  color: #666;
+  /* font-size: 14px; */
+}
+
+/* Form basics */
+.bi-form label,
+.bi-form .bi-label{
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #222;
+  text-align: left;
+  /* display: block; */
+}
+
+.bi-form input[type="text"],
+.bi-form input[type="email"],
+.bi-form input[type="tel"],
+.bi-form select,
+.bi-form textarea{
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+.bi-form input[type="text"]:focus,
+.bi-form input[type="email"]:focus,
+.bi-form input[type="tel"]:focus,
+.password-wrapper input:focus,
+.bi-form select:focus,
+.bi-form textarea:focus{
+  border-color: #4a4aff;
+  box-shadow: 0 0 3px rgba(74, 74, 255, 0.4);
+}
+
+/* grid 2 columns */
+.bi-grid-2{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 6px;
+}
+
+/* Fix Password Field Resizing Issue */
+.password-wrapper{
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input{
+  width: 100%;
+  padding: 10px 12px;
+  padding-right: 42px; /* space for eye icon */
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+ 
+/* Eye icon position fix */
+.password-wrapper .eye-icon{
+  position: absolute;
+  right: 12px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+}
+
+/* section title */
+.bi-section-title{
+  /* margin: 8px 0 12px; */
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-align: left;
+  display: block;
+}
+
+/* skills row */
+.bi-skill-row{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.bi-skill-row input{
+  flex: 1;
+}
+
+.bi-add-btn{
+  background: #1f6feb;
+  border: none;
+  padding: 9px 12px;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* skills list chips */
+.bi-skills-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap:8px;
+  margin-bottom: 10px;
+}
+
+.bi-skill-tag{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: #f0f6ff;
+  border-radius: 18px;
+  font-size: 13px;
+  color: #0b2b66;
+}
+
+.bi-skill-remove{
+  cursor: pointer;
+  color: #666;
+}
+
+
+/* suggested */
+.bi-suggest-title{
+  margin: 10px 0 8px;
+  color: #666;
+  font-size: 13px;
+}
+
+.bi-suggest-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bi-suggest-btn{
+  border: 1px solid #d6dbe6;
+  background: #fff;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.bi-label{
+  margin-top: 16px;
+}
+/* upload box */
+.bi-upload-box{
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 25px;
+  text-align: center;
+  position: relative;
+  margin-top: 8px;
+}
+
+.bi-upload-box:hover{
+  border-color: #4a4aff;
+}
+
+.bi-upload-icon {
+  font-size: 30px;
+  color: #555;
+}
+
+.bi-upload-text {
+  color: #666;
+   margin: 8px 0 10px;
+}
+
+
+/* file input style: hide default button but show small
+  file chooser (we keep browser choose button next to input) */
+  .bi-upload-box input[type="file"] {
+    margin-top: 6px;
+  }
+
+  /* photo preview */
+  .bi-photo-preview{
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .bi-photo-preview img{
+    width: 100%;
+    max-width: 140px;
+    max-height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+  }
+
+  .bi-upload-btn{
+    display: inline-flex !important;
+    width: auto !important;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border: 1px solid #888;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .bi-upload-btn:hover{
+    background: #f0f0ff;
+  }
+
+  /* error */
+  .bi-error {
+     background: #fff3f2;
+     color: #b72b2b;
+     padding: 10px;
+     border-radius: 8px;
+     margin-top: 10px;
+     margin-bottom: 6px;
+     border: 1px solid #f6caca;
+  }
+
+  /* buttons row */
+  .bi-btn-row{
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;    
+  }
+
+  .bi-primary{
+    flex: 1;
+    padding: 12px;
+     background: #4a4aff;
+    color: white;
+    border: none;
+    padding: 12px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .bi-secondary{
+    background: #fff;
+    border: 1px solid #aaa;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* Browser eye icon fix */
+  .password-wrapper input::-ms-reveal,
+  .password-wrapper input::-ms-clear {
+    display: none;
+  }
+
+  /* Chrome/Safari ke liye safety */
+  .password-wrapper input::-webkit-contacts-auto-fill-button,
+  .password-wrapper input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+  }
+
+  /* Responsive */
+@media (max-width: 720px) {
+  .bi-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .bi-card { padding: 16px; }
+  .bi-container { padding: 12px; }
+}
+
+
+/*Yha se OwnerDashboard.js file ki CSS hai*/
+ .od-root{
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  /* background: #f7f8fb; */
+  background: #fff;
+  min-height: 100vh;
+ }
+
+ /* header */
+ .od-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 14px 22px;
+  border-bottom: 1px solid #e6e6f0;
+ }
+
+ .od-left{
+  display:flex;
+  align-items:center;
+  gap:16px;
+ }
+
+ .od-ghost{
+  background: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  display: inline-flex;
+  gap:8px;
+  align-items:center;
+  font-weight: 600;
+ }
+
+ .od-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+ }
+
+ .od-brand-icon{
+  font-size: 26px;
+  color: #4a4aff;
+ }
+
+ .od-brand-title{
+  font-weight: 700;
+  font-size: 18px;
+ }
+
+ .od-right{
+  display:flex;
+  gap:12px; 
+  align-items:center;
+ }
+
+ .od-welcome{
+   font-size: 14px;
+   color: #555;
+ }
+
+ .od-avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#e7e8ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:#263;
+ }
+
+ .od-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+ }
+
+ /* main container */
+ .od-container{
+   max-width: 1300px;
+   margin: 28px auto;
+   padding: 0 18px 60px;
+ }
+
+ .od-page-title {
+  width: 100%;
+  text-align: left;
+}
+
+ .od-page-title h1 {
+  margin:0;
+  font-size:26px; 
+  font-weight: 600; 
+ }
+
+ .od-sub{
+  color: #666;
+  text-align: left;
+  margin-top:6px;
+  margin-bottom: 20px;
+ }
+
+
+ .od-marketplace-card{
+  background: linear-gradient(to right, #e6e6e6, #f9f9f9);
+  border-radius: 12px;
+  border: 3px dotted #bcbcbc;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  display: block;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+ }
+
+ .od-card-content{
+  max-width: 100%;
+  text-align: left; 
+ }
+
+ .od-marketplace-card h3{
+  /* margin: 0 0 8px 0; */
+  font-size: 18px;
+  font-weight: 600;
+   }
+
+ /* tabs */
+ .od-tabs {
+  display:flex;
+  gap:10px;
+  margin:20px 0;
+  /* background-color: grey; */
+  border-radius: 14px;
+ }
+
+ .od-tab{
+  width: 100%;
+  padding:6px 10px;
+  border-radius:15px;
+  /* background:grey; */
+  border:1px solid #eee;
+  cursor:pointer;
+  font-weight:500;
+ }
+
+ .od-tab-active{
+  background:#fff;
+  color:#333;
+  border-color: #4a4aff;
+ }
+ 
+ /* cards */
+.od-section{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  background: #fff;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 30px 0;
+}
+
+.od-overview-container{
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e6e6f0;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.03);
+}
+
+.od-section h2{
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.od-section h2 svg{
+  /* color: #4a4aff; */
+}
+.od-card{
+  background:#fff;
+  border-radius:12px;
+  border:1px solid #e6e6f0;
+  padding:30px;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.03);
+}
+
+.od-search-card{
+  /* display: block; */
+  /* justify-content: initial; */
+  /* align-items: initial; */
+  /* gap:18px; */
+  /* flex-wrap: nowrap; */
+  background: #f7f7f7;
+  border-radius: 12px;
+  border: 1px dotted #e6e6f0;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.03);
+  max-width: 800px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  /* border: none; */
+  /* box-shadow: none; */
+}
+
+.od-card-left{
+  max-width:720px;
+  margin-bottom: 15px;
+}
+
+.od-card-left h2{
+  margin-bottom: 12px;
+}
+
+.od-card-left p {
+margin-top: 8px;
+margin-bottom: 8px;
+}
+
+.od-badge{
+  display:inline-block;
+  padding: 6px 12px;
+  background: #eee;
+  color:#333;
+  border-radius:6px;
+  font-weight:500;
+  font-size: 14px;
+  margin-top:10px;
+}
+
+.od-card-right{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:flex-end;
+  min-width:200px; 
+}
+
+.od-search-icon{
+   width:64px;
+   height:64px;
+   background: #f0f7ff;
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   border-radius:50%;
+   color:#4a4aff;
+   font-size:22px;
+}
+
+.od-primary{
+  background: #000;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  width: 250px;
+  display: inline-block;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.od-search-overlay-icon{
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  /* margin-bottom: 100px; */
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  background: #e0e0e0;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #444;
+}
+
+
+/* profile card layout */
+.od-card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px; 
+  padding: 0 15px;
+}
+
+.od-card-header h3{
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+  margin-left: -125px;
+}
+
+.od-profile{
+  display:flex;
+  gap:24px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  margin-top: 20px;
+  padding: 0 30px;
+}
+
+.od-profile-left{
+  width:220px; 
+  /* text-align:center; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.od-avatar-large{
+  width:120px; 
+  height:120px;
+  border-radius:10px;
+  overflow:hidden;
+  background:#f0f2ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:10px;
+}
+
+.od-avatar-large img{
+  width:100%;
+  height:100%;
+   object-fit:cover;
+}
+
+.od-avatar-fallback-large{
+  font-size:28px;
+  font-weight:800;
+  color:#4a4aff;
+}
+
+.od-profile-name{
+  font-size:18px;
+  font-weight:700;
+}
+
+.od-location{
+  color:#666;
+  margin-top:6px;
+  display:flex; 
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+}
+
+
+/* blocks on right */
+/* .od-profile-right{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+} */
+
+.od-profile-data-wrap{
+  flex: 1;
+  min-width: 300px;
+  padding-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding-top: 10px;
+}
+
+.od-block{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Sab kuch left se shuru hoga */
+  text-align: left;
+}
+
+.od-block h4{
+  margin:0 0 6px 0;
+  font-size:15px;
+  font-weight: 700;
+  color: #111;
+  width: 100%; /* Poori width lega taaki right na bhage */
+}
+
+/* Purane .od-block p ki jagah ab ye use hoga */
+.od-detail-item {
+  margin: 8px 0;
+  color: #333; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* Icon ki styling */
+.od-detail-item .od-icon {
+  min-width: 18px;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Strong aur span ki styling wahi rahegi */
+.od-detail-item strong {
+  font-weight: 600;
+  color: #222;
+}
+
+.od-detail-item span {
+  color: #444;
+  flex: 1;
+}
+
+
+/* .od-block p{
+  margin:8px 0;
+  color:#333; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* grid-template-columns: 20px 1fr; */
+  /* gap: 0 8px; */
+  /* align-items: center; */
+  /* line-height: 1.4; */
+  /* text-align: left; */
+/* } */
+
+.od-block p svg{
+  min-width: 18px;
+  font-size: 16px;
+  color: #666;
+  /* margin-top: 4px; */
+} */
+
+.od-block p strong{
+  font-weight: 600;
+  /* margin-right: 8px; */
+  color: #222;
+  display: inline-block;
+ 
+}
+
+/* Text Value (Aasta, Email ID) ki styling */
+.od-block p span,
+.od-block p .value-text{
+  color: #444;
+  flex: 1;
+}
+
+.od-muted{
+  color:#666;
+  font-size:14px;
+  margin-top: 4px;
+}
+
+
+/* outline button */
+.od-outline{
+  border: 1px solid red;
+  background: #fff;
+  padding:8px 16px;
+  border-radius:6px;
+  border:1px solid #d7dbe6;
+  cursor:pointer;
+  display: flex;
+  align-items: center; /* Icon aur text ek line mein honge */
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  height: fit-content;    /* Jitni zaroorat hai utni height */
+
+}
+.od-outline:hover{
+  background: #f5f5f5;
+  border-color: #000;
+}
+
+/* responsive */
+@media (max-width: 800px) {
+  .od-profile { flex-direction:column; }
+  .od-card-right { align-items:center; }
+  .od-container { padding: 0 12px; }
+}
+
+
+/*yha se ChefDashboard.js file ke liye css hai*/
+.dashboard-container{
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  background: #fff;
+  min-height: 100vh;
+  /* padding-bottom: 40px; */
+  /* font-family: Arial, sans-serif; */
+}
+
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 14px 22px;
+  border-bottom: 1px solid #e6e6f0;  
+}
+
+.header-left{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-btn{
+  border: none;
+  background: transparent;
+  color: #333;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.logo{
+  /* font-size: 25px; */
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-avatar{
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+.content-box{
+   max-width: 900px;
+   margin: auto;
+   padding: 30px;
+}
+
+.title{
+  font-size: 32px;
+  font-weight: bold;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.subtitle{
+  color: #666;
+  text-align: left;
+  margin-top: 2px;
+  margin-bottom: 20px;
+}
+
+/* Job status */
+.job-status-card{
+  background: #e6e6e6;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.status-left{
+  display: flex;
+   /* gap: 20px; */
+   align-items: flex-start;
+}
+
+.icon-circle {
+  background: #f0f0f0;
+  padding: 12px;
+  margin-right: 15px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+}
+
+.status-heading{
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.btn-toggle{
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.status-heading{
+  text-align: left;
+}
+
+.status-message{
+  margin-top: 5px;
+}
+
+.badge-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  /* text-align: left; */
+}
+
+.btn-watch-profile{
+  background: #fff;
+  color: #000;
+  border: 1px solid #bcbcbc;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.btn-watch-profile:hover{
+  background-color: #e0e0e0;
+}
+
+.badge{
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  /* text-align: left; */
+  /* position: static; */
+  /* transform: translateX(-225px); */
+  /* margin-top: 5px; */
+}
+
+/* Profile section */
+.profile-card{
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+   border: 1px solid #ddd;
+}
+
+.profile-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Button ko upar se align rakhega */
+  margin-bottom: 20px;
+}
+
+.btn-outline {
+  border: 1px solid #333;
+  background: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Icon aur text ek line mein honge */
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  height: fit-content;    /* Jitni zaroorat hai utni height */
+  /* width: auto; */
+}
+
+.btn-outline:hover{
+  background: #f5f5f5;
+  border-color: #000;
+}
+
+.profile-box{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.main-avatar{
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+}
+
+.name{
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.role {
+  color: gray;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+   gap: 5px;
+}
+
+.rating-icon{
+  color: gold;
+}
+
+.details-grid {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  align-items: start; /* Ye sabko top-left se align rakhega */
+  text-align: left;
+}
+
+.detail-item{
+  display: flex;
+  align-items: center; /* 👈 Isse Icon aur Text ekdum beech se align honge */
+  gap: 5px;  /* Icon aur Text ke beech ki doori */
+  margin-bottom: 18px;
+}
+.detail-icon{
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.detail-block h4{
+  margin-bottom: 8px;
+  font-weight: 700;
+  text-align: left;
+  width: 100%;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+  margin-top: 2px;
+  width: 100%;
+  padding: 0; /* Extra padding hatayi */
+}
+
+.skill-tag{
+  background: #f3f4f6; /* Light grey background */
+  color: #111827;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #dee2e6;
+}
+
+.about {
+  font-size: 15px;
+  color: gray;
+  margin-top: 10px;
+}
+
+/* Yha se AvailableProfessional.js code file ke liye css hai*/
+.ap-root{
+  min-height: 100vh;
+  background: #f6f7fb;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #111827;
+}
+
+/* Header */
+.ap-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  background: #ffffffcc;
+  backdrop-filter: blur(6px);
+}
+
+.ap-header-title-group{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.ap-page-location{
+  font-size: 25px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.ap-back{
+  background: transparent;
+  border: 1px solid transparent;
+  color: #0f172a;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* .ap-header-center h1 {
+  font-size: 18px;
+  font-weight: 600;  <- eski css hta deni eka kuch kaam nhi hai eski jagah koi or kaam kr rha hai 
+} */
+
+/* top container */
+.ap-container{
+  max-width: 1200px;
+  margin: 28px auto;
+  padding: 0 20px 60px;
+}
+
+.ap-top{
+  display: flex;
+  gap: 20px;
+  align-items: start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+/* .ap-top--figma{
+  display: block;
+} */
+.ap-top-left{
+  flex: 1 1 60%;
+}
+
+.ap-title{
+  font-size: 28px;
+  margin: 0 0 6px;
+  text-align: left;
+}
+
+.ap-desc{
+  margin: 0;
+  color: #6b7280;
+  text-align: left;
+}
+
+/* badges */
+.ap-badges{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.ap-badge{
+  background: #f3f4f6;
+  color: #111827;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+.ap-badge.outline{
+  background: transparent;
+  border: 1px dashed rgba(15,23,42,0.06);
+}
+
+/* search + filters */
+.ap-top-right{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 380px;
+}
+
+.ap-search{
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.03);
+}
+
+.ap-search-icon{
+  margin-right: 10px;
+  color: #9ca3af;
+}
+
+.ap-search input{
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+.ap-filters{
+  display: flex;
+  gap: 10px;
+}
+
+.ap-filters select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(15,23,42,0.06);
+  background: white;
+  min-width: 110px;
+  font-size: 14px;
+}
+
+.ap-list {
+  display: grid;
+  gap: 18px;
+}
+
+.ap-card {
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 250px;
+  gap: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.04);
+  align-items: stretch;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+.ap-card--mine{
+  border-color: rgba(59,130,246,0.18);
+  background: rgba(59,130,246,0.03);
+}
+
+.ap-card-left{
+  display: flex;
+  /* flex: 1; */
+  gap: 16px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ap-avatar{
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ap-meta{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ye hta ke dhekna  */
+.ap-title-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.ap-name{
+  /* margin: 0; */
+   font-size: 18px;
+   font-weight: 600;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+
+.ap-pill {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+/* sub */
+.ap-sub{
+  color: #6b7280;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  text-align: left;
+  display: block;
+}
+
+/* ese comment kekke dhekna hai  */
+/* stats grid */
+.ap-stats-grid{
+  display: flex; /* Grid ki jagah Flex */
+  flex-direction: column; /* Sab kuch ek ke niche ek */
+  /* grid-template-columns: repeat(2, minmax(0, 1fr)); */
+  gap: 8px;
+  margin-bottom: 15px;
+  align-items: flex-start; /* Sab kuch left se shuru hoga */
+}
+
+.ap-stat{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+  font-size: 13px;
+  justify-content: flex-start; /* Left alignment */
+}
+
+.ap-block {
+ font-size: 13px;
+ margin-bottom: 15px; 
+ width: 100%; /* Puri width lega */
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start; /* Left align */
+} 
+
+.ap-block-title{
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 4px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.ap-skills{
+  display: flex;  /* Tags ko ek line mein laane ke liye */
+  flex-wrap: wrap;  /* Agar zyada skills hon toh niche wali line mein aa jayein */
+  gap: 8px;               /* YEH HAI MAIN FIX: Biskit aur Tofi ke beech gap ke liye */
+  background: transparent; /* Parent ka background hata do agar individual tags chahiye */
+  padding: 0;
+}
+
+/* Har ek single skill (Biskit, Tofi) ki styling */
+.ap-skill{
+  background: #f3f4f6; /* Light grey background */
+  color: #111827;
+  padding: 4px 10px;      /* Tag ke andar ki space */
+  border-radius: 6px;     /* Rounded corners */
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(15,23,42,0.06);
+  display: inline-block;
+
+}
+
+.ap-skill.outline {
+  background: transparent;
+  border: 1px dashed rgba(15,23,42,0.06);
+}
+
+
+/* right contact card */
+.ap-card-right{
+  width: 260px;
+  flex-shrink: 0;
+  background: #fff;
+  border-left: 1px solid #eee;
+  /* flex-shrink: 0; */
+  /* display: flex; */
+  /* align-items: center; */
+}
+
+
+.ap-contact-card{
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px dashed rgba(15,23,42,0.06);
+  padding: 5px;   /*ese comment krke dheko*/
+  text-align: center;
+}
+
+.ap-contact-top {
+  margin-bottom: 12px;
+}
+
+.ap-lock{
+  font-size: 26px;
+  color: #9ca3af;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.ap-contact-sub{
+  color: #6b7280;
+  font-size: 13px;
+   margin-top: 6px;
+}
+
+/* unlocked */
+.ap-contact-unlocked{
+  text-align: left;
+  background: #f0fdf4;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;  
+}
+
+/* locked */
+.ap-locked-box {
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #6b7280;
+}
+
+/* buttons */
+.ap-contact-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  width: 100%;
+}
+
+.ap-contact-actions .btn-primary{
+  background: #0f172a;
+  color: white;
+  border: none;
+}
+
+.ap-contact-actions .btn-outline{
+  background: transparent;
+  border: 1px solid rgba(15,23,42,0.06);
+  color: #0f172a;
+}
+
+
+/* empty state */
+.ap-empty{
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.ap-empty-icon {
+  font-size: 48px;
+  color: rgba(15,23,42,0.08);
+  margin-bottom: 12px;
+}
+
+/* responsive */
+@media (max-width: 980px) {
+  .ap-top{
+     flex-direction: column;
+  }
+
+  .ap-top-right{
+    width: 100%;
+  }
+
+  .ap-card{
+    flex-direction: column;
+  }
+
+  .ap-card-right{
+    width: 100%;
+  }
+}
+
+/* Yha se PaymentModal.js file code ke liye css hai*/
+.pm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* Thoda light overlay Figma jaisa */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.pm-modal{
+  background: #fff;
+  width: 440px;
+  max-width: 95%;
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.pm-close{
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Title Alignment */
+.pm-title{
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left; /* Left align like Figma */
+  margin-bottom: 20px;
+  color: #111;
+}
+
+/* Profile Card (The Gray Box) */
+.pm-card{
+  border: 1px solid #e5e5e5;
+  background-color: #fcfcfc; /* Very light gray background */
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.pm-profile{
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.pm-avatar{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+/* Name and Role */
+.pm-meta-info h3{
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #111;
+}
+
+.pm-meta-info p{
+  margin: 2px 0 8px 0;
+  color: #6b7280; /* Gray color for role */
+  font-size: 16px;
+}
+
+/* Stats Row (Rating, Location, Price) */
+.pm-stats-row{
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: #333;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pm-stats-row span{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pm-rating{
+  color: #f59e0b; /* Golden Star Color */
+  font-weight: 600;
+}
+/* .pm-meta{ 
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  margin-top: 6px;
+} */
+
+/* .pm-meta span{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+} */
+
+/* Skills Badges */
+.pm-skills{
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pm-badge{
+  background: #f1f1f1;
+  color: #374151;
+  padding: 4px 12px;
+  border-radius: 999px; /* Pill shape */
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+}
+
+/* Benefits Section */
+.pm-section{
+  margin-top: 24px;
+  text-align: left;
+}
+
+.pm-section h4{
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pm-section ul{
+  padding-left: 0;
+  list-style: none; /* No default bullets */
+  margin: 0;
+}
+
+.pm-section li{
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pm-section li::before{
+  content: "•"; /* Custom bullet */
+  color: #111;
+  font-weight: bold;
+}
+
+/* Price Box */
+.pm-price{
+  background: #f9fafb; /* Light background like Figma */
+  border: 1px dashed #ccc;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pm-price-label{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* Specific Title Styling */
+.pm-price-title{
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 2px;
+}
+
+.pm-price-subtitle{
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.pm-amount{
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* Action Buttons */
+.pm-actions{
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.pm-btn{
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  /* border: 1px solid #ccc; */
+  /* background: #fff; */
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  color: #374151;
+  /* border: 1px solid #e5e7eb; */
+}
+
+.pm-btn.primary{
+  background: #111;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pm-btn:hover{
+  opacity: 0.9;
+}
+
+.pm-center{
+  text-align: center;
+  padding: 30px 10px;
+}
+
+.pm-spinner{
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #000;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+.pm-success{
+  width: 60px;
+  height: 60px;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 10px;
+}
+
+.pm-error-icon{
+  color: #ef4444;
+  margin-bottom: 10px;
+}
+
+.pm-muted{
+  color: #666;
+  font-size: 13px;
+}
+
+/*Yha se LegalPage.js file code ke liye CSS hai */
+.legal-container{
+  background-color: #fdfdfd;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.legal-content-wrapper{
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Sab kuch left se barabar start hoga */
+}
+
+.footer-back-btn{
+  margin-bottom: 20px;
+  cursor: pointer;
+  padding: 10px 24px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background: #fff;
+  font-weight: 600;
+  color: #555;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.footer-back-btn:hover{
+  background-color: #333; /* Hover par dark theme */
+ color: #fff;
+  transform: translateY(-2px); /* Halki si lift */
+}
+
+.legal-title{
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 30px;
+/* Border niche ki jagah thoda left mein dete hain professional look ke liye */
+  padding-left: 15px;
+  border-left: 5px solid #FFD700;
+}
+
+.legal-card{
+  background-color: #fff;
+  padding: 45px;
+  border-radius: 12px;
+  border: 1px solid #efefef; /* Light border card ke liye */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  line-height: 1.9;
+  font-size: 17px;
+  color: #444;
+  width: 100%; /* Card puri width le */
+  text-align: justify;
+  white-space: pre-line; /* Points ko sahi dikhane ke liye */
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .legal-card {
+    padding: 20px;
+    font-size: 15px;
+  }
+  .legal-title{
+    font-size: 28px;
+  }
+  }
+
+  .legal-card strong {
+    color: #1a1a1a; /* Thoda dark color */
+    font-size: 1.05rem; /* Mamuli sa bada size */
+}
