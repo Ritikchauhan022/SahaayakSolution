@@ -444,9 +444,9 @@
 /* yha se LoginSignup ki css hai */
 
 * {
-  /* box-sizing: border-box; */
-  /* margin: 0; */
-  /* padding: 0; */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 .ls-container{
 width: 100%;
