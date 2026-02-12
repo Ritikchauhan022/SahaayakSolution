@@ -588,7 +588,36 @@ padding-bottom: 20px;
     pointer-events: none;
   }
 
+  /* RESPONSIVE FIXES (Mobile & Tablet) */
+  @media (max-width: 480px) {
+    .ls-header {
+      margin-bottom: 20px;
+      padding: 10px 15px;
+    }
 
+    .ls-box {
+      width: 92%;
+      padding: 20px 15px; /* Mobile par thoda compact padding */
+      border-radius: 10px;
+    }
+
+    .ls-title{
+      font-size: 20px;
+    }
+
+    .ls-desc{
+      font-size: 13px;
+    }
+
+    .ls-form input{
+      font-size: 16px; /* Mobile par zoom issue rokne ke liye 16px best hai */
+      padding: 10px;
+    }
+
+    .ls-submit-btn{
+      padding: 12px;
+    }
+  }
   /*Yha se OwnerInformation.js file ki CSS hai*/
    .owner-container{
     background: #f8f9fa;
