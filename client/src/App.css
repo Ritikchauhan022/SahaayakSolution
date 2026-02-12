@@ -158,9 +158,9 @@
    grid-template-columns: repeat(3, 1fr); /* 🔥 fixed 3 columns */
    gap: 35px 50px; /* vertical aur horizontal gap badhaya */
    justify-items: center;
-     align-items: stretch;
-     max-width: 1100px; /* ye center alignment ke liye */
-     margin: 0 auto; /* grid ko center me rakhega */
+   align-items: stretch;
+   max-width: 1100px; /* ye center alignment ke liye */
+   margin: 0 auto; /* grid ko center me rakhega */
 }
 
 .feature-card{
@@ -1479,15 +1479,6 @@ margin-bottom: 8px;
   justify-content:center;
 }
 
-
-/* blocks on right */
-/* .od-profile-right{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-} */
-
 .od-profile-data-wrap{
   flex: 1;
   min-width: 300px;
@@ -1543,25 +1534,12 @@ margin-bottom: 8px;
 }
 
 
-/* .od-block p{
-  margin:8px 0;
-  color:#333; 
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  /* grid-template-columns: 20px 1fr; */
-  /* gap: 0 8px; */
-  /* align-items: center; */
-  /* line-height: 1.4; */
-  /* text-align: left; */
-/* } */
-
 .od-block p svg{
   min-width: 18px;
   font-size: 16px;
   color: #666;
   /* margin-top: 4px; */
-} */
+} 
 
 .od-block p strong{
   font-weight: 600;
@@ -1944,11 +1922,6 @@ margin-bottom: 8px;
   cursor: pointer;
 }
 
-/* .ap-header-center h1 {
-  font-size: 18px;
-  font-weight: 600;  <- eski css hta deni eka kuch kaam nhi hai eski jagah koi or kaam kr rha hai 
-} */
-
 /* top container */
 .ap-container{
   max-width: 1200px;
@@ -1964,9 +1937,6 @@ margin-bottom: 8px;
   margin-bottom: 22px;
 }
 
-/* .ap-top--figma{
-  display: block;
-} */
 .ap-top-left{
   flex: 1 1 60%;
 }
@@ -2404,18 +2374,6 @@ margin-bottom: 8px;
   color: #f59e0b; /* Golden Star Color */
   font-weight: 600;
 }
-/* .pm-meta{ 
-  display: flex;
-  gap: 10px;
-  font-size: 12px;
-  margin-top: 6px;
-} */
-
-/* .pm-meta span{
-  display: flex;
-  align-items: center;
-  gap: 4px;
-} */
 
 /* Skills Badges */
 .pm-skills{
