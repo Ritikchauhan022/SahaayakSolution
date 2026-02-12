@@ -426,7 +426,7 @@
   .hero-buttons .btn { width: 100%; max-width: 300px; }
 
   .features-grid { grid-template-columns: 1fr; }
-  .feature-card { width: 100%; max-width: 310px; }
+  .feature-card { width: 100%; max-width: 300px; }
 
   .process-flow-container { grid-template-columns: 1fr; }
 
