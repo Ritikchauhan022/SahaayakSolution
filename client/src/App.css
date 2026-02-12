@@ -442,17 +442,24 @@
 
 
 /* yha se LoginSignup ki css hai */
+
+* {
+  /* box-sizing: border-box; */
+  /* margin: 0; */
+  /* padding: 0; */
+}
 .ls-container{
 width: 100%;
 min-height: 100vh;
 background: #f8f9fc;
-padding-bottom: 20px;
+padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 }
 
 .ls-header{
   display: flex;
   align-items: center;
   gap: 15px;
+  padding: 10px 20px; /* Header mein thodi padding add ki */
   margin-bottom: 40px;
   background: #fff;
   border-bottom: 1px solid #e5e5e5;
@@ -470,9 +477,10 @@ padding-bottom: 20px;
 
 .ls-box {
    max-width: 420px;
+   width: 90%; /* Mobile par 90% width lega */
    margin: auto;
    background: #fff;
-   padding: 25px;
+   padding: 30px 25px; /* Padding thodi adjust ki */
    border-radius: 12px;
    box-shadow: 0 4px 15px rgba(0,0,0,0.09);
    text-align: center;
@@ -509,7 +517,7 @@ padding-bottom: 20px;
 
   .ls-tabs button{
      flex: 1;
-     padding: 10px;
+     padding: 12px;
      background: #f4f4f4;
      border: none;
      cursor: pointer;
@@ -538,14 +546,16 @@ padding-bottom: 20px;
   .ls-form label{
     font-size: 14px;
     font-weight: 600;
+    display: block; /* Label ko block banaya safe layout ke liye */
   }
 
   .ls-form input{
     width: 100%;
-    padding: 10px;
-    margin: 7px 0 15px 0;
+    padding: 12px; /* Thoda comfortable padding mobile ke liye */
+    margin: 7px 0 18px 0;
     border-radius: 6px;
     border: 1px solid #ddd;
+    box-sizing: border-box; /* Width issue se bachne ke liye */
   }
 
   .ls-password-box{
@@ -554,8 +564,8 @@ padding-bottom: 20px;
 
   .ls-password-box span{
      position: absolute;
-     right: 10px;
-     top: 13px;
+     right: 12px;
+     top: 15px;
      cursor: pointer;
      color: #555;
   }
@@ -571,6 +581,9 @@ padding-bottom: 20px;
     cursor: pointer;
     margin-top: 5px;
   }
+  .ls-submit-btn:hover {
+  background: #1a66e6;
+}
 
   /* --- Browser Default Password Icons Fix --- */
 
