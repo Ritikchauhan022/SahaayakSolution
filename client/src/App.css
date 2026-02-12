@@ -631,6 +631,8 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
       padding: 12px;
     }
   }
+
+
   /*Yha se OwnerInformation.js file ki CSS hai*/
    .owner-container{
     background: #f8f9fa;
@@ -848,12 +850,20 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 
 
 /*Yha se BasicInformation.css file ka code hai*/
+/* Sabse upar Universal Fix taaki boxes bahar na nikle */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 /* Page layout */
 .bi-container{
   background: #f8f9fa;
   padding-bottom: 40px;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color: #222;
+  min-height: 100vh;
 }
 
 /* Header */
@@ -864,7 +874,9 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
   padding: 15px 25px;
   background: #fff;
   border-bottom: 1px solid #e5e5e5;
-  /* margin-bottom: 18px; */
+  position: sticky; /* Header ko top par fix rakhega scroll karte waqt */
+  top: 0;
+  z-index: 100;
 }
 
 .bi-back{
@@ -887,13 +899,13 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 
 /* Card */
 .bi-card{
-  width: 90%;
+  width: 95%; /* Mobile par thoda zyada space lega */
   max-width: 650px;
-  margin: 35px auto;
+  margin: 25px auto;
   background: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
-  padding: 25px;
+  padding: 30px; /* Thodi zyada padding professional lagti hai */
   box-shadow: 0 6px 22px rgba(17, 24, 39, 0.03);
 }
 
@@ -904,22 +916,21 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 }
 
 .bi-sub{
-  margin-top: 15px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 25px;
   color: #666;
-  /* font-size: 14px; */
+  font-size: 14px;
 }
 
 /* Form basics */
 .bi-form label,
 .bi-form .bi-label{
   display: block;
-  margin-bottom: 6px;
-  font-weight: 500;
+  margin-bottom: 8px;
+  font-weight: 600;
   font-size: 14px;
-  color: #222;
+  color: #333;
   text-align: left;
-  /* display: block; */
 }
 
 .bi-form input[type="text"],
@@ -928,9 +939,9 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 .bi-form select,
 .bi-form textarea{
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px; /* Touch targets bade rakhe hain */
   margin-bottom: 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #cfcfcf;
   font-size: 14px;
   outline: none;
@@ -945,13 +956,17 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
   border-color: #4a4aff;
   box-shadow: 0 0 3px rgba(74, 74, 255, 0.4);
 }
+.bi-form textarea{
+  resize: none;
+  min-height: 120px;
+}
 
 /* grid 2 columns */
 .bi-grid-2{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
-  margin-bottom: 6px;
+  /* margin-bottom: 6px; */
 }
 
 /* Fix Password Field Resizing Issue */
@@ -997,8 +1012,8 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 /* skills row */
 .bi-skill-row{
   display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .bi-skill-row input{
@@ -1008,12 +1023,17 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 .bi-add-btn{
   background: #1f6feb;
   border: none;
-  padding: 9px 12px;
+  padding: 8px 12px;
+  height: 42px;  /*Input box ki height ke barabar rakho */
   color: #fff;
   border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
+  justify-content: center;
   align-items: center;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 0;
 }
 
 /* skills list chips */
@@ -1021,16 +1041,17 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
   display: flex;
   flex-wrap: wrap;
   gap:8px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .bi-skill-tag{
-  display: inline-flex;
+  /* display: inline-flex; */
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
+  gap: 6px;
+  padding: 6px 12px;
   background: #f0f6ff;
-  border-radius: 18px;
+  border-radius: 20px;
   font-size: 13px;
   color: #0b2b66;
 }
@@ -1069,15 +1090,18 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 /* upload box */
 .bi-upload-box{
   border: 2px dashed #ccc;
-  border-radius: 10px;
-  padding: 25px;
+  border-radius: 12px;
+  padding: 30px 20px;
   text-align: center;
-  position: relative;
+  background: #fafafa;
+  transition: all 0.2s;
+  /* position: relative; */
   margin-top: 8px;
 }
 
 .bi-upload-box:hover{
   border-color: #4a4aff;
+  background: #f5f5ff;
 }
 
 .bi-upload-icon {
@@ -1148,23 +1172,26 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
   }
 
   .bi-primary{
-    flex: 1;
+    flex: 2;
     padding: 12px;
      background: #4a4aff;
     color: white;
     border: none;
-    padding: 12px 14px;
+    padding: 14px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 14px;
   }
 
   .bi-secondary{
+    flex: 1;
     background: #fff;
     border: 1px solid #aaa;
-    padding: 12px 20px;
+    padding: 14px;
     border-radius: 8px;
     cursor: pointer;
+    font-size: 14px;
   }
 
   /* Browser eye icon fix */
@@ -1181,13 +1208,41 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
     pointer-events: none;
   }
 
-  /* Responsive */
-@media (max-width: 720px) {
-  .bi-grid-2 {
-    grid-template-columns: 1fr;
+ /* --- Responsive Media Queries --- */
+
+@media (max-width: 600px) {
+  .bi-header {
+    padding: 12px 15px;
   }
-  .bi-card { padding: 16px; }
-  .bi-container { padding: 12px; }
+
+  .bi-card {
+    padding: 20px 15px;
+    margin: 15px auto;
+    border: none; /* Mobile par border hata kar card ko clean dikhaya */
+    box-shadow: none; /* Mobile par borderless look zyada trendy hai */
+    background: transparent;
+  }
+
+  .bi-grid-2{
+    grid-template-columns: 1fr; /* Name fields ek ke niche ek */
+    gap: 0;
+  }
+
+  .bi-btn-row {
+    flex-direction: column; /* Buttons stack ho jayenge */
+  }
+
+  .bi-primary, .bi-secondary {
+    width: 100%;
+  }
+
+  .bi-secondary {
+    order: 2; /* Cancel button neeche aayega */
+  }
+
+  .bi-primary {
+    order: 1; /* Save button upar aayega */
+  }
 }
 
 
