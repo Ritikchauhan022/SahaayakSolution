@@ -1784,7 +1784,7 @@ margin-bottom: 8px;
 .dashboard-container{
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color: #222;
-  background: #fff;
+  background: #fcfcfc; /* Halka sa off-white fresh look ke liye */
   min-height: 100vh;
   /* padding-bottom: 40px; */
   /* font-family: Arial, sans-serif; */
@@ -2024,13 +2024,16 @@ margin-bottom: 8px;
 .detail-item{
   display: flex;
   align-items: center; /* 👈 Isse Icon aur Text ekdum beech se align honge */
-  gap: 5px;  /* Icon aur Text ke beech ki doori */
-  margin-bottom: 18px;
+  gap: 10px;  /* Icon aur Text ke beech ki doori */
+  margin-bottom: 15px;
+  text-align: left;
 }
 .detail-icon{
   flex-shrink: 0;
+  color: #555; /* Icon ka color thoda soft karne ke liye */
   display: flex;
   align-items: center;
+  width: 18px; /* Fixed width taaki text ek line mein align ho */
 }
 
 .detail-block h4{
@@ -2066,6 +2069,116 @@ margin-bottom: 8px;
   margin-top: 10px;
 }
 
+/* --- Mobile aur Tablet ke liye Responsive --- */
+
+/* --- Mobile aur Tablet ke liye Safe Responsive --- */
+
+@media (max-width: 768px) {
+  /* 1. Page ki width ko lock kiya taaki side scroll na ho */
+  .dashboard-container {
+    width: 100% !important;
+    overflow-x: hidden !important; /* Ye side scroll ko rok dega */
+  }
+
+  /* 2. Content box ki fixed padding aur width reset ki */
+  .content-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important; /* 30px se kam karke 15px kiya */
+    box-sizing: border-box !important;
+  }
+
+  /* 3. Header: Logout aur Welcome ko screen ke andar fit kiya */
+  .header {
+    flex-wrap: wrap !important; /* Elements ko ek ke niche ek aane ki jagah di */
+    padding: 10px 15px !important;
+  }
+  
+  .header-left {
+    gap: 10px !important;
+  }
+  .title{
+  font-size: 30px;
+  font-weight: bold;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.subtitle{
+  color: #666;
+  text-align: left;
+  margin-top: 2px;
+  margin-bottom: 20px;
+}
+
+  /* 4. "Stop Looking" Card Fix: Button ko niche dhakela */
+  .job-status-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 15px !important;
+    width: 100% !important;
+  }
+
+  /* 5. Profile Header: Edit Profile button ko set kiya */
+  .profile-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 15px !important;
+  }
+
+  .btn-outline {
+    width: 100% !important; /* Edit Profile button poora bada hoga */
+    justify-content: center;
+  }
+
+  /* 6. Professional Details Grid: Sabko ek ke niche ek kiya */
+  .details-grid {
+    grid-template-columns: 1fr !important; /* 3 columns ko 1 column kiya */
+    gap: 20px !important;
+  }
+
+  /* 7. Skills ko wrap kiya taaki screen se bahar na bhagein */
+  .skills {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
+
+  .skill-tag {
+    margin-bottom: 5px;
+  }
+
+  /* 8. Badge Container ko Grid banao taaki dono buttons ek line mein fit hon */
+  .badge-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Do barabar columns */
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 15px 0 !important;
+  }
+
+  /* 9. Buttons ko ek jaisa professional look do */
+  .badge, .btn-watch-profile {
+   width: 100% !important;
+   height: 35px !important; /* Fix height taaki upar-niche na dikhein */
+   display: flex !important;
+   align-items: center !important;
+   justify-content: center !important;
+   font-size: 14px !important;
+   font-weight: 500 !important;
+   padding: 0 5px !important;
+   margin: 0 !important;
+   border-radius: 6px !important;
+   white-space: nowrap !important; /* Text line break nahi karega */
+  }
+
+  /* 10. Status content ko thoda saaf dikhao */
+  .status-text-content {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+}
 /* Yha se AvailableProfessional.js code file ke liye css hai*/
 .ap-root{
   min-height: 100vh;

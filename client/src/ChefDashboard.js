@@ -70,7 +70,7 @@ const profile = {
                 <button className="back-btn" onClick={onLogout}>
                     <FaArrowLeft className="icon" /> Logout
                 </button>
-                <h1 className="logo">BakeryConnect</h1>
+                <h1 className="logo">SahaayakSolution</h1>
                 </div>
                 <div className="profile-mini">
                     <span>Welcome, {profile.name}</span>
@@ -97,15 +97,22 @@ const profile = {
                             </p>
                             <div className="badge-container">
                             {userProfile.isAvailable && <span className="badge">Profile Active</span>}
+                            {/* Is button ko humne badge ke saath hi container ke andar daal diya hai */}
+                            {userProfile.isAvailable && (
+                                <button className="btn-watch-profile" onClick={onWatchProfile}>
+                                    <FaSearch size={14} style={{marginRight: '5px'}} className="icon-small"/>
+                                    Watch Profile
+                                </button>
+                                )}
                             </div>
-                            {/* Watch Your Profile button yha add kiya mene  */}
+                            {/* Watch Your Profile button yha add kiya mene 
                             {userProfile.isAvailable && (
                                 <button className="btn-watch-profile"
                                     onClick={onWatchProfile}>
                                     
                                     <FaSearch size={14} style={{marginRight: '5px'}} className="icon-small"/> Watch Your Profile 
                                 </button>
-                            )}
+                            )} */}
                         </div>
                     </div>
 
@@ -157,9 +164,18 @@ const profile = {
 
                         <div className="detail-block">
                             <h4>Professional Details</h4>
-                            <p><FaClock /> {profile.experience}  experience</p>
-                            <p><FaRupeeSign /> {profile.hourlyRate}/month</p>
-                            <p><FaClock /> {profile.availability}</p>
+                            <div className="detail-item">
+                            <FaClock className="detail-icon" /> 
+                            <span>{profile.experience} experience</span>
+                        </div>
+                            <div className="detail-item">
+                            <FaRupeeSign className="detail-icon" /> 
+                           <span>{profile.hourlyRate}/month</span>
+                         </div>
+                           <div className="detail-item">
+                            <FaClock className="detail-icon" /> 
+                           <span>{profile.availability}</span>
+                         </div>
                         </div>
 
                         <div className="detail-block">
