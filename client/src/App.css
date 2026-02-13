@@ -634,12 +634,23 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 
 
   /*Yha se OwnerInformation.js file ki CSS hai*/
+
+  /* --- Sabse upar Universal Fix --- */
+  * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+ }
+
    .owner-container{
     background: #f8f9fa;
     min-height: 100vh;
     padding-bottom: 40px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #222;
    }
 
+  /* Header - Isko sticky rakhte hain */
    .owner-header{
     display: flex;
     align-items: center;
@@ -647,26 +658,31 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
     padding: 15px 25px;
     background: #fff;
     border-bottom: 1px solid #e5e5e5;
+    position: sticky;
+    top: 0;
+    z-index: 100;
    /* border-top: 1px solid rgb(184, 172, 172); */
    /* border-bottom: 1px solid rgb(184, 172, 172); */
 
    }
 
    .back-btn{
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 7px;
-    background: transparent;
     border: none;
-    font-size: 15px;
+    background: transparent;
+    font-size: 16px;
     cursor: pointer;
+    color: #333;
+    font-weight: 500;
    }
 
    .header-title{
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
    }
 
@@ -674,14 +690,16 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
      color: #4a4aff;
    }
 
+   /* Card - Same as Chef Card */
    .owner-card{
-    background: white;
-    width: 90%;
+    width: 95%;
     max-width: 650px;
-    margin: 35px auto;
-    padding: 25px;
+    margin: 25px auto;
+    background: #fff;
+    padding: 30px; /* Padding thodi badhayi professional look ke liye */
     border-radius: 12px;
     border: 1px solid #e5e5e5;
+    box-shadow: 0 6px 22px rgba(17, 24, 39, 0.03);
    }
 
    .owner-title{
@@ -692,30 +710,33 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 
    .owner-desc{
     color: #666;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 14px;
    }
 
    /* Form */
    .owner-form label{
+    display: block;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     text-align: left;
-    display: block;
+    color: #333;
    }
 
    .owner-form input,
    .owner-form select{
     width: 100%;
     padding: 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid #cfcfcf;
     outline: none;
     font-size: 14px;
-    margin-top: 6px;  /* Naya: Label se thoda gap */
-    margin-bottom: 12px;   /* Thoda kam kiya taaki clean lage */
+    margin-top: 2px;  /*Naya: Label se thoda gap*/
+    margin-bottom: 10px;   /* Thoda kam kiya taaki clean lage */
     box-sizing: border-box; /* Zaroori: Taaki padding width se bahar na jaye */
+    transition: all 0.2s; /* Smoothness */
    }
 
    .owner-form input:focus,
@@ -726,18 +747,19 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 
    .section-title{
     font-size: 18px;
-    margin-top: 25px;
-    margin-bottom: 8px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     font-weight: 600;
     text-align: left;
     display: block;
+    color: #222;
+
    }
 
    .grid-2{
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px; /* Horizontal gap */
-    margin-bottom: 10px;  /* Agle section ya row se gap */
    }
 
    .password-wrapper{
@@ -759,12 +781,16 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
    .upload-box{
     text-align: center;
     border: 2px dashed #ccc;
-    padding: 25px;
-    border-radius: 10px;
+    padding: 30px 20px;
+    border-radius: 12px;
+    background: #fafafa;
+    transition: all 0.2s;
+    margin-top: 8px;
    }
 
    .upload-box:hover{
     border-color: #4a4aff;
+    background: #f5f5ff;
    }
 
    .upload-icon{
@@ -792,11 +818,11 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
    .btn-row{
     display: flex;
     gap: 15px;
-    margin-top: 25px;
+    margin-top: 30px;
    }
 
    .primary-btn {
-    flex: 1;
+    flex: 2;
     padding: 12px;
     background: #4a4aff;
     color: white;
@@ -804,14 +830,18 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 14px;
    }
+   .primary-btn:hover { background: #3636e0; }
 
    .cancel-btn{
-    padding: 12px 20px;
+    flex: 1;
+    padding: 12px;
     background: #fff;
     border: 1px solid #aaa;
     border-radius: 8px;
-    cursor: pointer;      
+    cursor: pointer;   
+    font-size: 14px;   
    }
 
    /* OwnerInformation.css - Browser eye icon fix */
@@ -827,26 +857,48 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
     pointer-events: none;
    }
 
+   /* --- Responsive Media Queries --- */
 
-   @media (max-width: 600px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
+  @media (max-width: 600px) {
+    .owner-header {
+      padding: 12px 15px;
+    }
+
+    .header-title {
+      font-size: 18px;
+    }
 
   .owner-card {
+    padding: 20px 15px;
     width: 95%;
-    margin: 20px auto;
-    padding: 18px;
+    margin: 15px auto;
+    border: none; /* Mobile par cleaner look */
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .grid-2 {
+   grid-template-columns: 1fr; /* Name/Details ek ke niche ek */
+   gap: 0;
   }
 
   .btn-row {
-    flex-direction: column;
+    flex-direction: column; /* Buttons stack ho jayenge */
+    gap: 10px;
   }
 
   .primary-btn, .cancel-btn {
     width: 100%;
   }
+
+  .cancel-btn {
+    order: 2; /* Cancel neeche */
 }
+
+.primary-btn {
+  order: 1; /* Save upar */
+}
+  }
 
 
 /*Yha se BasicInformation.css file ka code hai*/
@@ -940,6 +992,7 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
 .bi-form textarea{
   width: 100%;
   padding: 12px; /* Touch targets bade rakhe hain */
+  margin-top: 2px;  /*Naya: Label se thoda gap*/
   margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #cfcfcf;
@@ -1183,6 +1236,7 @@ padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
     font-weight: 600;
     font-size: 14px;
   }
+  .bi-primary:hover { background: #3636e0; }
 
   .bi-secondary{
     flex: 1;
