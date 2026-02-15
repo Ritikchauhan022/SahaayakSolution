@@ -457,9 +457,9 @@ const finalSubmissionData = {
     location: userData.location || "Location not set",
 
     // फोटो पाथ को सही URL में बदलना
-    profilePic: userData.profilePic 
-    ? (userData.profilePic.startsWith('http') ? userData.profilePic : `${API_BASE_URL}/${userData.profilePic.replace(/\\/g, '/')}`)
-    : "https://i.pravatar.cc/150"
+    profilePic: userData.profilePic && userData.profilePic.includes('cloudinary.com')
+  ? userData.profilePic
+  : (userData.profilePic ? `${API_BASE_URL}/${userData.profilePic.replace(/\\/g, '/')}` : "https://i.pravatar.cc/150"),
   };
   setCurrentOwnerProfile(finalOwnerData); //ओनर की स्टेट अपडेट करें
  }
