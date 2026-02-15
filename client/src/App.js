@@ -391,9 +391,10 @@ const finalSubmissionData = {
        salaryExpectation: savedChef.salaryExpectation || savedChef.hourlyRate,
         // अगर ये नई प्रोफाइल है (!isEditingMode), तो इसे पक्का false रखें
         isAvailable: isEditingMode ? savedChef.isAvailable : false,
-        // फोटो पाथ को URL में बदलें (अगर Backend से path आ रहा है)
-        avatar: savedChef.avatarPath ? `${API_BASE_URL}/${savedChef.avatarPath.replace(/\\/g, '/')}`
-        : currentChefProfile.avatar,
+        // 🔥 CLOUDINARY FIX: Agar image path hai, toh check karo wo URL hai ya local path
+     avatar: savedChef.avatarPath && savedChef.avatarPath.includes('cloudinary.com') 
+     ? savedChef.avatarPath 
+     : (savedChef.avatarPath ? `${API_BASE_URL}/${savedChef.avatarPath.replace(/\\/g, '/')}` : currentChefProfile.avatar),
       };
 
       setCurrentChefProfile(finalProfileData);
@@ -437,9 +438,9 @@ const finalSubmissionData = {
   role: cleanUserData.specialty || "Bakery Chef",
   hourlyRate: cleanUserData.salaryExpectation || "0",
   isAvailable:cleanUserData.isAvailable ?? false,
-  avatar: cleanUserData.avatarPath 
-      ? `${API_BASE_URL}/${cleanUserData.avatarPath.replace(/\\/g, '/')}` 
-      : "https://i.pravatar.cc/150"
+   avatar: cleanUserData.avatarPath && cleanUserData.avatarPath.includes('cloudinary.com')
+   ? cleanUserData.avatarPath
+   : (cleanUserData.avatarPath ? `${API_BASE_URL}/${cleanUserData.avatarPath.replace(/\\/g, '/')}` : "https://i.pravatar.cc/150")
   };
  setCurrentChefProfile(finalProfileData); // अब स्टेट में असली "Ganesha" का डेटा सेट होगा
  }
@@ -456,7 +457,8 @@ const finalSubmissionData = {
     location: userData.location || "Location not set",
 
     // फोटो पाथ को सही URL में बदलना
-    profilePic: userData.profilePic ? `${API_BASE_URL}/${userData.profilePic.replace(/\\/g, '/')}`
+    profilePic: userData.profilePic 
+    ? (userData.profilePic.startsWith('http') ? userData.profilePic : `${API_BASE_URL}/${userData.profilePic.replace(/\\/g, '/')}`)
     : "https://i.pravatar.cc/150"
   };
   setCurrentOwnerProfile(finalOwnerData); //ओनर की स्टेट अपडेट करें
@@ -582,8 +584,9 @@ const finalSubmissionData = {
         businessName: savedOwner.businessName || savedOwner.bakeryName,
         phone: savedOwner.phone,
         // फोटो पाथ को URL में बदलें
-        profilePic: savedOwner.profilePic ? `${API_BASE_URL}/${savedOwner.profilePic.replace(/\\/g, '/')}`
-        : "https://i.pravatar.cc/150",
+      profilePic: savedOwner.profilePic && savedOwner.profilePic.includes('cloudinary.com')
+  ? savedOwner.profilePic
+  : (savedOwner.profilePic ? `${API_BASE_URL}/${savedOwner.profilePic.replace(/\\/g, '/')}` : "https://i.pravatar.cc/150"),
 
         activeSubscription: savedOwner.activeSubscription ?? true
       };
@@ -690,8 +693,9 @@ const shouldShowFooter = footerPages.includes(location.pathname);
       hourlyRate: chef.salaryExpectation || "0", // Taaki ₹0 na dikhe
       skills: Array.isArray(chef.skills) ? chef.skills : [],
       // 🔥 Image Path Fix:
-      avatar: chef.avatarPath ? `${API_BASE_URL}/${chef.avatarPath.replace(/\\/g, '/')}`
-      : "https://i.pravatar.cc/120",
+      avatar: chef.avatarPath && chef.avatarPath.includes('cloudinary.com')
+  ? chef.avatarPath
+  : (chef.avatarPath ? `${API_BASE_URL}/${chef.avatarPath.replace(/\\/g, '/')}` : "https://i.pravatar.cc/120"),
       bio: chef.bio || "No bio added",
       phone: chef.phone || "No Phone", // ✅ Backend se ab phone hi aayega
       email: chef.email || "No Email", // ✅ Model mein email field hai hi
