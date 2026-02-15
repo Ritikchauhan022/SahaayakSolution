@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import  "./App.css";
 // Icons
 import { FaArrowLeft, FaEye, FaEyeSlash, FaUpload, FaBuilding } from "react-icons/fa";
+import imageCompression from 'browser-image-compression';
 
 export default function OwnerInformation({
     onProfileCreated = (data) => console.log("Owner Profile:", data),
@@ -249,12 +250,35 @@ export default function OwnerInformation({
 
                     {/* Hidden file input */}
                     <input type="file" id="uploadPhoto" accept="image/*" style={{display: "none"}}
-                    onChange={(e) => {
+                    onChange={async (e) => {
                         const file = e.target.files[0];
                         if (file) {
-                            setPreviewImage(URL.createObjectURL(file));
+                            // 1. Compression Options Set Kiya
+                            const options = {
+                                maxSizeMB: 1, // File ko 1MB se chota rakhega
+                                maxWidthOrHeight: 1024,  // Photo ki width/height optimize karega
+                                useWebWorker: true     // Background mein kaam karega (App slow nahi hoga)
+                            };
+
+                            try {
+                             // 2. Image ko compress kiya
+                             const compressedFile = await imageCompression(file, options);
+
+                             // FIX: Purana temporary link delete karo memory se
+                            if (previewImage && previewImage.startsWith('blob:')) {
+                            URL.revokeObjectURL(previewImage);
+                             }
+
+                             // 3. Purana Preview URL agar hai to band (Revoke) kra
+                            setPreviewImage(URL.createObjectURL(compressedFile));
                             // 🔥 यह लाइन जोड़ना बहुत ज़रूरी है, वरना फोटो कभी सर्वर पर नहीं जाएगी
-                            setFormData(prev => ({ ...prev, profilePic: file}));
+                            // ProfilePic mein ab compressed file jayegi
+                            setFormData(prev => ({ ...prev, profilePic: compressedFile}));
+                            setError('');
+                            } catch (error) {
+                                console.error("Compression Error:", error);
+                                setError("Photo upload failed.");
+                            }
                         }
 
                     }}/>

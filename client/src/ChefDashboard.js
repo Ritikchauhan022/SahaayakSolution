@@ -31,7 +31,8 @@ const profile = {
   name: userProfile.fullName || userProfile.name || "Guest Chef", // fullName पहले चेक करें
   // Backend 'avatarPath' भेज रहा है, Dashboard 'avatar' मांग रहा है
   // 🔥 सुधार: पहले App.js वाला 'avatar' चेक करें, फिर 'avatarPath', फिर Default
-  avatar: userProfile.avatar || (userProfile.avatarPath ?  `${API_BASE_URL}/${userProfile.avatarPath.replace(/\\/g, '/')}` : "https://i.pravatar.cc/150"),
+  // 🔥 FIX: Sirf userProfile.avatar use karo kyunki App.js ise pehle hi process kar chuka hai
+  avatar: userProfile.avatar || "https://i.pravatar.cc/150",
   role: userProfile.specialty || userProfile.role || "Bakery Chef", // specialty बैकएंड से आता है
   rating: userProfile.rating || 4.8,
   phone: userProfile.phone || "No Phone",

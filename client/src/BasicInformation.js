@@ -2,6 +2,7 @@ import React, {useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaArrowLeft,FaEyeSlash, FaEye, FaPlus, FaTimes, FaUnlink, FaUpload } from "react-icons/fa";
 import  "./App.css";
+import imageCompression from 'browser-image-compression';
 
 export default function BasicInformation({
     onProfileCreated = (data) => console.log("Chef Profile:", data),
@@ -364,20 +365,39 @@ const finalIsEditing = isEditingFromState || isEditing;
 
                         {/* hidden file input */}
                         <input type="file" id="uploadProfilePhoto" accept="image/*" style={{display: "none"}}
-                        onChange={(e) => {
+                        onChange={async (e) => {
                             const file = e.target.files[0];
                             if (file) {
-                                // Purana Preview URL agar hai to band(Revoke) kra
+                                // 1. Compression Options Set Kiya
+                                const options = {
+                                    maxSizeMB: 1,           // File ko 1MB se chota rakhega
+                                    maxWidthOrHeight: 1024,  // Photo ki width/height optimize karega
+                                    useWebWorker: true,      // Background mein kaam karega (App slow nahi hoga)
+                                };
+
+                                try {
+                                // 2. Image ko compress kiya
+                                    const compressedFile = await imageCompression(file, options);
+                                
+                                // 3. Purana Preview URL agar hai to band (Revoke) kra
                                 if (photoPreview && photoPreview.startsWith('blob:')) {
                                     URL.revokeObjectURL(photoPreview);
                                 }
-                                setFormData({...formData, photo: file});
-                                setPhotoPreview(URL. createObjectURL(file));
+
+                                // 4. State update: Ab 'file' ki jagah 'compressedFile' jayega
+                                setFormData({ ...formData, photo: compressedFile });
+                                setPhotoPreview(URL.createObjectURL(compressedFile));
+
+                                // Messages saaf karein
                                 // Photo change hone per bhi message saaf hoga (Consistency ke liye)
                                 setError('');
                                 setSuccessMessage('');
+                            } catch (err) {
+                                console.error("Compression Error:", err);
+                                setError("There was a problem compressing the photo, please try another photo.");
                             }
-
+                        }
+                        
                         }}/>
                         {/* button trigger */}
                         <label htmlFor="uploadProfilePhoto" className="bi-upload-btn">

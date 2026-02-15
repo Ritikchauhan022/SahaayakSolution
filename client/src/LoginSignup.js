@@ -27,7 +27,7 @@ function LoginSignup(props){
 
 
     const [showPassword, setShowPassword] = useState(false);
-    const [showconfirmPassword, setShowConfirmPassword ] = useState(false);
+    // const [showconfirmPassword, setShowConfirmPassword ] = useState(false);
     const [error, setError] = useState("");
 
 // Back button functionality 
