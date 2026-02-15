@@ -6,6 +6,8 @@ const { Server } = require('socket.io'); // 👈 Add this
 const cors = require('cors');
 const mongoose = require('mongoose');
 const multer = require('multer'); // Multer ko import kiya
+const cloudinary = require('cloudinary').v2; // 👈 Add this
+const { CloudinaryStorage } = require('multer-storage-cloudinary'); // 👈 Add this
 
 // ChefModel को यहाँ इम्पोर्ट करना ज़रूरी है!
 const Chef = require('./models/ChefModel');
@@ -16,9 +18,30 @@ const Owner = require('./models/OwnerModel');
 const app = express();
 const server = http.createServer(app); // 👈 Server ko wrap karein
 
+// --- CLOUDINARY CONFIGURATION ---
+// Bhai yahan apni keys dal
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// --- CLOUDINARY STORAGE SETTINGS ---
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'BakeryConnect_Uploads', // Cloudinary mein is naam ka folder ban jayega
+        allowed_formats: ['jpg', 'png', 'jpeg'],
+        transformation: [{ width: 500, height: 500, crop: 'limit' }] // Optimization
+    },
+});
+const upload = multer({storage: storage});  // Ab multer cloud par bhejega
+
 const io = new Server(server, {
     cors: {
-        origin: "*", // Live hone par ye sabse safe hai testing ke liye
+        // Isse Vercel aur tumhara apna laptop dono allow ho jayenge
+        origin: ["https://sahaayak-frontend.vercel.app", "http://localhost:3000"],
+        // origin: "*", // Live hone par ye sabse safe hai testing ke liye
         methods: ["GET", "POST", "PATCH", "PUT"]
     }
 });
@@ -37,12 +60,12 @@ const PORT = process.env.PORT || 5000; // Backend aamtor per 5000 per chalta hai
 
 // Multer storage set kiya (Hum filal upload nhi kr rhe, srif data paas kr rhe hai)
 // Yadi aap cloud per image save krege, to ye change hoga| Abhi ye local folder me save krege|
-const upload = multer({dest: 'uploads/' });  
+// const upload = multer({dest: 'uploads/' });  
 
 // (Middleware)
 app.use(cors());
 // यह लाइन ब्राउज़र को 'uploads' फोल्डर से फोटो उठाने की परमिशन देती है
-app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static('uploads'));
 // Note: Multer ka use krne per, express.json() ki need nhi hoti
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
@@ -84,7 +107,7 @@ app.get('/api/status', (req, res) => {
         }
 
         // Photo ka path (Example ke liye)
-        const photoPath = req.file ? req.file.path : null;
+        const photoUrl = req.file ? req.file.path : null;
         
         // 🔥 SAFETY LOGIC: Agar email empty string hai, toh use undefined kar do
         // Taaki sparse index use ignore kare aur duplicate error na aaye
@@ -107,7 +130,7 @@ app.get('/api/status', (req, res) => {
             // अपनी जानकारी के लिए availability को अलग से स्टोर कर सकते हैं अगर आपके Schema में है
             availability: body.availability,
             // isAvailable: body.availability === 'Full-time' || body.availability === 'Part-time',
-            avatarPath: photoPath, // photo path save kra 
+            avatarPath: photoUrl, // 👈 Yahan ab seedha https:// link save hoga
              // नई लाइन: नया प्रोफाइल हमेशा 'false' से शुरू होगा
             isAvailable: false,
         };
@@ -205,6 +228,7 @@ app.get('/api/status', (req, res) => {
         }
 
         // अगर यूजर ने नई फोटो अपलोड की है, तो उसका पाथ अपडेट करें
+        // 🔥 CHANGE: Nayi photo bhi Cloudinary par jayegi
         if (req.file) {
             updateData.avatarPath = req.file.path;
         }
@@ -392,7 +416,7 @@ app.get('/api/status', (req, res) => {
  app.post('/api/owner/register', upload.single('profilePic'), async (req, res) => {
     try{
         const body = req.body;
-        const photoPath = req.file ? req.file.path : null;
+        const photoUrl = req.file ? req.file.path : null; // Cloudinary URL
 
         const newOwner = new Owner ({
             ownerName: body.fullName,
@@ -403,7 +427,7 @@ app.get('/api/status', (req, res) => {
             bakeryWork: body.bakeryWork,
             location: body.location,
             yearEstablished: body.yearEstablished,
-            profilePic: photoPath
+            profilePic: photoUrl // 👈 Seedha Cloud link
         });
 
         const savedOwner = await newOwner.save();

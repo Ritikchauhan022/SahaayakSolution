@@ -33,7 +33,7 @@ export default function OwnerDashboard({
     bakerywork: "",
     location: "Your City, State",
     yearEstablished: "",
-    avatar: ""
+    profilePic: ""
    };
 
    return(
@@ -128,7 +128,7 @@ export default function OwnerDashboard({
                    {profile.profilePic ? (
                     <img src={profile.profilePic} alt="avatar"/>
                    ) : (
-                    <div className="od-avatar-fallback-large">(
+                    <div className="od-avatar-fallback-large">
                       {profile.ownerName 
          ? profile.ownerName.split(" ").map(n => n[0]).slice(0,2).join("")
          : 'OW'}
