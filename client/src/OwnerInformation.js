@@ -122,6 +122,12 @@ export default function OwnerInformation({
             return;
          }
 
+         // FIX: Check karo agar image compression fail hui aur file abhi bhi badi hai
+         if (formData.profilePic && formData.profilePic.size > 2 * 1024 * 1024) { // 2MB se badi
+            setError("This image is too complex/large. Please take a screenshot of it and upload that instead.");
+            return;
+         }
+
          // Dono keys bhejo: ownerName (New) aur fullName (Old backup)
          const finalData = {
             ...formData,
@@ -132,14 +138,17 @@ export default function OwnerInformation({
          try {
             // 🔥 FIX 1: 'await' lagaya taaki image upload/compression poora hone ka wait kare
             // Ye line wahi purani onProfileCreated hai, bas ab ye "wait" karegi
-            await onProfileCreated(finalData);
+           await onProfileCreated(finalData);
             setSuccessMessage("Profile created successfully!");
-            // 🔥 FIX 2: Navigate tabhi hoga jab upar wala kaam (onProfileCreated) bina error ke khatam ho jaye
-            navigate('/ownerdashboard');
+            // Success ke baad hi navigate karein
+            setTimeout(() => {
+                navigate('/ownerdashboard');
+                }, 1500);
 
             } catch (err) {
                 console.error("Submission Error:", err);
-                setError("There was a problem saving your profile. Please check your internet and image size..");
+                // Agar Render/Vercel mana karega, toh ye error dikhega
+                setError("Server rejected the image. Please use a simpler photo or a screenshot.");
             }
         };
     
