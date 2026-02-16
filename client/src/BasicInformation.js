@@ -367,37 +367,48 @@ const finalIsEditing = isEditingFromState || isEditing;
                         <input type="file" id="uploadProfilePhoto" accept="image/*" style={{display: "none"}}
                         onChange={async (e) => {
                             const file = e.target.files[0];
-                            if (file) {
-                                // 1. Compression Options Set Kiya
-                                const options = {
-                                    maxSizeMB: 0.7,           // 1MB se kam kiya taaki AI image heavy na pade
-                                    maxWidthOrHeight: 800,    // Dimension thoda chota kiya fast processing ke liye
-                                    useWebWorker: true,      // Background mein kaam karega (App slow nahi hoga)
-                                    initialQuality: 0.6       // Quality thodi kam rakhi taaki compression loop na fase
-                                };
+                            if (!file) return;
 
-                                try {
-                                // 2. Image ko compress kiya
-                                    const compressedFile = await imageCompression(file, options);
+                            setError('');
+                            setSuccessMessage('');
+
+                          // 1. Compression Options Set Kiya
+                             const options = {
+                                maxSizeMB: 0.5,   // 1MB se kam kiya taaki AI image heavy na pade
+                                maxWidthOrHeight: 800,  // Dimension thoda chota kiya fast processing ke liye
+                                useWebWorker: true,    // Background mein kaam karega (App slow nahi hoga)
+                                initialQuality: 0.6,  // Quality thodi kam rakhi taaki compression loop na fase
+                                preserveExif: false //  Naya: AI image ka extra data delete karega
+                            };
+
+                             try {
+                                // Backup: Pehle se asli file ko hi 'fileToUpload' maan lo
+                                let fileToUpload = file;
+
+                             try {
+                                // 2. Compression try karo
+                                const compressedFile = await imageCompression(file, options);
+                                fileToUpload = compressedFile; // Agar success hua toh compressed file
+                                console.log("Compression success!");
+                            } catch (compressionErr) {
+                                // Sabse Zaruri: Agar AI image ki wajah se compression fail ho,
+                                // toh ye crash nahi hoga, seedha asli file upload hogi.
+                                console.warn("Compression failed, using original file:", compressionErr);
+                            }
                                 
-                                // 3. Purana Preview URL agar hai to band (Revoke) kra
-                                if (photoPreview && photoPreview.startsWith('blob:')) {
+                               // 3. Purana Preview URL agar hai to band (Revoke) kra
+                               if (photoPreview && photoPreview.startsWith('blob:')) {
                                     URL.revokeObjectURL(photoPreview);
                                 }
 
-                                // 4. State update: Ab 'file' ki jagah 'compressedFile' jayega
-                                setFormData({ ...formData, photo: compressedFile });
-                                setPhotoPreview(URL.createObjectURL(compressedFile));
+                                // 4. State update (Hamesha fileToUpload use karein)
+                                setFormData({ ...formData, photo: fileToUpload });
+                                setPhotoPreview(URL.createObjectURL(fileToUpload));
 
-                                // Messages saaf karein
-                                // Photo change hone per bhi message saaf hoga (Consistency ke liye)
-                                setError('');
-                                setSuccessMessage('');
-                            } catch (err) {
-                                console.error("Compression Error:", err);
-                                setError("There was a problem compressing the photo, please try another photo.");
-                            }
-                        }
+                                } catch (err) {
+                                    console.error("Main Error:", err);
+                                    setError("Photo process karne mein dikkat aayi.");
+                              }
                         
                         }}/>
                         {/* button trigger */}
