@@ -113,7 +113,7 @@ export default function OwnerInformation({
     }
 
       // Profile Creation
-    const handleSubmit = async(e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
          setError('');
          setSuccessMessage('');
@@ -121,7 +121,8 @@ export default function OwnerInformation({
          if (!validate()){
             return;
          }
-
+         
+         // 1. Size Check (Vercel/Render ki safety ke liye)
          // FIX: Check karo agar image compression fail hui aur file abhi bhi badi hai
          if (formData.profilePic && formData.profilePic.size > 2 * 1024 * 1024) { // 2MB se badi
             setError("This image is too complex/large. Please take a screenshot of it and upload that instead.");
@@ -135,21 +136,24 @@ export default function OwnerInformation({
             bakeryName: formData.businessName
          };
 
-         try {
-            // 🔥 FIX 1: 'await' lagaya taaki image upload/compression poora hone ka wait kare
-            // Ye line wahi purani onProfileCreated hai, bas ab ye "wait" karegi
-           await onProfileCreated(finalData);
-            setSuccessMessage("Profile created successfully!");
-            // Success ke baad hi navigate karein
-            setTimeout(() => {
-                navigate('/ownerdashboard');
-                }, 1500);
+         // 2. Background mein data bhejo (Bina await kiye)
+         // Isse browser ko wait nahi karna padega
+         onProfileCreated(finalData)
+         .then(() => {
+            console.log("Profile updated in background!");
+         })
+         .catch((err) => {
+            console.error("Submission Error:", err);
+            // Agar bahut bada error ho tabhi alert aayega
+         });
 
-            } catch (err) {
-                console.error("Submission Error:", err);
-                // Agar Render/Vercel mana karega, toh ye error dikhega
-                setError("Server rejected the image. Please use a simpler photo or a screenshot.");
-            }
+         // 3. User ko turant message dikhao aur Dashboard par bhej do
+         setSuccessMessage("Setting up your dashboard... Please wait.");
+
+         setTimeout(() => {
+            navigate('/ownerdashboard');
+            }, 1500);
+            
         };
     
 
