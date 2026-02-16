@@ -32,10 +32,14 @@ const storage = new CloudinaryStorage({
     params: {
         folder: 'BakeryConnect_Uploads', // Cloudinary mein is naam ka folder ban jayega
         allowed_formats: ['jpg', 'png', 'jpeg'],
-        transformation: [{ width: 500, height: 500, crop: 'limit' }] // Optimization
+        transformation: [{ quality: "auto", fetch_format: "auto" }] // Optimization
     },
 });
-const upload = multer({storage: storage});  // Ab multer cloud par bhejega
+const upload = multer({
+    storage: storage, // Ab multer cloud par bhejega
+    limits: { fileSize: 10 * 1024 * 1024 } // Iska matlab 10MB ki limit  
+}); 
+
 
 const io = new Server(server, {
     cors: {
@@ -67,8 +71,8 @@ app.use(cors());
 // यह लाइन ब्राउज़र को 'uploads' फोल्डर से फोटो उठाने की परमिशन देती है
 // app.use('/uploads', express.static('uploads'));
 // Note: Multer ka use krne per, express.json() ki need nhi hoti
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' })); 
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // New: MongoDB Connection String // ye local MongoDB URL hai
 // const DB_URL = 'mongodb://127.0.0.1:27017/BakeryDB';
 // Ab ye .env file se cloud ka URL uthayega
