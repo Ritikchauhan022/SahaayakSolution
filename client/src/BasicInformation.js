@@ -158,43 +158,46 @@ const finalIsEditing = isEditingFromState || isEditing;
         return true;
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         if (!validate()) return;
 
         setError(""); // pichli error ko saaf kra 
         setSuccessMessage(""); // pichli success message ko saaf kra
 
+        // 1. Safety Size Check (Render crash na ho isliye)
+        if (formData.photo && formData.photo.size > 3 * 1024 * 1024) {
+            setError("This photo is too complex. Please take a screenshot and upload that.");
+            return;
+        }
+
+        // 2. Data Cleaning
         // Ek naya object banao bina contactEmail ke
-        const cleanedData = {...formData};
-
+        const cleanedData = { ...formData };
         // Agar email empty string hai, toh use field se hi uda do
-    if (!cleanedData.email || cleanedData.email.trim() === "") {
-        delete cleanedData.email; 
-    }
-
+        if (!cleanedData.email || cleanedData.email.trim() === "") {
+            delete cleanedData.email;
+        }
         delete cleanedData.contactEmail; // 👈 Safai abhi isi waqt!
 
-        //  ध्यान दें: हम यहाँ fetch नहीं करेंगे,
-        // बल्कि App.js से आए onProfileCreated को डेटा भेजेंगे।
+        // 3. Background Processing (No Await)
+        onProfileCreated(cleanedData, finalIsEditing)
+        .then(() => {
+            console.log("Chef Profile Processed!");
+        })
+        .catch((err) => {
+            console.error("Upload Error:", err);
+            // Agar asli error aaye toh alert dikhega
+            alert("Update Failed: " + (err.response?.data?.message || err.message));
+        });
 
-        // onProfileCreated (जो App.js का handleUpdateChefProfile है) को कॉल करें
-        try{
-            //  यहाँ हमने 'finalIsEditing' को भी साथ भेजा है
-            // App.js के फंक्शन (onProfileCreated) को डेटा भेजें
-            // App.js खुद संभाल लेगा कि नया बनाना है या अपडेट करना है
-            await onProfileCreated(cleanedData, finalIsEditing);
-            setSuccessMessage(finalIsEditing ? "Profile update successfully!" : "Profile created successfully!");
-       
-                // 2 second baad ChefDashboard per navigate kra 
-                setTimeout(() => {
-                    navigate('/chefdashboard');
-                }, 2000);
+        // 4. Instant Feedback & Navigation
+        setSuccessMessage(finalIsEditing ? "Updating your profile..." : "Creating your profile...");
 
-          } catch (err) {
-            console.error("Submission Error:", err);
-            setError("Failed to save profile.");
-        }
+     // 2 second baad ChefDashboard per navigate kra 
+        setTimeout(() => {
+         navigate('/chefdashboard');
+        }, 1500);
     };
 
     return (

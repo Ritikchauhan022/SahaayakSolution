@@ -145,6 +145,8 @@ export default function OwnerInformation({
          .catch((err) => {
             console.error("Submission Error:", err);
             // Agar bahut bada error ho tabhi alert aayega
+            // Ye line phone par error dikha degi
+          alert("Asli Error: " + (err.response?.data?.message || err.message));
          });
 
          // 3. User ko turant message dikhao aur Dashboard par bhej do

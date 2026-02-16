@@ -31,8 +31,14 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'BakeryConnect_Uploads', // Cloudinary mein is naam ka folder ban jayega
-        allowed_formats: ['jpg', 'png', 'jpeg'],
-        transformation: [{ quality: "auto", fetch_format: "auto" }] // Optimization
+        // .webp aur .heic ko allow karna MUST hai real project ke liye
+        allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'heic'],
+       transformation: [
+        // Ye line photo ko handle-able banayegi
+        { width: 800, height: 800, crop: "limit" },
+        // Ye line quality maintain rakhegi
+        { quality: "auto", fetch_format: "auto" }
+    ] // Optimization
     },
 });
 const upload = multer({
