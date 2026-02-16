@@ -261,35 +261,46 @@ export default function OwnerInformation({
                     <input type="file" id="uploadPhoto" accept="image/*" style={{display: "none"}}
                     onChange={async (e) => {
                         const file = e.target.files[0];
-                        if (file) {
-                            // 1. Compression Options Set Kiya
+                        if (!file) return;
+
+                        setError('');
+
+                         // 1. Compression Options Set Kiya
                             const options = {
-                                maxSizeMB: 0.7,           // 1MB se kam kiya taaki AI image heavy na pade
+                                maxSizeMB: 0.5,           // 1MB se kam kiya taaki AI image heavy na pade
                                 maxWidthOrHeight: 800,    // Dimension thoda chota kiya fast processing ke liye
                                 useWebWorker: true,   // Background mein kaam karega (App slow nahi hoga)
-                                initialQuality: 0.6       // Quality thodi kam rakhi taaki compression loop na fase
+                                initialQuality: 0.6,     // Quality thodi kam rakhi taaki compression loop na fase
+                                preserveExif: false
                             };
 
                             try {
-                             // 2. Image ko compress kiya
-                             const compressedFile = await imageCompression(file, options);
+                              // Backup: Pehle asli file ko hi maan lo
+                              let fileToUpload = file;
 
+                            try {
+                             // 2. Image ko compress kiya
+                            const compressedFile = await imageCompression(file, options);
+                            fileToUpload = compressedFile;
+                            console.log("Owner Photo Compression success!");
+                        } catch (compressionErr) {
+                            // Agar fail hua (jaise Abdul wali photo), toh asli file chalti rahegi
+                              console.warn("Compression failed, using original file:", compressionErr);
+                        }
                              // FIX: Purana temporary link delete karo memory se
                             if (previewImage && previewImage.startsWith('blob:')) {
                             URL.revokeObjectURL(previewImage);
-                             }
+                          }
 
-                             // 3. Purana Preview URL agar hai to band (Revoke) kra
-                            setPreviewImage(URL.createObjectURL(compressedFile));
+                            // 4. Preview aur State update (fileToUpload use karein)
+                           setPreviewImage(URL.createObjectURL(fileToUpload));
                             // 🔥 यह लाइन जोड़ना बहुत ज़रूरी है, वरना फोटो कभी सर्वर पर नहीं जाएगी
                             // ProfilePic mein ab compressed file jayegi
-                            setFormData(prev => ({ ...prev, profilePic: compressedFile}));
-                            setError('');
-                            } catch (error) {
-                                console.error("Compression Error:", error);
-                                setError("Photo upload failed.");
+                            setFormData(prev => ({ ...prev, profilePic: fileToUpload }));
+                           } catch (error) {
+                                console.error("Main Error:", error);
+                                setError("Photo process karne mein dikkat aayi.");
                             }
-                        }
 
                     }}/>
                     {/* Button to trigger file upload */}
