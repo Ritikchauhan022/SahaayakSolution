@@ -370,9 +370,10 @@ const finalIsEditing = isEditingFromState || isEditing;
                             if (file) {
                                 // 1. Compression Options Set Kiya
                                 const options = {
-                                    maxSizeMB: 1,           // File ko 1MB se chota rakhega
-                                    maxWidthOrHeight: 1024,  // Photo ki width/height optimize karega
+                                    maxSizeMB: 0.7,           // 1MB se kam kiya taaki AI image heavy na pade
+                                    maxWidthOrHeight: 800,    // Dimension thoda chota kiya fast processing ke liye
                                     useWebWorker: true,      // Background mein kaam karega (App slow nahi hoga)
+                                    initialQuality: 0.6       // Quality thodi kam rakhi taaki compression loop na fase
                                 };
 
                                 try {

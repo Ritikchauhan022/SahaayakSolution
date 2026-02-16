@@ -129,11 +129,20 @@ export default function OwnerInformation({
             bakeryName: formData.businessName
          };
 
-         // Data ko parent component ko pass kena (onProfileCreated prop ke mhadyam se)
-         onProfileCreated(finalData);
-         // (OwnerDashboard per navigate krna)
-         navigate('/ownerdashboard');
-    };
+         try {
+            // 🔥 FIX 1: 'await' lagaya taaki image upload/compression poora hone ka wait kare
+            // Ye line wahi purani onProfileCreated hai, bas ab ye "wait" karegi
+            await onProfileCreated(finalData);
+            setSuccessMessage("Profile created successfully!");
+            // 🔥 FIX 2: Navigate tabhi hoga jab upar wala kaam (onProfileCreated) bina error ke khatam ho jaye
+            navigate('/ownerdashboard');
+
+            } catch (err) {
+                console.error("Submission Error:", err);
+                setError("There was a problem saving your profile. Please check your internet and image size..");
+            }
+        };
+    
 
     return (
         <div className="owner-container">
@@ -255,9 +264,10 @@ export default function OwnerInformation({
                         if (file) {
                             // 1. Compression Options Set Kiya
                             const options = {
-                                maxSizeMB: 1, // File ko 1MB se chota rakhega
-                                maxWidthOrHeight: 1024,  // Photo ki width/height optimize karega
-                                useWebWorker: true     // Background mein kaam karega (App slow nahi hoga)
+                                maxSizeMB: 0.7,           // 1MB se kam kiya taaki AI image heavy na pade
+                                maxWidthOrHeight: 800,    // Dimension thoda chota kiya fast processing ke liye
+                                useWebWorker: true,   // Background mein kaam karega (App slow nahi hoga)
+                                initialQuality: 0.6       // Quality thodi kam rakhi taaki compression loop na fase
                             };
 
                             try {
