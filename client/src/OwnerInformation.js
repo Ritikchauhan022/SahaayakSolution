@@ -255,14 +255,16 @@ export default function OwnerInformation({
                         <label>Location</label>
                         <input type="text" name="location" value={formData.location || ""}
                          onChange={handleChange}
-                         placeholder="City, State"/>
+                         placeholder="City, State"
+                          required/>
                     </div>
 
                     <div>
                         <label>Year Established</label>
                         <input type="text" name="yearEstablished" value={formData.yearEstablished || ""}
                          onChange={handleChange}
-                         placeholder="e.g., 2010"/>
+                         placeholder="e.g., 2010"
+                          required/>
                     </div>
                  </div>
 
