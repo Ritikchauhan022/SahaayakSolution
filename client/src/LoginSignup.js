@@ -142,7 +142,6 @@ function LoginSignup(props){
                  <button className="ls-back-btn" onClick={handleBack}>
                      <FaArrowLeft /> Back
                  </button>
-                 <h2>SahaayakSolution</h2>
              </div>
 
               {/* === MAIN CARD === */}
