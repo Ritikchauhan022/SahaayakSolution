@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const multer = require('multer'); // Multer ko import kiya
 const cloudinary = require('cloudinary').v2; // 👈 Add this
 const { CloudinaryStorage } = require('multer-storage-cloudinary'); // 👈 Add this
+const bcrypt = require('bcrypt');
 
 // ChefModel को यहाँ इम्पोर्ट करना ज़रूरी है!
 const Chef = require('./models/ChefModel');
@@ -111,6 +112,10 @@ app.get('/api/status', (req, res) => {
         const body = req.body;
         delete body.contactEmail; // 👈 Ye line database mein jane se pehle hi uda degi
 
+        // NAYA LOGIC: Hashing add kra
+        const salt = await bcrypt.genSalt(10);
+        const hashedPw = await bcrypt.hash(body.password, salt);
+
         // skills field jo humne JSON.stringify kiya tha, use parse kiya
         if (body.skills) {
             body.skills = JSON.parse(body.skills);
@@ -119,7 +124,7 @@ app.get('/api/status', (req, res) => {
         // Photo ka path (Example ke liye)
         const photoUrl = req.file ? req.file.path : null;
         
-        // 🔥 SAFETY LOGIC: Agar email empty string hai, toh use undefined kar do
+        // SAFETY LOGIC: Agar email empty string hai, toh use undefined kar diya
         // Taaki sparse index use ignore kare aur duplicate error na aaye
         const finalEmail = (body.email && body.email.trim() !== "") ? body.email : undefined;
 
@@ -127,10 +132,10 @@ app.get('/api/status', (req, res) => {
         // Database me save krne ke liye ChefModel ka use kra
         const newChefData = {
             name: body.fullName, // Frontend fullName bhej rha hai
-            email: finalEmail, // 👈 Null ki jagah undefined use karo
+            email: finalEmail, // 👈 Null ki jagah undefined use kra
             phone: body.phone,         // Phone alag save hoga
             // User Authentication के लिए: password: body.password, // इसे bcrypt से hash करना होगा
-            password: body.password,
+           password: hashedPw, // 👈 body.password ki jagah hashedPw use karo
             city: body.location,
             specialty: body.role, // Frontend Role bhej rha hai
             experience: body.experience,
@@ -199,7 +204,7 @@ app.get('/api/status', (req, res) => {
             experience: body.experience,
             salaryExpectation: body.salaryExpectation,
             bio: body.bio,
-            // 🔥 YE LINE ADD KAREIN:
+            //  YE LINE ADD kri
             // Agar body mein isAvailable aa raha hai, toh use updateData mein daalein
             availability: body.availability,
             // ...(body.isAvailable !== undefined && { isAvailable: body.isAvailable === 'true' || body.isAvailable === true })
@@ -257,7 +262,7 @@ app.get('/api/status', (req, res) => {
             return res.status(404).json({ message: "Chef profile not found" });
         }
 
-        // 🔥 YAHAN SE CHANGES START HAIN:
+        // YAHAN SE CHANGES START HAIN:
         // 2. Agar update success hai, toh socket signal bhejo
         const io = req.app.get('io');
         // Hum poora naya data bhej rahe hain taaki App.js bina fetch kiye update ho jaye
@@ -383,28 +388,29 @@ app.get('/api/status', (req, res) => {
         });
       }
 
-     // 4. Password check karo
-        // पासवर्ड चेक करें (अभी हम डायरेक्ट मैच कर रहे हैं)
-        if (user.password === password) {
-            console.log(`Login Success: ${userType === 'chef' ? user.name : user.ownerName}`);
-            
-        // Response mein user ka data aur uska type (chef/owner) dono bhej rahe hain
-            res.status(200).json({
-             message: 'Login successful!',
-             type: userType, // Frontend ko batao ki ye chef hai ya owner
-             // Agar chef hai toh 'chef' key mein bhejenge, owner hai toh frontend ki compatibility ke liye 'chef' key hi use kar sakte hain ya 'data' key
-             data: user, // 👈 App.js 'data.data' dhund raha hai Sync mein
-             chef: user   // LoginSignup.js ke liye (Dono khush!)
-            });
-        } else {
-             return res.status(401).json({ message: 'Incorrect password. Try again.' });
-        }
-    } catch (err) {
-        console.error("Login Error:", err);
-       return res.status(500).json({ message: 'Internal Server Error' });
-    }
+      // 4. BCRYPT PASSWORD CHECK (Naya Logic)
+      // Pehle hum direct match kar rahe the: if (user.password === password)
+      // Ab hum bcrypt.compare use karenge
+      const isMatch = await bcrypt.compare(password, user.password);
 
- });
+      if (isMatch) {
+        console.log(`Login Success: ${userType === 'chef' ? user.name : user.ownerName}`);
+        res.status(200).json({
+            message: 'Login successful!',
+            type: userType,
+            data: user,
+            chef: user
+            });
+         } else {
+            // Agar password match nahi hua
+            return res.status(401).json({ message: 'Incorrect password. Try again.' });
+         }
+
+     } catch (err) {
+        console.error("Login Error:", err);
+        return res.status(500).json({ message: 'Internal Server Error' });
+     }
+  });
 
  // प्रोफाइल देखने के लिए नया रूट (रिफ्रेश प्रॉब्लम फिक्स करने के लिए)
  app.get('/api/chef/profile/:identifier', async (req, res) => {
@@ -424,15 +430,23 @@ app.get('/api/status', (req, res) => {
  // ------OWNER ROUTES--------
  // Owner Registration
  app.post('/api/owner/register', upload.single('profilePic'), async (req, res) => {
+    console.log("!!! REGISTRATION STARTING !!!"); // Ye line terminal mein dikhni chahiye
     try{
         const body = req.body;
+        console.log("Plain Password received:", body.password); // Check karo kya aa raha hai
         const photoUrl = req.file ? req.file.path : null; // Cloudinary URL
+
+        // NAYA LOGIC: Yahan bhi manual hashing
+        const salt = await bcrypt.genSalt(10);
+        const hashedPw = await bcrypt.hash(body.password, salt);
+
+        console.log("Hashed Password generated:", hashedPw); // 👈 YE SABSE ZAROORI HAI
 
         const newOwner = new Owner ({
             ownerName: body.fullName,
             email: body.email,
             phone: body.phone,
-            password: body.password,
+            password: hashedPw, // 👈 Hashed password
             businessName: body.bakeryName,
             bakeryWork: body.bakeryWork,
             location: body.location,
