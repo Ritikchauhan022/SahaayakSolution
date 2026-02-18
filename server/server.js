@@ -436,12 +436,16 @@ app.get('/api/status', (req, res) => {
         // Taaki MongoDB index error na de
         const finalEmail = (body.email && body.email.trim() !== "") ? body.email : undefined;
 
+        // 🔥 FIX 2: Manual Hashing (Directly here)
+        // Agar model hook hataya hai, toh yahan hash karna MUST hai
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(body.password, salt);
 
         const newOwner = new Owner ({
             ownerName: body.fullName,
             email: finalEmail, // 👈 body.email ki jagah finalEmail use karo
             phone: body.phone,
-            password: body.password,
+            password: hashedPassword, // 👈 Hashed password yahan jayega
             businessName: body.bakeryName,
             bakeryWork: body.bakeryWork,
             location: body.location,
@@ -453,10 +457,13 @@ app.get('/api/status', (req, res) => {
        res.status(201).json({ message: 'Owner Profile Created!', owner: savedOwner });
     } catch (error) {
         console.error("Owner Save Error:", error);
-        if (error.code === 11000) {
-            return res.status(400).json({ message: 'Phone number already registered as Owner.' });
-        }
-        res.status(500).json({ message: 'Registration failed', error: error.message });
+        // Error response ko detail mein bhejo taaki front-end par dikhe
+        res.status(500).json({
+            message: 'Registration failed',
+            error: error.message,
+            stack: error.code === 11000 ? "Duplicate Data Error" : "Other Error"
+        });
+
     }
  });
 

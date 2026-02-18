@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
 const ChefSchema = new mongoose.Schema({
     // BasicInformation.js से आ रहे फ़ील्ड्स के हिसाब से
     name: {type: String, required: true},
@@ -18,18 +16,5 @@ const ChefSchema = new mongoose.Schema({
 
     avatarPath: { type: String }, // Uploaded photo path
     }, {timestamps: true});
-
-    // PASSWORD HASHING LOGIC START
-    ChefSchema.pre('save', async function(next) {
-        if (!this.isModified('password')) return next();
-        try {
-            const salt = await bcrypt.genSalt(10);
-            this.password = await bcrypt.hash(this.password, salt);
-            next();
-          } catch (error) {
-            next(error);
-          }
-    });
-    // PASSWORD HASHING LOGIC END
 
     module.exports = mongoose.model('Chef', ChefSchema);
