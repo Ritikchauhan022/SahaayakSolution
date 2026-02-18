@@ -112,10 +112,6 @@ app.get('/api/status', (req, res) => {
         const body = req.body;
         delete body.contactEmail; // 👈 Ye line database mein jane se pehle hi uda degi
 
-        // NAYA LOGIC: Hashing add kra
-        const salt = await bcrypt.genSalt(10);
-        const hashedPw = await bcrypt.hash(body.password, salt);
-
         // skills field jo humne JSON.stringify kiya tha, use parse kiya
         if (body.skills) {
             body.skills = JSON.parse(body.skills);
@@ -124,7 +120,7 @@ app.get('/api/status', (req, res) => {
         // Photo ka path (Example ke liye)
         const photoUrl = req.file ? req.file.path : null;
         
-        // SAFETY LOGIC: Agar email empty string hai, toh use undefined kar diya
+        // 🔥 SAFETY LOGIC: Agar email empty string hai, toh use undefined kar do
         // Taaki sparse index use ignore kare aur duplicate error na aaye
         const finalEmail = (body.email && body.email.trim() !== "") ? body.email : undefined;
 
@@ -132,10 +128,10 @@ app.get('/api/status', (req, res) => {
         // Database me save krne ke liye ChefModel ka use kra
         const newChefData = {
             name: body.fullName, // Frontend fullName bhej rha hai
-            email: finalEmail, // 👈 Null ki jagah undefined use kra
+            email: finalEmail, // 👈 Null ki jagah undefined use karo
             phone: body.phone,         // Phone alag save hoga
             // User Authentication के लिए: password: body.password, // इसे bcrypt से hash करना होगा
-           password: hashedPw, // 👈 body.password ki jagah hashedPw use karo
+            password: body.password,
             city: body.location,
             specialty: body.role, // Frontend Role bhej rha hai
             experience: body.experience,
@@ -204,7 +200,7 @@ app.get('/api/status', (req, res) => {
             experience: body.experience,
             salaryExpectation: body.salaryExpectation,
             bio: body.bio,
-            //  YE LINE ADD kri
+            // 🔥 YE LINE ADD KAREIN:
             // Agar body mein isAvailable aa raha hai, toh use updateData mein daalein
             availability: body.availability,
             // ...(body.isAvailable !== undefined && { isAvailable: body.isAvailable === 'true' || body.isAvailable === true })
@@ -262,7 +258,7 @@ app.get('/api/status', (req, res) => {
             return res.status(404).json({ message: "Chef profile not found" });
         }
 
-        // YAHAN SE CHANGES START HAIN:
+        // 🔥 YAHAN SE CHANGES START HAIN:
         // 2. Agar update success hai, toh socket signal bhejo
         const io = req.app.get('io');
         // Hum poora naya data bhej rahe hain taaki App.js bina fetch kiye update ho jaye
@@ -388,7 +384,7 @@ app.get('/api/status', (req, res) => {
         });
       }
 
-      // 4. BCRYPT PASSWORD CHECK (Naya Logic)
+      // 4. 🔥 BCRYPT PASSWORD CHECK (Naya Logic)
       // Pehle hum direct match kar rahe the: if (user.password === password)
       // Ab hum bcrypt.compare use karenge
       const isMatch = await bcrypt.compare(password, user.password);
@@ -430,23 +426,19 @@ app.get('/api/status', (req, res) => {
  // ------OWNER ROUTES--------
  // Owner Registration
  app.post('/api/owner/register', upload.single('profilePic'), async (req, res) => {
-    console.log("!!! REGISTRATION STARTING !!!"); // Ye line terminal mein dikhni chahiye
     try{
         const body = req.body;
-        console.log("Plain Password received:", body.password); // Check karo kya aa raha hai
         const photoUrl = req.file ? req.file.path : null; // Cloudinary URL
 
-        // NAYA LOGIC: Yahan bhi manual hashing
-        const salt = await bcrypt.genSalt(10);
-        const hashedPw = await bcrypt.hash(body.password, salt);
-
-        console.log("Hashed Password generated:", hashedPw); // 👈 YE SABSE ZAROORI HAI
+        // 1. Email Safety Logic (Sabse Zaroori!)
+        // Iske bina khali email par Duplicate Error 500 aayega
+        const finalEmail = (body.email && body.email.trim() !== "") ? body.email : undefined;
 
         const newOwner = new Owner ({
             ownerName: body.fullName,
-            email: body.email,
+            email: finalEmail, // 👈 Ab undefined jayega agar khali hai, toh unique conflict nahi hoga
             phone: body.phone,
-            password: hashedPw, // 👈 Hashed password
+            password: body.password,
             businessName: body.bakeryName,
             bakeryWork: body.bakeryWork,
             location: body.location,
@@ -459,7 +451,10 @@ app.get('/api/status', (req, res) => {
     } catch (error) {
         console.error("Owner Save Error:", error);
         if (error.code === 11000) {
-            return res.status(400).json({ message: 'Phone number already registered as Owner.' });
+            const field = Object.keys(error.keyValue)[0];
+            return res.status(400).json({
+                message: `${field === 'phone' ? 'Phone number' : 'Email'} is already registered.` 
+                });
         }
         res.status(500).json({ message: 'Registration failed', error: error.message });
     }
