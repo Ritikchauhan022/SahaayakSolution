@@ -408,6 +408,8 @@ app.get('/api/status', (req, res) => {
      }
   });
 
+
+
  // प्रोफाइल देखने के लिए नया रूट (रिफ्रेश प्रॉब्लम फिक्स करने के लिए)
  app.get('/api/chef/profile/:identifier', async (req, res) => {
     try{
@@ -430,15 +432,18 @@ app.get('/api/status', (req, res) => {
         const body = req.body;
         const photoUrl = req.file ? req.file.path : null; // Cloudinary URL
 
-        // 1. Email Safety Logic (Sabse Zaroori!)
-        // Iske bina khali email par Duplicate Error 500 aayega
+        // 🔥 FIX 1: Email undefined handle karo (Isse 500 Error jati hai)
         const finalEmail = (body.email && body.email.trim() !== "") ? body.email : undefined;
+        // 🔥 FIX 2: Manual Hashing (Directly here)
+        // Agar model hook hataya hai, toh yahan hash karna MUST hai
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(body.password, salt);
 
         const newOwner = new Owner ({
             ownerName: body.fullName,
-            email: finalEmail, // 👈 Ab undefined jayega agar khali hai, toh unique conflict nahi hoga
+            email: finalEmail,
             phone: body.phone,
-            password: body.password,
+            password: hashedPassword, // 👈 Hashed password yahan jayega
             businessName: body.bakeryName,
             bakeryWork: body.bakeryWork,
             location: body.location,
@@ -450,13 +455,12 @@ app.get('/api/status', (req, res) => {
        res.status(201).json({ message: 'Owner Profile Created!', owner: savedOwner });
     } catch (error) {
         console.error("Owner Save Error:", error);
-        if (error.code === 11000) {
-            const field = Object.keys(error.keyValue)[0];
-            return res.status(400).json({
-                message: `${field === 'phone' ? 'Phone number' : 'Email'} is already registered.` 
-                });
-        }
-        res.status(500).json({ message: 'Registration failed', error: error.message });
+        // Error response ko detail mein bhejo taaki front-end par dikhe
+        res.status(500).json({ 
+            message: 'Registration failed', 
+            error: error.message,
+            stack: error.code === 11000 ? "Duplicate Data Error" : "Other Error"
+            });
     }
  });
 
