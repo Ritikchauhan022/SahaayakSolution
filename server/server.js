@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const multer = require('multer'); // Multer ko import kiya
 const cloudinary = require('cloudinary').v2; // 👈 Add this
 const { CloudinaryStorage } = require('multer-storage-cloudinary'); // 👈 Add this
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 // ChefModel को यहाँ इम्पोर्ट करना ज़रूरी है!
 const Chef = require('./models/ChefModel');
@@ -432,18 +432,16 @@ app.get('/api/status', (req, res) => {
         const body = req.body;
         const photoUrl = req.file ? req.file.path : null; // Cloudinary URL
 
-        // 🔥 FIX 1: Email undefined handle karo (Isse 500 Error jati hai)
+        // 🔥 YE LINE ADD KARO: Agar email khali hai toh use undefined karo
+        // Taaki MongoDB index error na de
         const finalEmail = (body.email && body.email.trim() !== "") ? body.email : undefined;
-        // 🔥 FIX 2: Manual Hashing (Directly here)
-        // Agar model hook hataya hai, toh yahan hash karna MUST hai
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(body.password, salt);
+
 
         const newOwner = new Owner ({
             ownerName: body.fullName,
-            email: finalEmail,
+            email: finalEmail, // 👈 body.email ki jagah finalEmail use karo
             phone: body.phone,
-            password: hashedPassword, // 👈 Hashed password yahan jayega
+            password: body.password,
             businessName: body.bakeryName,
             bakeryWork: body.bakeryWork,
             location: body.location,
@@ -455,12 +453,10 @@ app.get('/api/status', (req, res) => {
        res.status(201).json({ message: 'Owner Profile Created!', owner: savedOwner });
     } catch (error) {
         console.error("Owner Save Error:", error);
-        // Error response ko detail mein bhejo taaki front-end par dikhe
-        res.status(500).json({ 
-            message: 'Registration failed', 
-            error: error.message,
-            stack: error.code === 11000 ? "Duplicate Data Error" : "Other Error"
-            });
+        if (error.code === 11000) {
+            return res.status(400).json({ message: 'Phone number already registered as Owner.' });
+        }
+        res.status(500).json({ message: 'Registration failed', error: error.message });
     }
  });
 
