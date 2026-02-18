@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const multer = require('multer'); // Multer ko import kiya
 const cloudinary = require('cloudinary').v2; // 👈 Add this
 const { CloudinaryStorage } = require('multer-storage-cloudinary'); // 👈 Add this
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 // ChefModel को यहाँ इम्पोर्ट करना ज़रूरी है!
 const Chef = require('./models/ChefModel');
