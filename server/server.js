@@ -120,9 +120,14 @@ app.get('/api/status', (req, res) => {
         // Photo ka path (Example ke liye)
         const photoUrl = req.file ? req.file.path : null;
         
-        // 🔥 SAFETY LOGIC: Agar email empty string hai, toh use undefined kar do
+        // SAFETY LOGIC: Agar email empty string hai, toh use undefined kar do
         // Taaki sparse index use ignore kare aur duplicate error na aaye
         const finalEmail = (body.email && body.email.trim() !== "") ? body.email : undefined;
+
+        // 2. MANUAL HASHING FOR CHEF
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(body.password, salt);
+
 
        // ChefModel के हिसाब से data को मैप करें (mapping BasicInformation.js fields)
         // Database me save krne ke liye ChefModel ka use kra
@@ -131,7 +136,7 @@ app.get('/api/status', (req, res) => {
             email: finalEmail, // 👈 Null ki jagah undefined use karo
             phone: body.phone,         // Phone alag save hoga
             // User Authentication के लिए: password: body.password, // इसे bcrypt से hash करना होगा
-            password: body.password,
+            password: hashedPassword, // 👈 Ab yahan hashed password jayega
             city: body.location,
             specialty: body.role, // Frontend Role bhej rha hai
             experience: body.experience,
@@ -157,31 +162,19 @@ app.get('/api/status', (req, res) => {
         });
     } catch (error) {
         // 1. सबसे पहले, टर्मिनल में एरर का प्रकार दिखाएँ
-        console.error("Mongoose Save Failed Error:", error);
-        let errorMessage = 'Registration failed due to a server error.';
+        console.error("Chef Registration Error:", error);
 
         // 2. अगर यह Duplicate Key Error (Unique: true फ़ील्ड जैसे phone/contactEmail) है
         if (error.code === 11000) {
-            console.log("Duplicate Key Detail:", error.keyValue); // 👈 Ye line terminal mein dikhayegi kaunsa field duplicate hai
-            errorMessage = 'Phone number is already registered. Please use a different number.';
-            return res.status(400).json ({ // 400 Bad Request भेजें
-            message: errorMessage,
-            error: "Duplicate key error."
-            });
+            return res.status(400).json({
+                message: 'Phone or Email already registered.',
+                error: "Duplicate key error."
+                });
+            }
+            res.status(500).json({ message: 'Registration failed', error: error.message });
         }
-        // Validation या Duplicate Key Error (जैसे duplicate phone/email)
-        // अगर यह Validation Error (Required field missing, जैसे password) है
-        // if (error.name === 'ValidationError') {
-        //     errorMessage = `Validation failed: ${error.message}`;
-        // }
-
-        // बाकी सभी एरर (जैसे Password Missing):
-        res.status(500).json({
-            message: errorMessage,
-            error:error.message
-            });
-    }
- });
+    });
+       
 
  // प्रोफाइल अपडेट करने का रूट (Professional Way)
  app.put('/api/chef/update/:identifier', upload.single('photo'), async (req, res) => {
