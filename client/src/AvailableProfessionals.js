@@ -3,6 +3,8 @@ import  "./App.css";
 import { useParams } from "react-router-dom";
 import {
   FaArrowLeft,
+  FaPhone,
+  FaEnvelope,
   FaSearch,
   FaMapMarkerAlt,
   FaStar,
@@ -145,7 +147,10 @@ const unlockedContacts = externalUnlocked || [];
     // Ye line ensure karegi ki database wali ID aur card wali ID sahi se match ho
     return unlockedContacts.some(id => String(id) === String(professionalId));
     };
-    const isCurrentChef = (professionalId) => currentChefId && professionalId && String(currentChefId) === String(professionalId);
+    const isCurrentChef = (professionalId) => {
+        // Sirf tab true hona chahiye jab viewerType 'chef' ho AUR ID match kare
+        return viewerType === "chef" && currentChefId && String(currentChefId) === String(professionalId);
+        };
     
     // OWNER → payment modal kholna hai
   const handleUnlock = (professional) => {
@@ -320,12 +325,15 @@ const unlockedContacts = externalUnlocked || [];
                                             </div>
 
                                             <div className="ap-contact-body">
-                                                {/* ✅ 3. लॉजिक अपडेट: अपनी प्रोफाइल पर भी कांटेक्ट छुपाएं */}
+                                                {/* YAHAN HAI ASLI LOGIC:
+                                                - Agar 'unlocked' hai (Owner ne paise diye) -> Dikhao
+                                                - Agar 'myProfile' hai (Chef khud apni profile dekh raha hai) -> Dikhao
+                                                */}
                                                 {(unlocked || myProfile) ? (
                                                     // myProfile ? (
                                                        <div className="ap-contact-unlocked">
-                                                        <div><FaUser className="icon" /> <strong>Phone:</strong> {professional.phone}</div>
-                                                        <div><FaUser className="icon" /> <strong>Email:</strong> {professional.email}</div>
+                                                        <div><FaPhone className="icon" /> <strong>Phone:</strong> {professional.phone}</div>
+                                                        <div><FaEnvelope className="icon" /> <strong>Email:</strong> {professional.email}</div>
                                                      </div>
                                                     ) : (
                                               <div className="ap-locked-box">
