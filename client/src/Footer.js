@@ -13,7 +13,7 @@ const Footer = () => {
            <div className="footer-brand">
             <div className="footer-logo">
                 <img src="/logo1.png" alt="Chef Logo" />
-                <h3>SahaayakSolution</h3>
+                <h3>Sahaayak Solution</h3>
             </div>
             <p>Connecting India's best bakeries with world-class talent.</p>
            </div>
@@ -49,7 +49,7 @@ const Footer = () => {
            </div>
             </div>
             <div className="footer-bottom">
-                <p>© 2026 SahaayakSolution. All rights reserved.</p>
+                <p>© 2026 Sahaayak Solution. All rights reserved.</p>
             </div>
         </footer>
     );

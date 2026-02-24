@@ -2,8 +2,21 @@ const mongoose = require('mongoose');
 const ChefSchema = new mongoose.Schema({
     // BasicInformation.js से आ रहे फ़ील्ड्स के हिसाब से
     name: {type: String, required: true},
-    email: { type: String, unique: true, sparse: true }, // sparse isliye taki agar email na ho to error na aaye
-    phone: { type: String, required: true, unique: true }, // Ab main ID phone hi hai
+    // Email Validation: Only @gmail.com allowed
+    email: {
+       type: String, 
+       unique: true,
+       sparse: true, // sparse isliye taki agar email na ho to error na aaye
+       trim: true,
+       lowercase: true,
+       match: [/^[a-zA-Z0-9._%+-]+@gmail\.com$/, 'Please provide a valid @gmail.com address']}, 
+      // Phone Validation: Exactly 10 digits
+    phone: {
+       type: String,
+       required: [true, 'Phone number is required'],
+       unique: true,
+       trim: true,
+       match: [/^[0-9]{10}$/, 'Phone number must be exactly 10 digits']}, // Ab main ID phone hi hai
     password: {type: String, required: true}, // Authentication के लिए, हालाँकि यहाँ hashed नहीं है
     city: { type: String, required: true },
     specialty: { type: String }, // Role

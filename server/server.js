@@ -106,7 +106,7 @@ app.get('/api/status', (req, res) => {
  // 'photo' field ke liye file accept ki (upload.single('photo'))
  app.post('/api/chef/register', upload.single('photo'), async (req, res) => {
     console.log("API HIT: Register route triggered!");
-    console.log("Incoming Data:", req.body);
+    // console.log("Incoming Data:", req.body);
     try {
         // req.body me ab text fields hai, req file me photo
         const body = req.body;
@@ -154,11 +154,13 @@ app.get('/api/status', (req, res) => {
         const newChef = new Chef(newChefData);
         const savedChef = await newChef.save();
         console.log("DB Name:", mongoose.connection.name);
-
         console.log(`Chef saved successfully with ID: ${savedChef._id}`);
+
+        const chefToReturn = savedChef.toObject();
+        delete chefToReturn.password;
         res.status(201).json({
             message: 'Chef profile created (Backend received data)!',
-            chef:savedChef
+            chef: chefToReturn // Password hatakar bheja
         });
     } catch (error) {
         // 1. सबसे पहले, टर्मिनल में एरर का प्रकार दिखाएँ
@@ -167,8 +169,16 @@ app.get('/api/status', (req, res) => {
         // 2. अगर यह Duplicate Key Error (Unique: true फ़ील्ड जैसे phone/contactEmail) है
         if (error.code === 11000) {
             return res.status(400).json({
-                message: 'Phone or Email already registered.',
+                message: 'This Phone or Email is already registered.',
                 error: "Duplicate key error."
+                });
+            }
+
+            // 3. NAYA: Agar Mongoose Validation fail hui (10 digits nahi hain ya galat email hai)
+            if (error.name === "ValidationError") {
+                const messages = Object.values(error.errors).map(val => val.message);
+                return res.status(400).json({
+                    message: messages[0] // Pehli galti (e.g., "Phone number must be exactly 10 digits") user dhekega
                 });
             }
             res.status(500).json({ message: 'Registration failed', error: error.message });
@@ -188,6 +198,7 @@ app.get('/api/status', (req, res) => {
         // Frontend के नाम को Database के नाम से मैप करें
         let updateData = {
             name: body.fullName || body.name,
+            phone: body.phone,
             city: body.location || body.city,
             specialty: body.role || body.specialty,
             experience: body.experience,
@@ -198,6 +209,8 @@ app.get('/api/status', (req, res) => {
             availability: body.availability,
             // ...(body.isAvailable !== undefined && { isAvailable: body.isAvailable === 'true' || body.isAvailable === true })
         };
+
+
 
         // Boolean status check
         if (body.isAvailable !== undefined) {
@@ -213,6 +226,15 @@ app.get('/api/status', (req, res) => {
         // Agar identifier ek valid MongoDB ID hai, toh use bhi query mein dalo
         if (mongoose.Types.ObjectId.isValid(identifier)) {
             orConditions.push({ _id: new mongoose.Types.ObjectId(identifier) });
+        }
+
+        // Agar body mein password hai, toh use hash karke updateData mein add karo
+        if (body.password && body.password.trim() !== "") {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(body.password, salt);
+           // 🔥 YE LINE ZAROORI HAI: updateData ke andar password property set karo
+           updateData.password = hashedPassword;
+            console.log("Password updated and hashed for Chef!");
         }
 
         // 2. Email handling ko ekdum strict banao (Isse replace karo)
@@ -241,15 +263,19 @@ app.get('/api/status', (req, res) => {
         const updatedChef = await Chef.findOneAndUpdate(
             { $or: orConditions },
             { 
+
                 $set: updateData,
                 ...(Object.keys(unsetData).length > 0 && { $unset: unsetData })
             },
-            { new: true, runValidators: false } // Validation off rakho test ke liye
+            { new: true, runValidators: true } // // Ab update par bhi validation check hogi!
         );
 
         if (!updatedChef) {
             return res.status(404).json({ message: "Chef profile not found" });
         }
+
+        const chefToReturn = updatedChef.toObject();
+        delete chefToReturn.password;
 
         // 🔥 YAHAN SE CHANGES START HAIN:
         // 2. Agar update success hai, toh socket signal bhejo
@@ -258,22 +284,13 @@ app.get('/api/status', (req, res) => {
         io.emit('marketplace_update', {
             type: 'PROFILE_UPDATE',
             chefId: updatedChef._id,
-            chefData: {
-                name: updatedChef.name,
-                city: updatedChef.city,
-                specialty: updatedChef.specialty,
-                experience: updatedChef.experience,
-                salaryExpectation: updatedChef.salaryExpectation,
-                bio: updatedChef.bio,
-                avatarPath: updatedChef.avatarPath, // Photo ke liye
-                isAvailable: updatedChef.isAvailable
-            }
+            chefData: { ...chefToReturn } // Clean data bhejo
         });
 
         console.log("Update Success & Socket Signal Sent for:", updatedChef.name);
 
         //Last mein response bhejo
-        res.status(200).json({ message: "Profile updated successfully!", chef: updatedChef });
+        res.status(200).json({ message: "Profile updated successfully!", chef: chefToReturn });
 
     } catch (error) {
         console.error("CRITICAL UPDATE ERROR:", error);
@@ -336,7 +353,7 @@ app.get('/api/status', (req, res) => {
 
  // --- LOGIN ROUTE (Email or Phone) ---(Chef or Owner dono ke liye)
   app.post('/api/chef/login', async (req, res) => {
-    console.log("Login Attempt:", req.body); 
+    // console.log("Login Attempt:", req.body); 
     const { identifier, password, expectedRole } = req.body;  // 👈 expectedRole yahan receive kiya
 
     try{
@@ -384,11 +401,15 @@ app.get('/api/status', (req, res) => {
 
       if (isMatch) {
         console.log(`Login Success: ${userType === 'chef' ? user.name : user.ownerName}`);
+        // 🔥 Password hatao
+        const userToReturn = user.toObject();
+        delete userToReturn.password;
+
         res.status(200).json({
             message: 'Login successful!',
             type: userType,
-            data: user,
-            chef: user
+            data: userToReturn, // Safe data
+            chef: userToReturn
             });
          } else {
             // Agar password match nahi hua
@@ -411,7 +432,11 @@ app.get('/api/status', (req, res) => {
           $or: [ { email: identifier }, { phone: identifier } ]
         });
         if (!chef) return res.status(404).json({message: "Chef not found"});
-        res.status(200).json({ chef: chef });
+
+        const chefToReturn = chef.toObject();
+        delete chefToReturn.password;
+
+        res.status(200).json({ chef: chefToReturn });
     } catch (err) {
         res.status(500).json({message: "Server error", error: err.message });
     }
@@ -447,18 +472,33 @@ app.get('/api/status', (req, res) => {
         });
 
         const savedOwner = await newOwner.save();
-       res.status(201).json({ message: 'Owner Profile Created!', owner: savedOwner });
+        const ownerToReturn = savedOwner.toObject();
+        delete ownerToReturn.password;
+       res.status(201).json({ message: 'Owner Profile Created!', owner: ownerToReturn});
     } catch (error) {
         console.error("Owner Save Error:", error);
-        // Error response ko detail mein bhejo taaki front-end par dikhe
-        res.status(500).json({
-            message: 'Registration failed',
-            error: error.message,
-            stack: error.code === 11000 ? "Duplicate Data Error" : "Other Error"
-        });
 
-    }
- });
+        // 1. Duplicate Error
+        if (error.code === 11000) {
+            return res.status(400).json({
+            message: 'This Phone or Email is already registered.'
+            });
+        }
+
+        // 2. NAYA: Mongoose Validation Error
+        if (error.name === "ValidationError") {
+            const messages = Object.values(error.errors).map(val => val.message);
+            return res.status(400).json({
+                message: messages[0]
+                });
+            }
+
+            res.status(500).json({
+                message: 'Registration failed',
+                error: error.message
+            });
+        }
+    });
 
  //Owner Update API
  app.put('/api/owner/update/:identifier', upload.single('profilePic'), async(req, res) => {
@@ -475,6 +515,15 @@ app.get('/api/status', (req, res) => {
             location: body.location,
             yearEstablished: body.yearEstablished,
         };
+
+        // Agar body mein password hai, toh use hash karke updateData mein add karo
+        if (body.password && body.password.trim() !== "") {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(body.password, salt);
+            // 🔥 YE LINE ZAROORI HAI: updateData ke andar password property set karo
+            updateData.password = hashedPassword;
+            console.log("Password updated and hashed for Owner!");
+        }
 
         // 2. Email "Null/Empty" Safety (Ye sabse zaroori hai!)
         let unsetData = {};
@@ -505,12 +554,15 @@ app.get('/api/status', (req, res) => {
                 $set: updateData,
                 ...(Object.keys(unsetData).length > 0 && { $unset: unsetData })
             },
-            { new: true, runValidators: false }
+            { new: true, runValidators: true } // Ab update par bhi validation check hogi!
         );
             
         if (!updatedOwner) return res.status(404).json({ message: "Owner not found" });
 
-        res.status(200).json({ message: 'Profile updated successfully!', owner: updatedOwner });
+        const ownerToReturn = updatedOwner.toObject();
+        delete ownerToReturn.password;
+
+        res.status(200).json({ message: 'Profile updated successfully!', owner: ownerToReturn });
     } catch (error) {
         console.error("OWNER UPDATE ERROR:", error.message);
         res.status(500).json({ message: 'Update failed', error: error.message});
@@ -543,6 +595,8 @@ app.get('/api/status', (req, res) => {
         if (chef) {
             // Document ko plain object mein badlo
             const chefObj = chef.toObject();
+            // 🔥 Dono zaroori cheezein delete karo
+            delete chefObj.password;
             // Ab delete kaam karega
             delete chefObj.contactEmail;
             return res.status(200).json({type: 'chef', data: chefObj});
@@ -554,9 +608,11 @@ app.get('/api/status', (req, res) => {
         });
 
         if (owner) {
+            const ownerObj = owner.toObject();
+            delete ownerObj.password; // 👈 Password delete karo frontend par bhejne se pehle
             return res.status(200).json({type: 'owner', 
                 data: {
-                   ...owner._doc,
+                   ...ownerObj,
                    // Ye line ensure karegi ki refresh ke baad bhi unlocked list mile
                    unlockedChefs: owner.unlockedChefs || []
 

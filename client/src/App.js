@@ -19,7 +19,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 // Razorpay ke liye mandatory content
 const policies = {
- privacy: `At BakeryConnect, we value your trust. Our Privacy Policy explains how we handle your data:
+ privacy: `At Sahaayak Solution, we value your trust. Our Privacy Policy explains how we handle your data:
 
 1. **Information Collection**: We collect basic information like name, phone number, and email to facilitate the connection between bakery owners and chefs.
 2. **Data Sharing**: Your contact details are only shared with authorized bakery owners after a successful payment transaction. We do not sell or rent your data to third parties for marketing.
@@ -27,18 +27,18 @@ const policies = {
 4. **Cookies**: We use basic cookies to improve your browsing experience and remember your login session for a smoother interface.
 5. **Third-Party Services**: We use secure payment gateways (like Razorpay) to process payments. We do not store your credit card or bank details on our servers.
 6. **User Rights**: You have the right to request the deletion of your account and personal data from our platform at any time by contacting our support.`,
-  terms: `1. **Introduction**: BakeryConnect is a platform to discover and connect with bakery professionals.
+  terms: `1. **Introduction**: Sahaayak Solution is a platform to discover and connect with bakery professionals.
 2. **User Eligibility**: By using this platform, you confirm that you are at least 18 years of age.
 3. **Payments**: Owners must pay a one-time fee of ₹500 to unlock a specific professional's contact details. This fee is for information access only.
 4. **Account Security**: Users are responsible for maintaining the confidentiality of their account; please do not share your password with anyone.
 5. **Prohibited Conduct**: Any misuse of the platform, data scraping, or harassment of professionals will lead to permanent account suspension.
-6. **Limitation of Liability**: The information provided by chefs is self-declared. BakeryConnect only facilitates connections and is not liable for any disputes, conduct, or service quality issues after hiring.
+6. **Limitation of Liability**: The information provided by chefs is self-declared. Sahaayak Solution only facilitates connections and is not liable for any disputes, conduct, or service quality issues after hiring.
 7. **Verification**: Owners are strongly advised to verify credentials and references before hiring any professional.`,
-  refund: `1. **Nature of Service**: BakeryConnect provides digital information services (unlocking professional contact details). Once the contact details are accessed or unlocked, the service is considered 'consumed'.
+  refund: `1. **Nature of Service**: Sahaayak Solution provides digital information services (unlocking professional contact details). Once the contact details are accessed or unlocked, the service is considered 'consumed'.
 2. **No-Refund Policy**: Due to the digital nature of our service, we do not offer any refunds once a contact has been successfully unlocked on your dashboard.
 3. **Failed Transactions**: In cases where the amount is deducted from your bank account but the contact remains locked, the amount will be automatically refunded to your original payment method within 5-7 business days.
 4. **Dispute Resolution**: For any payment-related issues, please contact our support team with your Transaction ID and Registered Phone Number. We aim to resolve all queries within 48 hours.`,
-  shipping: `1. **Digital Service**: BakeryConnect is a digital-only platform. We do not deal in physical goods; therefore, no physical shipping or courier service is involved.
+  shipping: `1. **Digital Service**: Sahaayak Solution is a digital-only platform. We do not deal in physical goods; therefore, no physical shipping or courier service is involved.
 2. **Method of Delivery**: The 'Delivery' of our service (Chef's contact information) is provided digitally and instantly on your Owner Dashboard upon successful payment confirmation.
 3. **Delivery Timeline**: Access is immediate. There is no waiting period or shipping time. If you face any delay in access after payment, please refresh your dashboard or contact support.
 4. **Order Confirmation**: You will receive an automated email and/or SMS confirmation for every successful unlock, which serves as the electronic proof of delivery for our service.`,
@@ -323,17 +323,27 @@ const finalSubmissionData = {
 
   // सभी फील्ड्स को FormData में डालें // अब finalSubmissionData का उपयोग करें
   for (const key in finalSubmissionData) {
+    // Pehle check karo ki key exist karti hai ya nahi (Safety Check)
+    if (Object.prototype.hasOwnProperty.call(finalSubmissionData, key)) {
+      const value = finalSubmissionData[key];
+
+      // 💡 SABSE ZARURI CHECK:
+      // Agar value null hai, undefined hai, ya password khali hai (Edit mode mein delete ho gaya),
+      // toh usse FormData mein append MAT KARO.
+      if (value === null || value === undefined) continue;
     // Agar frontend se galti se contactEmail key aa rahi hai toh use skip karo
     if (key === 'contactEmail') continue;
 
-    if (key === 'photo' && finalSubmissionData[key] instanceof File) {
-      formData.append('photo', finalSubmissionData[key]);
+    //  Append logic
+    if (key === 'photo' && value instanceof File) {
+      formData.append('photo', value);
     } else if (key === 'skills') {
-      formData.append(key, JSON.stringify(finalSubmissionData[key]));
+      formData.append(key, JSON.stringify(value));
     } else {
-      formData.append(key, finalSubmissionData[key]);
+      formData.append(key, value);
     }
   }
+}
   try {
     //  अब हम isEditingMode के आधार पर फैसला लेंगे
     // MAIN LOGIC: यहाँ तय करेंगे कि Register करना है या Update
@@ -343,9 +353,9 @@ const finalSubmissionData = {
     //Identifier check: Use cleanedData.phone instead of newProfileData.phone
     // Naya Updated Code
     const identifier = isEditingMode 
-    ? (currentChefProfile.phone || currentChefProfile._id) // Phone pehle, ID backup
-    : (cleanedData.phone);
-    console.log("Sending Update Request for:", identifier); // Debugging ke liye
+    ? (currentChefProfile._id || currentChefProfile.phone || currentChefProfile.email)
+    : (cleanedData.phone || cleanedData.email);
+    console.log("Chef Identifier (Using ID/Phone/Email):", identifier);
 
   // Ek extra safety check:
   if (!identifier) {
@@ -366,20 +376,35 @@ const finalSubmissionData = {
       const result = await response.json();
       const savedChef = result.chef || result.user; //Backend से आया असली डेटा
 
+      // 1. Sabse pehle LocalStorage ko naye phone se update karo (Zaruri hai!)
+      if (savedChef.phone) {
+        localStorage.setItem("userPhone", savedChef.phone);
+        localStorage.setItem("userType", "chef"); 
+        }
+
       // FIX: Hamesha Phone ko priority do, kyunki humne Dashboard par
       // Toggle ke liye bhi Phone ko hi pehli priority di hai.
-      localStorage.setItem("userPhone", savedChef.phone); // Phone number save hua
-      localStorage.setItem("userType", "chef");           // Role save hua taaki refresh pe panga na ho
+
+      // 1. LocalStorage update karo taaki refresh pe naya number hi rahe
+      // if (savedChef.phone) {
+      //   localStorage.setItem("userPhone", savedChef.phone);
+      // }
+
+      // localStorage.setItem("userPhone", savedChef.phone); // Phone number save hua
+      //localStorage.setItem("userType", "chef");           // Role save hua taaki refresh pe panga na ho
 
       // refres krne per profile hat ke dusri profile na aaye jo hai boi rhe 
       // localStorage.setItem("userPhone", savedChef.contactEmail || savedChef.phone);
 
       // Frontend State को अपडेट करें ताकि Dashboard पर असली डेटा दिखे
       // Hum wahi mapping use karenge jo humne 'handleLoginSuccess' mein ki hai
+      // 2. Mapping mein double check karo
       const finalProfileData = {
+        ...initialChefData, // Hamesha clean start karo
         ...currentChefProfile, // Purana data rakho
         ...savedChef, //Backend से आया असली डेटा // Naya data jo backend se aaya wo dalo
         _id: savedChef._id, // 👈 यह लाइन पक्का करें ताकि 'currentChefId' सही रहे
+        phone: savedChef.phone,
         // Dashboard 'fullName' aur 'name' dono mangta hai, hum dono ko update karenge
         fullName: savedChef.fullName || savedChef.name,
         name: savedChef.fullName || savedChef.name,
@@ -398,8 +423,19 @@ const finalSubmissionData = {
       };
 
       setCurrentChefProfile(finalProfileData);
+      // alert("Profile Updated Successfully!");
       // isEditingMode का उल्टा मतलब है कि प्रोफाइल नई है (New Profile)
       console.log(!isEditingMode ? "Profile Created!" : "Profile Updated!", savedChef);
+
+     // Marketplace ki list ko turant update kr rha hai
+     setAllChefs((prevChefs) =>
+      prevChefs.map((chef) =>
+      // Agar ID match ho gayi, toh purane data ki jagah naya 'savedChef' daal dege hum
+     (chef._id === savedChef._id || chef.id === savedChef._id)
+     ? { ...chef, ...savedChef }
+     : chef
+     )
+     );
 
       // 4. डैशबोर्ड पर भेजें
       navigate('/chefdashboard');
@@ -539,13 +575,22 @@ const finalSubmissionData = {
   const formData = new FormData();
 
   for (const key in cleanedData) { // 👈 Dhayan de: cleanedData use ho rha hai
+    // 1. Safety Guard: Sirf apni asli keys uthao
+    if (Object.prototype.hasOwnProperty.call(cleanedData, key)) {
+      const value = cleanedData[key]; // Baar-baar cleanedData[key] likhne se bachne ke liye variable bana liya
+
+      // 2. Password/Undefined Guard: 🛑 SABSE ZARURI
+      if (value === null || value === undefined) continue;
+
+      // 3. Mapping logic
     // ध्यान दें: 'photo' (जो फॉर्म से आता है) को 'profilePic' (जो बैकएंड चाहता है) में बदलें
-     if ((key === 'photo' || key === 'profilePic') && cleanedData[key] instanceof File) {
-      formData.append('profilePic', cleanedData[key]);
+     if ((key === 'photo' || key === 'profilePic') && value instanceof File) {
+      formData.append('profilePic', value);
      } else {
-      formData.append(key, cleanedData[key]);
+      formData.append(key, value);
      }
   }
+}
 
   try{
     // 🔥 MAGIC STEP: Chef ki tarah yahan bhi current state se identifier uthao

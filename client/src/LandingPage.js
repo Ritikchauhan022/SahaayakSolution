@@ -39,7 +39,7 @@ function LandingPage() {
 <nav className="navbar">
 <div className="nav-logo">
  <img src="/logo1.png" alt="Bakery Chef Logo"/>
- <span>SahaayakSolution</span>
+ <span>Sahaayak Solution</span>
  </div>
 <ul className="nav-links">
    { /* onClick handler ko mene yha joda hai  */}

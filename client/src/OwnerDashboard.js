@@ -44,8 +44,6 @@ export default function OwnerDashboard({
             <FaArrowLeft/> Logout
           </button>
           <div className="od-brand">
-            <FaBuilding className="od-brand-icon" />
-            <span className="od-brand-title">BakeryConnect</span>
           </div>
         </div>
 
@@ -57,7 +55,7 @@ export default function OwnerDashboard({
             ) : (
               <div className="od-avatar-fallback">
                 {profile.ownerName 
-         ? profile.ownerName.split(" ").map(n => n[0]).slice(0,2).join("")
+         ? profile.ownerName.trim().split(/\s+/).map(n => n[0]).slice(0, 2).join("").toUpperCase()
          : 'OW'}
                 </div>
             )}
@@ -130,7 +128,7 @@ export default function OwnerDashboard({
                    ) : (
                     <div className="od-avatar-fallback-large">
                       {profile.ownerName 
-         ? profile.ownerName.split(" ").map(n => n[0]).slice(0,2).join("")
+         ? profile.ownerName.trim().split(/\s+/).map(n => n[0]).slice(0, 2).join("").toUpperCase()
          : 'OW'}
                     </div>
                    )}

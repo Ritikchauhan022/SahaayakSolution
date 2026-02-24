@@ -11,11 +11,22 @@ import {
   FaLock,
   FaEye,
   FaUser,
+  FaRupeeSign
 } from "react-icons/fa";
 // import { data } from "react-router-dom";
 
 const formatCurrency = (amount = 0) => {
-    return `₹${Number(amount).toLocaleString("en-IN")}`;
+    // Agar amount string hai aur usme comma hai (jaise "20,000"), toh use saaf karo
+    const cleanAmount = typeof amount === 'string'
+    ? amount.replace(/,/g, '')
+    : amount;
+
+    const numericAmount = Number(cleanAmount);
+
+    // Agar fir bhi number na bane (NaN ho), toh "Negotiable" ya wahi string dikha do
+    if (isNaN(numericAmount)) return amount;
+
+    return `₹${numericAmount.toLocaleString("en-IN")}`;
 };
 
 /*data nhi mila to dummy data use krea */
@@ -109,9 +120,10 @@ const unlockedContacts = externalUnlocked || [];
     
     // सिर्फ उन्हें दिखाओ जिनका isAvailable true है (Real data के लिए)
     // या lookingForWork true है (Dummy data के लिए)
+    // 1. FILTER LOGIC FIX (CHANGE HERE)
     const activeProfessionals = professionals.filter(p => p.isAvailable === true || p.lookingForWork === true);
     // अब 'activeProfessionals' पर सर्च और बाकी फिल्टर लगाओ
-    const filteredProfessionals =  professionals.filter((professional) => {
+    const filteredProfessionals =  activeProfessionals.filter((professional) => { // Pehle yahan 'professionals' tha
         // 1. Search Logic 
         const name = professional.name || "";
         const skills = Array.isArray(professional.skills) ? professional.skills : [];
@@ -119,8 +131,10 @@ const unlockedContacts = externalUnlocked || [];
         skills.some((skill) => skill.toLowerCase().includes(searchTerm.toLowerCase()));
      // 2. Filter Logic
         const matchesRole = selectedRole === "all" || professional.role === selectedRole;
+        // 2. EXPERIENCE FILTER SYNC
+        // Strict '===' ki jagah includes use kar rahe hain taaki "4+ years" dropdown "4 years" data se match kar jaye
         const matchesExperience = 
-        selectedExperience === "all" || professional.experience === selectedExperience;
+        selectedExperience === "all" || (professional.experience && professional.experience.includes(selectedExperience.split(' ')[0]));
         const matchesLocation = selectedLocation === "all" ||  professional.location === selectedLocation;
 
         return matchesSearch && matchesRole && matchesExperience && matchesLocation;
@@ -226,9 +240,17 @@ const unlockedContacts = externalUnlocked || [];
                             return(
                                 <article className={`ap-card ${myProfile ? "ap-card--mine" : ""}`} key={profId}> 
                                     <div className="ap-card-left">
-                                        {/* 2. Image Fix: Agar avatarPath kharab ho toh default image dikhegi */}
+                                        {/* 3. AVATAR INITIAL FALLBACK (CHANGE HERE) */}
+                                        {/* Image Fix: Agar avatarPath kharab ho toh default image dikhegi */}
+                                        {professional.avatar ? (
                                         <img src={professional.avatar} alt={professional.name} className="ap-avatar" 
-                                       onError={(e) => { e.target.src = "https://i.pravatar.cc/120"; }}/>
+                                       onError={(e) => { e.target.src = "https://ui-avatars.com/api/?name=" + professional.name + "&background=4f46e5&color=fff"; }} // Agar link toot jaye toh dabba dikhe
+                                       />
+                                       ) : (
+                                        <div className="ap-avatar-fallback">
+                                            {professional.name ? professional.name.charAt(0).toUpperCase() : "P"}
+                                            </div>
+                                            )}
 
                                         <div className="ap-meta">
                                             <div className="ap-title-row">
@@ -253,7 +275,7 @@ const unlockedContacts = externalUnlocked || [];
                                                 </div>
 
                                                 <div className="ap-stat">
-                                                    <FaDollarSign className="icon"/>
+                                                    <FaRupeeSign className="icon"/>
                                                     {/* 4. Salary Fix: hourlyRate ko proper dikhayega */}
                                                     <span>{formatCurrency(professional.hourlyRate || 0 )}/month</span>
                                                 </div>
@@ -267,13 +289,16 @@ const unlockedContacts = externalUnlocked || [];
                                             <div className="ap-block">
                                                 <div className="ap-block-title">Skills</div>
                                                 <div className="ap-skills">
-                                                    {professional.skills && professional.skills.length > 0 ? (
+                                                    {professional.skills && professional.skills.length > 0 && professional.skills[0] !== "" ? (
                                                         professional.skills.slice(0, 4).map((s, i) => (
-                                                            <span className="ap-skill" key={i}>{s}</span>
+                                                            /* Key mein skill ka naam (s) aur index (i) dono daal diye taaki React turant update pakad le */
+                                                           <span className="ap-skill" key={`${s}-${i}`}>
+                                                            {s}
+                                                            </span>
                                                         ))
                                                     ) : (
-                                                        <span className="ap-skill">General Bakery</span>
-                                                           
+                                                        /* Agar skills khali hain toh "No skills added" dikhega */
+                                                        <span className="ap-skill"style={{ opacity: 0.7 }}>No skills added</span>           
                                                     )}
                                                     </div>
                                                     </div>
@@ -296,7 +321,7 @@ const unlockedContacts = externalUnlocked || [];
 
                                             <div className="ap-contact-body">
                                                 {/* ✅ 3. लॉजिक अपडेट: अपनी प्रोफाइल पर भी कांटेक्ट छुपाएं */}
-                                                {(unlocked && !myProfile) ? (
+                                                {(unlocked || myProfile) ? (
                                                     // myProfile ? (
                                                        <div className="ap-contact-unlocked">
                                                         <div><FaUser className="icon" /> <strong>Phone:</strong> {professional.phone}</div>

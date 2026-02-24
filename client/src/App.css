@@ -2236,6 +2236,66 @@ margin-bottom: 8px;
   margin-top: 10px;
 }
 
+/* --- Naye Elements jo Logic ke liye zaroori hain --- */
+/* 1. Avatar Fallback Styling (Headers aur Profile ke liye) */
+.mini-avatar-fallback, .main-avatar-fallback {
+  background: #4f46e5; /* Professional Purple Color */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.mini-avatar-fallback {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+.main-avatar-fallback {
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+  font-size: 28px;
+}
+
+/* 2. Status Colors (Taaki Toggle Button mast dikhe) */
+.btn-toggle.btn-start {
+  background: #22c55e; /*Green: Job ki zaroorat hai */
+  color: white;
+}
+
+.btn-toggle.btn-stop {
+  background: #ef4444; /* Red: Ab kaam nahi chahiye */
+  color: white;
+}
+
+/* 3. Icon Circle Colors */
+.icon-circle.active {
+  background: #dcfce7; /* Light Green */
+  color: #16a34a;
+}
+
+.icon-circle.inactive {
+  background: #fee2e2; /* Light Red */
+  color: #dc2626;
+}
+/* 4. Muted Text for empty states */
+.od-muted {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* 5. Tooltip ya small icons ke liye consistency */
+.icon-small {
+  flex-shrink: 0;
+}
+
+
 /* --- Mobile aur Tablet ke liye Responsive --- */
 
 /* --- Mobile aur Tablet ke liye Safe Responsive --- */
@@ -2724,6 +2784,29 @@ margin-bottom: 8px;
   font-size: 48px;
   color: rgba(15,23,42,0.08);
   margin-bottom: 12px;
+}
+
+/* Marketplace Initial Fallback */
+.ap-avatar-fallback {
+  width: 120px;
+  height: 120px;
+  min-width: 120px; /* Resize na ho */
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ap-avatar {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 /* responsive */

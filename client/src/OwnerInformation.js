@@ -27,14 +27,14 @@ export default function OwnerInformation({
     const userType = location.state?.userType || 'owner';
 
     const [formData, setFormData] = useState({
-        ownerName: initialData?.ownerName || initialData?.fullName || "",
-       email: initialData?.email || "",
-       phone: initialData?.phone || "",
-       password: initialData?.password || "",
-       businessName: initialData?.businessName || initialData?.bakeryName || "",
-       bakeryWork: initialData?.bakeryWork || "",
-       location: initialData?.location || "",
-       yearEstablished: initialData?.yearEstablished || "",
+       ownerName: finalIsEditing ? (initialData?.ownerName || initialData?.fullName || "") : "",
+       email: finalIsEditing ? (initialData?.email || "") : "",
+       phone: finalIsEditing ? (initialData?.phone || "") : "",
+       password: "", // Signup pe password hamesha khali hona chahiye
+       businessName: finalIsEditing ? (initialData?.businessName || initialData?.bakeryName || "") : "",
+       bakeryWork: finalIsEditing ? (initialData?.bakeryWork || "") : "",
+       location: finalIsEditing ? (initialData?.location || "") : "",
+       yearEstablished: finalIsEditing ? (initialData?.yearEstablished || "") : "",
        profilePic: null, // photo ki jagah profilePic use karein backend compatibility ke liye
     });
 
@@ -47,14 +47,18 @@ export default function OwnerInformation({
 
     // useEffect: initialData(purana data) ko formData me load krna (Editing Logic)
     useEffect(() => {
-        if (initialData) {
+        if (initialData && finalIsEditing) { // Edit mode check
            setFormData(prev => ({
             ...prev, // ensure kra mene ki default value mojud rhe
             ...initialData,
 
             // FIX 1: Dashboard Keys ko Form Keys me map kre
-            fullName: initialData.ownerName || initialData.fullName || "",
-            bakeryName: initialData.businessName || initialData.bakeryName || "",
+            ownerName: initialData.ownerName || initialData.fullName || "",
+            businessName: initialData.businessName || initialData.bakeryName || "",
+            email: initialData.email || "",
+            phone: initialData.phone || "",
+            // FIX: Password hamesha khali rakho edit mode mein
+            password: "",
            }));
 
            // Photo preview ke liye, agar initialData me photo hai 
@@ -64,7 +68,7 @@ export default function OwnerInformation({
            }
         }
 
-    }, [initialData]);
+    }, [initialData, finalIsEditing]); // finalIsEditing add kiya
 
     // Input changes ko handle krna 
     const handleChange = (e) => {
@@ -88,10 +92,16 @@ export default function OwnerInformation({
     };
 
     const validate = () => {
-        // 1. (Required fields check)
-        if (!formData.ownerName?.trim() || !formData.phone?.trim() || !formData.password?.trim() || 
+        // 1. Required fields check (Password hata diya yahan se kyuki edit mode me user ke liye password optional hai)
+        if (!formData.ownerName?.trim() || !formData.phone?.trim() || 
      !formData.businessName?.trim()) {
-        setError("Owner Name, Phone, Password, and Bakery Name are required.");
+        setError("Owner Name, Phone and Bakery Name are required.");
+        return false;
+     }
+
+     // 2. Password logic: Naye user ke liye Required, Edit ke liye Optional
+     if (!finalIsEditing && (!formData.password || formData.password.trim() === "")) {
+        setError("Password is required for new accounts.");
         return false;
      }
 
@@ -101,13 +111,22 @@ export default function OwnerInformation({
        return false;
      }
 
-     // 3. (Phone number check)
-     if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
-        setError("Phone number must be exactly 10 digits.");
+     // 3. (Phone number check (Exactly 10 digits and only numbers))
+     if (!/^[0-9]{10}$/.test(formData.phone)) {
+        setError("Phone number must be exactly 10 digits (0-9 only).");
         return false;
       }
 
-      // 4. (If everything is valid)
+     // 4. NAYA: Email Validation (Agar email bhara hai toh @gmail.com compalsari hai)
+      if (formData.email && formData.email.trim() !== "") {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        if (!emailRegex.test(formData.email.trim())) {
+            setError("Email address must be a valid @gmail.com address.");
+            return false;
+        }
+      }
+
+     // 5. (If everything is valid)
       setError('');
       return true;
     }
@@ -118,46 +137,55 @@ export default function OwnerInformation({
          setError('');
          setSuccessMessage('');
 
+        // 1. Pehle validation check karo
          if (!validate()){
             return;
          }
-         
-         // 1. Size Check (Vercel/Render ki safety ke liye)
+
+         // 2. Size Check (Vercel/Render safety)
          // FIX: Check karo agar image compression fail hui aur file abhi bhi badi hai
          if (formData.profilePic && formData.profilePic.size > 2 * 1024 * 1024) { // 2MB se badi
             setError("This image is too complex/large. Please take a screenshot of it and upload that instead.");
             return;
          }
 
-         // Dono keys bhejo: ownerName (New) aur fullName (Old backup)
-         const finalData = {
+         
+       // 3. --- DATA CLEANING ---
+       // Yahan hum formData ki copy banate hain taaki original state kharab na ho
+         const finalDataForBackend = {
             ...formData,
-            fullName: formData.ownerName,
-            bakeryName: formData.businessName
+            fullName: formData.ownerName, // Syncing keys
+            bakeryName: formData.businessName  
          };
 
-         // 2. Background mein data bhejo (Bina await kiye)
-         // Isse browser ko wait nahi karna padega
-         onProfileCreated(finalData)
-         .then(() => {
-            console.log("Profile updated in background!");
-         })
-         .catch((err) => {
-            console.error("Submission Error:", err);
-            // Agar bahut bada error ho tabhi alert aayega
-            // Ye line phone par error dikha degi
-          alert("Asli Error: " + (err.response?.data?.message || err.message));
-         });
+         // Edit mode mein agar password khali hai toh delete kar do
+         // Isse backend purana password hi rehne dega
+        if (finalIsEditing && (!finalDataForBackend.password || finalDataForBackend.password.trim() === "")) {
+           delete finalDataForBackend.password;
+         }
 
-         // 3. User ko turant message dikhao aur Dashboard par bhej do
-         setSuccessMessage("Setting up your dashboard... Please wait.");
+         // Email cleaning: Agar khali hai toh hata do
+         if (!finalDataForBackend.email || finalDataForBackend.email.trim() === "") {
+            delete finalDataForBackend.email;
+         }
+
+         // 4. Background mein data bhejo
+         onProfileCreated(finalDataForBackend)
+         .then(() => {
+            console.log("Profile updated successfully!");
+            })
+            .catch((err) => {
+                console.error("Submission Error:", err);
+                alert("Asli Error: " + (err.response?.data?.message || err.message));
+                });
+
+         // 5. User UI Feedback
+         setSuccessMessage(finalIsEditing ? "Updating profile..." : "Setting up your dashboard...");
 
          setTimeout(() => {
             navigate('/ownerdashboard');
             }, 1500);
-            
-        };
-    
+          };
 
     return (
         <div className="owner-container">
@@ -193,6 +221,7 @@ export default function OwnerInformation({
                         <input
                           type="text"
                           name="ownerName"
+                          autoComplete="off" 
                           value={formData.ownerName || ""}
                           onChange={handleChange}
                             placeholder="Enter your full name"
@@ -201,7 +230,7 @@ export default function OwnerInformation({
 
                     <div>
                         <label>Email (Optional)</label>
-                        <input  type="email"  name="email" value={formData.email || ""}
+                        <input  type="email" autoComplete="off"  name="email" value={formData.email || ""}
                         onChange={handleChange}
                         placeholder="your.email@example.com" />
                     </div>
@@ -209,18 +238,20 @@ export default function OwnerInformation({
 
                  <div>
                     <label>Phone</label>
-                    <input type="text" name="phone" value={formData.phone}
+                    <input type="text" name="phone" autoComplete="off"  value={formData.phone}
                     onChange={handleChange}
                     placeholder=""
                     required />
                  </div>
 
                  <div>
-                    <label>Password</label>
+                    <label>Password {finalIsEditing && "(Leave blank to keep current password)"}</label>
                     <div className="password-wrapper">
-                    <input type={showPassword ? "text" : "password"} name="password" value={formData.password || ""}
+                    <input type={showPassword ? "text" : "password"} name="password" autoComplete="off"  value={formData.password || ""}
                     onChange={handleChange}
-                    placeholder="Create a password (min 6 characters)" required/>
+                    placeholder={finalIsEditing ? "Enter new password" : "Create a password"}
+                    required={!finalIsEditing} // Naye account ke liye required
+                    />
                     
                     <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -233,7 +264,7 @@ export default function OwnerInformation({
                  <div className="grid-2">
                     <div>
                         <label>Bakery Name</label>
-                        <input type="text" name="businessName" value={formData.businessName || ""}
+                        <input type="text" name="businessName" autoComplete="off"  value={formData.businessName || ""}
                         onChange={handleChange}
                         placeholder="Enter your bakery name" required/>
                     </div>
@@ -253,7 +284,7 @@ export default function OwnerInformation({
 
                     <div>
                         <label>Location</label>
-                        <input type="text" name="location" value={formData.location || ""}
+                        <input type="text" name="location" autoComplete="off"  value={formData.location || ""}
                          onChange={handleChange}
                          placeholder="City, State"
                           required/>
@@ -261,7 +292,7 @@ export default function OwnerInformation({
 
                     <div>
                         <label>Year Established</label>
-                        <input type="text" name="yearEstablished" value={formData.yearEstablished || ""}
+                        <input type="text" name="yearEstablished" autoComplete="off"  value={formData.yearEstablished || ""}
                          onChange={handleChange}
                          placeholder="e.g., 2010"
                           required/>

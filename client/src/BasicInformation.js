@@ -65,7 +65,9 @@ const finalIsEditing = isEditingFromState || isEditing;
                 fullName: initialData.name || initialData.fullName || "", // name or fllName handle kra 
                 email: initialData.email || "", // 👈 Edit mode ke liye
                 // FIX: Agar DB mein contactEmail mein phone save hai, toh use yahan nikalein
-                phone: initialData.phone || "",
+                phone: String(initialData.phone || initialData.contact || "").trim(),
+                // FIX: Password ko initialData se mat lo, hamesha khali rakho edit mode mein
+                password: "",
                 location: initialData.city || initialData.location || "",
                 role: initialData.specialty || initialData.role || "",
                 experience: initialData.experience || "",
@@ -134,23 +136,42 @@ const finalIsEditing = isEditingFromState || isEditing;
     };
 
     const validate = () => {
+        // 1. Full Name aur Phone hamesha required hain
         // 1. (Required fields check)
         // ?. use karne se undefined ka khatra khatam
-        if (!formData.fullName?.trim() || !formData.phone?.trim() || !formData.password?.trim()){
-            setError("Full name, phone and password are required.");
+        if (!formData.fullName?.trim() || !formData.phone?.trim()){
+            setError("Full name and phone are required.");
             return false; 
         }
 
-        // 2. (Password length check)
-        if (formData.password.length < 6){
+        // 2. Password Check:
+        // Agar Naya account hai (!finalIsEditing), toh Password compulsory hai.
+        // Agar Edit mode hai, toh password tabhi check karo agar user ne kuch type kiya ho.
+        if (!finalIsEditing && (!formData.password || formData.password.trim() === "")) {
+            setError("Password is required for new profiles.");
+            return false;
+        }
+
+        if (formData.password && formData.password.length < 6) {
             setError("Password must be at least 6 characters long.");
             return false;
         }
 
-        // 3. (Phone number check)
-        if (!/^\d{10}$/ .test(formData.phone)){
-            setError("Phone number must be exactly 10 digits.");
+        // 3. Phone number check (Exactly 10 digits and only numbers)
+        //Phone number check (Added .trim() as you requested)
+        if (!/^[0-9]{10}$/.test(formData.phone.trim())) {
+            setError("Phone number must be exactly 10 digits (0-9 only).");
             return false;
+        }
+
+        // 4. NAYA: Email Validation (Agar email bhara hai toh @gmail.com compalsari hai)
+
+        if (formData.email && formData.email.trim() !== "") {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+            if (!emailRegex.test(formData.email.trim())) {
+                setError("Email address must be a valid @gmail.com address.");
+                return false;
+            }
         }
 
         // 4. (If everything is valid)
@@ -158,7 +179,7 @@ const finalIsEditing = isEditingFromState || isEditing;
         return true;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault();
         if (!validate()) return;
 
@@ -173,7 +194,16 @@ const finalIsEditing = isEditingFromState || isEditing;
 
         // 2. Data Cleaning
         // Ek naya object banao bina contactEmail ke
-        const cleanedData = { ...formData };
+        const cleanedData = { 
+            ...formData,
+          phone: String(formData.phone).trim() // Force string and trim };
+          };
+        //  YE WALA LOGIC ZARURI HAI:
+        // Agar editing hai aur password field khali hai, toh password bhejo hi mat
+        if (finalIsEditing && (!cleanedData.password || cleanedData.password.trim() === "")) {
+            delete cleanedData.password;
+        }
+        
         // Agar email empty string hai, toh use field se hi uda do
         if (!cleanedData.email || cleanedData.email.trim() === "") {
             delete cleanedData.email;
@@ -246,16 +276,18 @@ const finalIsEditing = isEditingFromState || isEditing;
                          <label>Phone</label>
                          <input type="tel" name="phone" value={formData.phone}
                          onChange={handleChange}
-                         placeholder="(555) 123-4567" required/>
+                         placeholder="Enter phone number" required/>
                         </div>
 
                         <div>
-                            <label>Password</label>
+                            <label>Password {finalIsEditing && "(Leave blank to stay updated)"}</label>
                             <div className="password-wrapper">
                                 <input type={showPassword ? "text" : "password"} name="password" value={formData.password}
                                 onChange={handleChange}
-                                placeholder="Create a password (min 6 characters)" required/>
-
+                                placeholder={finalIsEditing ? "Enter new password" : "Create a password (min 6 characters)"}
+                                // FIX: Agar editing hai toh required hata diya
+                                 required={!finalIsEditing}
+                                 />
                                 <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
                                     {showPassword ? <FaEyeSlash/> : <FaEye/>}
                                 </span>
