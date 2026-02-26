@@ -31,7 +31,14 @@ const formatCurrency = (amount = 0) => {
     return `₹${numericAmount.toLocaleString("en-IN")}`;
 };
 
-/*data nhi mila to dummy data use krea */
+const getInitials = (name) => {
+    if (!name) return "BP"; // Bakery Professional default
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase(); // Pehla aur Dusra letter (RC)
+    }
+    return parts[0].substring(0, 1).toUpperCase(); // Agar sirf ek hi naam hai toh pehle do letter
+    };
 
 const AvailableProfessionals = ({
   professionals: externalProfessionals = null,
@@ -46,59 +53,8 @@ const AvailableProfessionals = ({
 const { viewerType: urlViewerType } = useParams();
 const viewerType = urlViewerType || "owner";
 
-// Dummy data
-const dummyProfessionals = [
-  {
-     id: 1,
-     name: "Ramesh Kumar",
-     role: "Chef",
-     experience: "4+ years",
-     rating: 4.9,
-     location: "Manhattan",
-     hourlyRate: 450,
-     skills: ["Cakes", "Pastry", "Fondant", "Chocolate"],
-     avatar: "https://i.pravatar.cc/120?img=12",
-     bio: "Expert in wedding cakes and artisanal pastries. Strong taste sense and presentation.",
-     phone: "+1 555-0101",
-     email: "ramesh@example.com",
-     availability: "Immediate",
-     lookingForWork: true,
-      },
-    {
-       id: 2,
-       name: "Priya Sharma",
-            role: "Helper",
-            experience: "2-3 years",
-            rating: 4.6,
-            location: "Brooklyn",
-            hourlyRate: 300,
-            skills: ["Breads", "Sourdough", "Croissant"],
-            avatar: "https://i.pravatar.cc/120?img=22",
-            bio: "Skilled in artisan breads and laminated dough. Loves long fermentation techniques.",
-            phone: "+1 555-0202",
-            email: "priya@example.com",
-            availability: "Part Time",
-            lookingForWork: true,
-        },
-        {
-            id: 3,
-            name: "Aman Verma",
-            role: "Helper",
-            experience: "1 year",
-            rating: 4.2,
-            location: "Queens",
-            hourlyRate: 180,
-            skills: ["Kneading", "Packing", "Cleaning"],
-            avatar: "https://i.pravatar.cc/120?img=32",
-            bio: "Reliable helper with experience in fast-paced bakery environments.",
-            phone: "+1 555-0303",
-            email: "aman@example.com",
-            availability: "Immediate",
-            lookingForWork: false,
-        }
-    ];
-
-    const professionals = externalProfessionals || dummyProfessionals;
+//  Dummy Data Hata Diya aur Fallback Array [] laga diya mene
+    const professionals = externalProfessionals || [];
 
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedRole, setSelectedRole] = useState("all");
@@ -115,7 +71,8 @@ const unlockedContacts = externalUnlocked || [];
     const experience = ["all", "0-1 years", "2-3 years", "4+ years"];
 
     const locations = useMemo(() => {
-        const setL = new Set(professionals.map((p) => p.location));
+        // professionals array check taaki map crash na ho
+        const setL = new Set(professionals.map((p) => p.location).filter(Boolean));
         return ["all", ...Array.from(setL)];
     }, [professionals]);
 
@@ -237,10 +194,10 @@ const unlockedContacts = externalUnlocked || [];
                             const unlocked = isContactUnlocked(profId);
                             const myProfile = isCurrentChef(profId);
 
-                            // ✅ 1. बायो को छोटा करने का लॉजिक (Max 150 characters)
+                            //  1. बायो को छोटा करने का लॉजिक (Max 150 characters)
                             const truncatedBio = professional.bio && professional.bio.length > 150
                             ? professional.bio.substring(0, 150) + "..."
-                            : professional.bio;
+                            : professional.bio || "No bio available."; //  Fallback bio
 
                             return(
                                 <article className={`ap-card ${myProfile ? "ap-card--mine" : ""}`} key={profId}> 
@@ -249,11 +206,15 @@ const unlockedContacts = externalUnlocked || [];
                                         {/* Image Fix: Agar avatarPath kharab ho toh default image dikhegi */}
                                         {professional.avatar ? (
                                         <img src={professional.avatar} alt={professional.name} className="ap-avatar" 
-                                       onError={(e) => { e.target.src = "https://ui-avatars.com/api/?name=" + professional.name + "&background=4f46e5&color=fff"; }} // Agar link toot jaye toh dabba dikhe
-                                       />
+                                       onError={(e) => {
+                                        // Agar image link kharab ho toh API bhi RC wala avatar degi
+                                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(professional.name || 'P')}&background=4f46e5&color=fff&length=2`; // Agar link toot jaye toh dabba dikhe
+                                          }}
+                                         />
                                        ) : (
                                         <div className="ap-avatar-fallback">
-                                            {professional.name ? professional.name.charAt(0).toUpperCase() : "P"}
+                                            {/* Yahan RC dikhega */}
+                                           {getInitials(professional.name)}
                                             </div>
                                             )}
 

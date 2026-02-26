@@ -28,8 +28,14 @@ const handleStatusClick = () => {
 };
 
 // Safe Name Logic (For Avatar Fallback)
+// 1. Better Initials Logic (Ritik Chauhan -> RC)
 const getInitials = (name) => {
-    return name ? name.trim().split(/\s+/).map(n => n[0]).slice(0, 2).join("").toUpperCase() : 'CH';
+    if (!name || name === "Guest Chef") return 'CH'; // Default agar naam na ho
+    const parts = name.trim().split(/\s+/);
+    if (parts.length > 1) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+        }
+        return parts[0][0].toUpperCase();
 };
 
 // Strong Data Mapping

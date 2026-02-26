@@ -21,6 +21,14 @@ export default function BasicInformation({
 //    nhi to, Prop (isEditing)ka use krega (jo default ruup se false hai)
 const finalIsEditing = isEditingFromState || isEditing;
 
+// Initials Fallback
+const getInitials = (name) => {
+    if (!name) return 'CH';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length > 1) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return parts[0][0].toUpperCase();
+    };
+
     // LoginSignu page se userType get(prapet) kra yani(default 'chef' set kra mene)
     const userType = location.state?.userType || 'chef';
 
@@ -196,7 +204,11 @@ const finalIsEditing = isEditingFromState || isEditing;
         // Ek naya object banao bina contactEmail ke
         const cleanedData = { 
             ...formData,
-          phone: String(formData.phone).trim() // Force string and trim };
+          phone: String(formData.phone).trim(), // Force string and trim };
+          // Agar photo nahi hai toh isse explicitly handle karein
+          photo: formData.photo || null,
+          initials: getInitials(formData.fullName) // Dashboard ke liye initials bhej rahe hain
+
           };
         //  YE WALA LOGIC ZARURI HAI:
         // Agar editing hai aur password field khali hai, toh password bhejo hi mat
@@ -395,6 +407,7 @@ const finalIsEditing = isEditingFromState || isEditing;
                 <section>
                     <label className="bi-label">Profile Photo</label>
                     <div className="bi-upload-box">
+                        
                         <FaUpload className="bi-upload-icon"/>
                         <p className="bi-upload-text">Upload your profile photo</p>
 

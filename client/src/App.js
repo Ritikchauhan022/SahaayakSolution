@@ -476,7 +476,7 @@ const finalSubmissionData = {
   isAvailable:cleanUserData.isAvailable ?? false,
    avatar: cleanUserData.avatarPath && cleanUserData.avatarPath.includes('cloudinary.com')
    ? cleanUserData.avatarPath
-   : (cleanUserData.avatarPath ? `${API_BASE_URL}/${cleanUserData.avatarPath.replace(/\\/g, '/')}` : "https://i.pravatar.cc/150")
+   : (cleanUserData.avatarPath ? `${API_BASE_URL}/${cleanUserData.avatarPath.replace(/\\/g, '/')}` : null)
   };
  setCurrentChefProfile(finalProfileData); // अब स्टेट में असली "Ganesha" का डेटा सेट होगा
  }
@@ -495,7 +495,7 @@ const finalSubmissionData = {
     // फोटो पाथ को सही URL में बदलना
     profilePic: userData.profilePic && userData.profilePic.includes('cloudinary.com')
   ? userData.profilePic
-  : (userData.profilePic ? `${API_BASE_URL}/${userData.profilePic.replace(/\\/g, '/')}` : "https://i.pravatar.cc/150"),
+  : (userData.profilePic ? `${API_BASE_URL}/${userData.profilePic.replace(/\\/g, '/')}` : null),
   };
   setCurrentOwnerProfile(finalOwnerData); //ओनर की स्टेट अपडेट करें
  }

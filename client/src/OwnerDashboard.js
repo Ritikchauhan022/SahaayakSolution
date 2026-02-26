@@ -3,13 +3,10 @@ import {
   FaArrowLeft,
   FaBuilding,
   FaMapMarkerAlt,
-  // FaClock,
   FaSearch,
   FaEdit,
-  // FaGlobe,
   FaPhone,
   FaEnvelope,
-  // FaBriefcase
 } from "react-icons/fa";
 import  "./App.css";
 
@@ -17,24 +14,36 @@ export default function OwnerDashboard({
   onBackToLanding = () => {},
   onSearchProfessionals = () => {},
   onEditProfile = () => {},
-  userProfile  //FIX: Prop name ownerProfile se userProfile hona chiye (jesa humne App.js me pass kiya hai)
+  userProfile  // Backend se jo data aa raha hai  //FIX: Prop name ownerProfile se userProfile hona chiye (jesa humne App.js me pass kiya hai)
 }) {
   // local tab state: 'overview' | 'profile'
   const [tab, setTab] = useState("overview");
 
-   // fallback if ownerProfile not provided
-   const profile = userProfile || {
-    id: 0,
-    name: "Owner Name",
-    email: "owner@bakery.com",
-    phone: "",
-    password: "",
-    bakeryName: "My Bakery",
-    bakerywork: "",
-    location: "Your City, State",
-    yearEstablished: "",
-    profilePic: ""
-   };
+  // 1. BETTER INITIALS LOGIC (Chef Dashboard se match karta hua)
+  const getInitials = (name) => {
+    if (!name) return 'OW';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length > 1) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+      return parts[0][0].toUpperCase();
+    };
+
+    // 2. Data Mapping: Logic ko upar hi settle kar diya chef ki tareh 
+    const profile = {
+      ...userProfile,
+      // Agar ownerName nahi hai toh name lo, varna "Owner"
+      name: userProfile?.ownerName || userProfile?.name || "Owner",
+      businessName: userProfile?.businessName || "My Bakery",
+      bakerywork: userProfile?.bakerywork || "Bakery Owner",
+      location: userProfile?.location || "Location Not Set",
+      // Email clean check
+      email: userProfile?.email && userProfile.email !== "null" ? userProfile.email : null,
+      phone: userProfile?.phone || "Not provided",
+      yearEstablished: userProfile?.yearEstablished || "N/A",
+      // Strictly null agar image nahi hai (fallback trigger karne ke liye)
+      profilePic: userProfile?.profilePic || null
+      };
 
    return(
     <div className="od-root">
@@ -48,15 +57,15 @@ export default function OwnerDashboard({
         </div>
 
         <div className="od-right">
-          <div className="od-welcome">Welcome, {profile.ownerName || profile.name}</div>
+          {/* Safe Name Display */}
+          <div className="od-welcome">Welcome, {profile.name}</div>
           <div className="od-avatar">
+            {/* DUMMY IMAGE REMOVED: Sirf asli pic ya fallback */}
             {profile.profilePic ? (
               <img src={profile.profilePic} alt="avatar"/>
             ) : (
               <div className="od-avatar-fallback">
-                {profile.ownerName 
-         ? profile.ownerName.trim().split(/\s+/).map(n => n[0]).slice(0, 2).join("").toUpperCase()
-         : 'OW'}
+              {getInitials(profile.name)}
                 </div>
             )}
           </div>
@@ -123,20 +132,19 @@ export default function OwnerDashboard({
               <div className="od-profile">
                 <div className="od-profile-left">
                   <div className="od-avatar-large">
+                    {/* DUMMY IMAGE REMOVED: Large version of fallback */}
                    {profile.profilePic ? (
                     <img src={profile.profilePic} alt="avatar"/>
                    ) : (
                     <div className="od-avatar-fallback-large">
-                      {profile.ownerName 
-         ? profile.ownerName.trim().split(/\s+/).map(n => n[0]).slice(0, 2).join("").toUpperCase()
-         : 'OW'}
+                     {getInitials(profile.name)}
                     </div>
                    )}
                   </div>
 
                   <div className="od-profile-name">{profile.businessName}</div> {/* App.js me businessName hai*/}
                   <div className="od-muted">{profile.bakerywork}</div>
-                  <div className="od-location"><FaMapMarkerAlt /> {profile.location}</div>
+                  <div className="od-location"><FaMapMarkerAlt />{profile.location}</div>
                 </div>
 
                 <div className="od-profile-data-wrap">
@@ -144,7 +152,7 @@ export default function OwnerDashboard({
                     <h4>Owner Information</h4>
                     {/* Name Section */}
                     <div className="od-detail-item">
-                    <strong>Name:</strong> <span>{profile.ownerName || "Not provided"}</span> {/* App.js me ownerName hai*/}
+                    <strong>Name:</strong> <span>{profile.name}</span> {/* App.js me ownerName hai*/}
                     </div>
 
                     {/* Email Section with Null Check */}
@@ -158,13 +166,13 @@ export default function OwnerDashboard({
                     {/* Phone Section */}
                     <div className="od-detail-item">
                       <FaPhone className="od-icon" />
-                      <span>{profile.phone || "Not provided"}</span>
+                      <span>{profile.phone}</span>
                     </div>
                   </div>
 
                   <div className="od-block">
                     <h4>Business Details</h4>
-                    {profile.yearEstablished && <p><strong>Established:</strong> {profile.yearEstablished}</p>}
+                    <p><strong>Established:</strong> {profile.yearEstablished}</p>
                   </div>
 
                 </div>
