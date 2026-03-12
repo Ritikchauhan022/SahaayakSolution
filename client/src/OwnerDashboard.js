@@ -35,14 +35,21 @@ export default function OwnerDashboard({
       // Agar ownerName nahi hai toh name lo, varna "Owner"
       name: userProfile?.ownerName || userProfile?.name || "Owner",
       businessName: userProfile?.businessName || "My Bakery",
-      bakerywork: userProfile?.bakerywork || "Bakery Owner",
+      bakerywork: userProfile?.bakeryWork || userProfile?.bakerywork || "Bakery Owner",
       location: userProfile?.location || "Location Not Set",
       // Email clean check
       email: userProfile?.email && userProfile.email !== "null" ? userProfile.email : null,
       phone: userProfile?.phone || "Not provided",
       yearEstablished: userProfile?.yearEstablished || "N/A",
+      // STRICTOR CHECK: Agar backend se "" ya "null" string aaye, toh usey real null banao
       // Strictly null agar image nahi hai (fallback trigger karne ke liye)
-      profilePic: userProfile?.profilePic || null
+      // 🔥 STRICTOR CHECK: Ye line Bob ki dummy image ka bhoot bhagayegi
+  profilePic: (
+    userProfile?.profilePic && 
+    userProfile.profilePic !== "null" && 
+    userProfile.profilePic !== "" &&
+    !userProfile.profilePic.includes("dummy") // Agar koi purana default link aa raha ho toh block karo
+    ) ? userProfile.profilePic : null
       };
 
    return(
@@ -61,13 +68,22 @@ export default function OwnerDashboard({
           <div className="od-welcome">Welcome, {profile.name}</div>
           <div className="od-avatar">
             {/* DUMMY IMAGE REMOVED: Sirf asli pic ya fallback */}
-            {profile.profilePic ? (
-              <img src={profile.profilePic} alt="avatar"/>
-            ) : (
-              <div className="od-avatar-fallback">
+            {/* Check karo ki profilePic real hai ya nahi */}
+           {profile.profilePic && profile.profilePic !== "null" ? (
+              <img src={profile.profilePic}
+               alt="avatar"
+               key={profile.profilePic} // 🔥 KEY ADD KARO: Isse React image change hote hi force update karega
+               onError={(e) => {
+                e.target.style.display = 'none'; // Image chhupao
+                e.target.nextSibling.style.display = 'flex'; // Initials dikhao
+               }}
+               />
+            ) : null}
+            {/* Initials wala div */}
+              <div className="od-avatar-fallback"
+              style={{ display: (profile.profilePic && profile.profilePic !== "null") ? 'none' : 'flex' }}>
               {getInitials(profile.name)}
                 </div>
-            )}
           </div>
         </div>
       </header>
@@ -134,12 +150,17 @@ export default function OwnerDashboard({
                   <div className="od-avatar-large">
                     {/* DUMMY IMAGE REMOVED: Large version of fallback */}
                    {profile.profilePic ? (
-                    <img src={profile.profilePic} alt="avatar"/>
-                   ) : (
-                    <div className="od-avatar-fallback-large">
+                    <img src={profile.profilePic} alt="avatar"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      if(e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                      }}
+                      />
+                   ) : null}
+                    <div className="od-avatar-fallback-large"
+                    style={{ display: profile.profilePic ? 'none' : 'flex' }}>
                      {getInitials(profile.name)}
                     </div>
-                   )}
                   </div>
 
                   <div className="od-profile-name">{profile.businessName}</div> {/* App.js me businessName hai*/}

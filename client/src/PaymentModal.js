@@ -9,6 +9,8 @@ import {
   FaDollarSign,
   FaExclamationCircle,
 } from "react-icons/fa";
+import { getAvatarColor } from "./AvatarColor";
+
 
 const CONTACT_UNLOCK_AMOUNT = "₹500.00";
 
@@ -16,21 +18,31 @@ const PaymentModal = ({professional, onClose, onPaymentSuccess}) => {
     const [paymentStep, setPaymentStep] = useState("details"); // details | processing | success | error
     const [error, setError] = useState(null);
 
-    const handleFakePayment = () => {
-        setError(null);
-        setPaymentStep("processing");
+// 2. Initials nikalne ke liye function (Rupa Mosi -> RM)
+const getInitials = (name) => {
+    if (!name) return "C";
+    const parts = name.trim().split(/\s+/);
+    if (parts.length > 1) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+      return parts[0][0].toUpperCase();
+};
 
-         // 🔥 BACKEND INTEGRATION POINT
-         setTimeout(() => {
-            setPaymentStep("success");
-             // success demo
-             setTimeout(() => {
-             if (onPaymentSuccess) {
-                // ✅ FIX: professional pass karo taaki App.js ko pata chale kise unlock karna hai
-                onPaymentSuccess(professional);
-             }
-         }, 1500);
-    }, 2000);
+const handleFakePayment = () => {
+    setError(null);
+    setPaymentStep("processing");
+
+    // 🔥 BACKEND INTEGRATION POINT
+    setTimeout(() => {
+    setPaymentStep("success");
+    // success demo
+    setTimeout(() => {
+      if (onPaymentSuccess) {
+    // professional pass kiya taaki App.js ko pata chale kise unlock karna hai
+      onPaymentSuccess(professional);
+    }
+     }, 1500);
+   }, 2000);
 };
 
 return (
@@ -46,11 +58,22 @@ return (
             {/* Professional Card */}
             <div className="pm-card">
                 <div className="pm-profile">
+                    {professional.avatar ? (
                     <img
                        src={professional.avatar}
                        alt={professional.name}
                        className="pm-avatar"
+                       onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
                     />
+                    ) : null}
+
+                    <div
+                    className="pm-avatar-fallback"
+                    style={{ display: professional.avatar ? 'none' : 'flex', backgroundColor: getAvatarColor(professional.name)
+                        }}
+                    >
+                    {getInitials(professional.name)}
+                        </div>
                     {/* Is div ko class di hai taaki alignment sahi rahe */}
                     <div className="pm-meta-info">
                         <h3>{professional.name}</h3>

@@ -1390,12 +1390,12 @@ html, body {
   height:40px;
   border-radius:50%;
   overflow:hidden;
-  background:#e7e8ff;
+  background:#2563eb;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:700;
-  color:#263;
+  color:#ffffff;
  }
 
  .od-avatar img{
@@ -1508,9 +1508,7 @@ html, body {
   gap: 8px;
 }
 
-.od-section h2 svg{
-  /* color: #4a4aff; */
-}
+
 .od-card{
   background:#fff;
   border-radius:12px;
@@ -1659,27 +1657,30 @@ margin-bottom: 8px;
 }
 
 .od-avatar-large{
-  width:120px; 
-  height:120px;
-  border-radius:10px;
+  width:90px; 
+  height:90px;
+  border-radius:50%;
   overflow:hidden;
-  background:#f0f2ff;
+  background:#2563eb;
   display:flex;
   align-items:center;
   justify-content:center;
   margin-bottom:10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 3px solid #fff;
 }
 
 .od-avatar-large img{
   width:100%;
   height:100%;
-   object-fit:cover;
+  object-fit:cover;
 }
 
 .od-avatar-fallback-large{
-  font-size:28px;
-  font-weight:800;
-  color:#4a4aff;
+  font-size:36px;
+  font-weight:700;
+  color:#ffffff;
+  text-transform: uppercase;
 }
 
 .od-profile-name{
@@ -1942,8 +1943,8 @@ margin-bottom: 8px;
   }
 
   .od-outline {
-    width: auto;              /* full width nahi */
-    padding:2px px;        /* chhota button */
+    width: auto;   /* full width nahi */
+    padding:2px px;   /* chhota button */
     font-size: 13px;
     border-radius: 6px;
     justify-content: center;
@@ -2253,7 +2254,7 @@ margin-bottom: 8px;
 /* --- Naye Elements jo Logic ke liye zaroori hain --- */
 /* 1. Avatar Fallback Styling (Headers aur Profile ke liye) */
 .mini-avatar-fallback, .main-avatar-fallback {
-  background: #4f46e5; /* Professional Purple Color */
+  /* background: #4f46e5; Professional Purple Color */
   color: white;
   display: flex;
   align-items: center;
@@ -2420,6 +2421,7 @@ margin-bottom: 8px;
   }
 
 }
+
 /* Yha se AvailableProfessional.js code file ke liye css hai*/
 .ap-root{
   min-height: 100vh;
@@ -2802,25 +2804,26 @@ margin-bottom: 8px;
 
 /* Marketplace Initial Fallback */
 .ap-avatar-fallback {
-  width: 120px;
-  height: 120px;
-  min-width: 120px; /* Resize na ho */
+  width: 90px;         /* Size thoda chota kiya taaki card mein fit baithe */
+  height: 90px;
+  min-width: 90px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  /* background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); */
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
+  font-size: 32px;     /* Font size 90px ke hisaab se set kiya */
   font-weight: bold;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .ap-avatar {
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   object-fit: cover;
   border-radius: 12px;
+  flex-shrink: 0;
 }
 
 /* responsive */
@@ -2896,9 +2899,23 @@ margin-bottom: 8px;
   align-items: flex-start;
 }
 
+.pm-avatar-fallback {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  text-transform: uppercase;
+  flex-shrink: 0; /* Gol shape bigde na */
+}
+
 .pm-avatar{
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
   background: #f3f4f6;

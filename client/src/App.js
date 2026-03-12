@@ -135,7 +135,7 @@ const handleEditProfile = () => {
 
 const initialChefData = {
   name: "",
-  avatar: "https://i.pravatar.cc/150",
+  avatar: null,
   role: "Bakery Chef",
   rating: 4.8,
   //email: "ritik@gmail.com",
@@ -237,25 +237,6 @@ try{
   }
   };
  
-//   // 2. अगर शेफ नहीं मिला, तो Owner API को चेक करें
-//   const ownerResponse = await fetch(`${API_BASE_URL}/api/owner/profile/${savedPhone}`);
-
-//     if (ownerResponse.ok) {
-//       const result = await ownerResponse.json();
-//       if (result.owner) {
-//         console.log("Syncing Owner Profile...");
-//         handleOwnerLoginSuccess(result.owner);  // अब ये शेफ की तरह ही काम करेगा! //handleOwnerLoginSuccess owner वाला फंक्शन
-//       }
-//     }
-//     // स्टेट अपडेट करें (डमी डेटा गायब हो जाएगा)
-//     // handleLoginSuccess(chefData);
-// } catch (err) {
-//   console.error("Session sync failed:", err);
-// } finally{
-//   setIsLoading(false); //  डेटा आ जाए या एरर आए, लोडिंग बंद करें
-// }
-//  };
-
   syncLoggedInUser();
 }, []); // खाली ऐरे मतलब यह सिर्फ पेज लोड/रिफ्रेश पर चलेगा
 
@@ -267,7 +248,7 @@ email: "",
 location: "",
 bakeryWork: "",
 yearEstablished: "",
-profilePic: "", // डमी लिंक हटा दो
+profilePic: null, // Dummy link htaya or Null kiya mene  
 activeSubscription: true
 };
 
@@ -419,7 +400,7 @@ const finalSubmissionData = {
         // 🔥 CLOUDINARY FIX: Agar image path hai, toh check karo wo URL hai ya local path
      avatar: savedChef.avatarPath && savedChef.avatarPath.includes('cloudinary.com') 
      ? savedChef.avatarPath 
-     : (savedChef.avatarPath ? `${API_BASE_URL}/${savedChef.avatarPath.replace(/\\/g, '/')}` : currentChefProfile.avatar),
+     : (savedChef.avatarPath ? `${API_BASE_URL}/${savedChef.avatarPath.replace(/\\/g, '/')}` : null),
       };
 
       setCurrentChefProfile(finalProfileData);
@@ -476,7 +457,7 @@ const finalSubmissionData = {
   isAvailable:cleanUserData.isAvailable ?? false,
    avatar: cleanUserData.avatarPath && cleanUserData.avatarPath.includes('cloudinary.com')
    ? cleanUserData.avatarPath
-   : (cleanUserData.avatarPath ? `${API_BASE_URL}/${cleanUserData.avatarPath.replace(/\\/g, '/')}` : null)
+   : (cleanUserData.avatarPath ? `${API_BASE_URL}/${cleanUserData.avatarPath.replace(/\\/g, '/')}` : null),
   };
  setCurrentChefProfile(finalProfileData); // अब स्टेट में असली "Ganesha" का डेटा सेट होगा
  }
@@ -629,9 +610,10 @@ const finalSubmissionData = {
         businessName: savedOwner.businessName || savedOwner.bakeryName,
         phone: savedOwner.phone,
         // फोटो पाथ को URL में बदलें
+        // 🛑 DUMMY LINK HATAYA: Agar pic nahi hai toh null bhejo taaki Dashboard initials dikha sake
       profilePic: savedOwner.profilePic && savedOwner.profilePic.includes('cloudinary.com')
   ? savedOwner.profilePic
-  : (savedOwner.profilePic ? `${API_BASE_URL}/${savedOwner.profilePic.replace(/\\/g, '/')}` : "https://i.pravatar.cc/150"),
+  : (savedOwner.profilePic ? `${API_BASE_URL}/${savedOwner.profilePic.replace(/\\/g, '/')}` : null),
 
         activeSubscription: savedOwner.activeSubscription ?? true
       };
@@ -736,11 +718,11 @@ const shouldShowFooter = footerPages.includes(location.pathname);
       rating: chef.rating || 4.5,
       location: chef.city || chef.location || "N/A",
       hourlyRate: chef.salaryExpectation || "0", // Taaki ₹0 na dikhe
-      skills: Array.isArray(chef.skills) ? chef.skills : [],
+      skills: Array.isArray(chef.skills) ? chef.skills : JSON.parse(chef.skills || "[]"),
       // 🔥 Image Path Fix:
       avatar: chef.avatarPath && chef.avatarPath.includes('cloudinary.com')
   ? chef.avatarPath
-  : (chef.avatarPath ? `${API_BASE_URL}/${chef.avatarPath.replace(/\\/g, '/')}` : "https://i.pravatar.cc/120"),
+  : (chef.avatarPath ? `${API_BASE_URL}/${chef.avatarPath.replace(/\\/g, '/')}` : null),
       bio: chef.bio || "No bio added",
       phone: chef.phone || "No Phone", // ✅ Backend se ab phone hi aayega
       email: chef.email || "No Email", // ✅ Model mein email field hai hi

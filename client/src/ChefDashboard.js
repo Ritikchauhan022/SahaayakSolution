@@ -14,6 +14,8 @@ import {
   FaEnvelope,
   FaRupeeSign,
 } from "react-icons/fa";
+import { getAvatarColor } from "./AvatarColor";
+
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
@@ -74,10 +76,14 @@ const profile = {
                 <div className="profile-mini">
                     <span>Welcome, {profile.name}</span>
                     {profile.avatar ? (
-                    <img src={profile.avatar} alt="avatar" className="mini-avatar" />
-                  ) : (
-                    <div className="mini-avatar-fallback">{getInitials(profile.name)}</div>
-                    )}
+                    <img src={profile.avatar} alt="avatar" className="mini-avatar" 
+                    key={profile.avatar} // 🔥 Force refresh
+                    onError={(e) => {e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex';}}
+                    />
+                  ) : null}
+                    <div className="mini-avatar-fallback" style={{ display: profile.avatar ? 'none' : 'flex', backgroundColor: getAvatarColor(profile.name)}} >
+                        {getInitials(profile.name)}
+                    </div>
                 </div>
             </header>
 
@@ -128,11 +134,14 @@ const profile = {
 
                     <div className="profile-box">
                         {profile.avatar ? (
-                        <img src={profile.avatar} alt="avatar" className="main-avatar" />
-                        ) : (
-                    <div className="main-avatar-fallback">{getInitials(profile.name)}</div>
-                     )}
-
+                        <img src={profile.avatar} alt="avatar" className="main-avatar"
+                        key={profile.avatar} // 🔥 Force refresh
+                        onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                         />
+                        ) : null}
+                    <div className="main-avatar-fallback" style={{ display: profile.avatar ? 'none' : 'flex', backgroundColor: getAvatarColor(profile.name) }}>
+                        {getInitials(profile.name)}
+                        </div>
                         <div>
                             <h3 className="name">{profile.name}</h3>
                             <p className="role">{profile.role}</p>

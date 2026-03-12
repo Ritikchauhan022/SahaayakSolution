@@ -26,6 +26,7 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
+console.log("Cloudinary Key:", process.env.CLOUDINARY_API_KEY ? "MIL GAYI" : "NAHI MILI");
 
 // --- CLOUDINARY STORAGE SETTINGS ---
 const storage = new CloudinaryStorage({

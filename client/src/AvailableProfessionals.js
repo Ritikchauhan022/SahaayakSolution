@@ -15,6 +15,7 @@ import {
   FaUser,
   FaRupeeSign
 } from "react-icons/fa";
+import { getAvatarColor } from "./AvatarColor";
 // import { data } from "react-router-dom";
 
 const formatCurrency = (amount = 0) => {
@@ -48,6 +49,10 @@ const AvailableProfessionals = ({
  unlockedChefs: externalUnlocked = [],
   currentChefId = null,
 }) => {
+  // Sabse upar search state ke paas ye line add karo
+  // Ye state un IDs ko track karegi jinki images load nahi ho payi
+  const [failedImages, setFailedImages] = useState(new Set());
+
 
  //  useParams ka use krke URL se viewerType pda
 const { viewerType: urlViewerType } = useParams();
@@ -203,18 +208,25 @@ const unlockedContacts = externalUnlocked || [];
                                 <article className={`ap-card ${myProfile ? "ap-card--mine" : ""}`} key={profId}> 
                                     <div className="ap-card-left">
                                         {/* 3. AVATAR INITIAL FALLBACK (CHANGE HERE) */}
-                                        {/* Image Fix: Agar avatarPath kharab ho toh default image dikhegi */}
-                                        {professional.avatar ? (
-                                        <img src={professional.avatar} alt={professional.name} className="ap-avatar" 
-                                       onError={(e) => {
-                                        // Agar image link kharab ho toh API bhi RC wala avatar degi
-                                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(professional.name || 'P')}&background=4f46e5&color=fff&length=2`; // Agar link toot jaye toh dabba dikhe
+                                       {/* Mix Logic: Pravatar ko block karo AUR error ko handle karo */}
+                                        {professional.avatar && 
+                                        professional.avatar !== "" && 
+                                        !professional.avatar.includes('pravatar.cc') && // Ye line dummy images ko rokti hai
+                                        !failedImages.has(profId) ? (
+                                        <img
+                                         src={professional.avatar}
+                                         alt={professional.name} 
+                                         className="ap-avatar" 
+                                         onError={(e) => {
+                                        // Agar image load nahi hui, toh set mein ID daal do
+                                        // Sirf ye ek line kafi hai, React baki khud sambhaal lega
+                                        setFailedImages(prev => new Set(prev).add(profId));
                                           }}
                                          />
                                        ) : (
-                                        <div className="ap-avatar-fallback">
+                                        <div className="ap-avatar-fallback" style={{ backgroundColor: getAvatarColor(professional.name || professional.fullName) }}>
                                             {/* Yahan RC dikhega */}
-                                           {getInitials(professional.name)}
+                                          {getInitials(professional.name || professional.fullName)}
                                             </div>
                                             )}
 
