@@ -6,7 +6,7 @@ import {
   FaLock,
   FaStar,
   FaMapMarkerAlt,
-  FaDollarSign,
+  FaRupeeSign,
   FaExclamationCircle,
 } from "react-icons/fa";
 import { getAvatarColor } from "./AvatarColor";
@@ -17,6 +17,11 @@ const CONTACT_UNLOCK_AMOUNT = "₹500.00";
 const PaymentModal = ({professional, onClose, onPaymentSuccess}) => {
     const [paymentStep, setPaymentStep] = useState("details"); // details | processing | success | error
     const [error, setError] = useState(null);
+
+// Ye logic mene ChefDashboard.js me bi add kr rkha haior ab yha per bhi 
+const formattedSalary = professional.hourlyRate
+? Number(String(professional.hourlyRate).replace(/[^0-9.-]+/g, "")).toLocaleString('en-IN')
+: "TBD";
 
 // 2. Initials nikalne ke liye function (Rupa Mosi -> RM)
 const getInitials = (name) => {
@@ -87,7 +92,7 @@ return (
                                 <FaMapMarkerAlt size={12}/> {professional.location}
                             </span>
                             <span>
-                                <FaDollarSign size={12}/> {professional.hourlyRate}/month
+                                <FaRupeeSign size={12}/>{formattedSalary}/month
                             </span>
                         </div>
                     </div>

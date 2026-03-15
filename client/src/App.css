@@ -46,9 +46,9 @@
    padding: 12px 65px;
    /* border-top: 1px solid rgb(184, 172, 172); */
    /* border-bottom: 1px solid rgb(184, 172, 172); */
-    border-bottom: 1px solid #e5e5e5;
+   border-bottom: 1px solid #e5e5e5;
    background-color: white;
-
+   flex-wrap: wrap; /* Takki mobile par content niche aa sake */
 }
 
 .nav-logo {
@@ -69,6 +69,8 @@
   list-style: none;
   display: flex;
   gap: 30px;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links li{
@@ -196,19 +198,6 @@
    color: #555;
    line-height: 1.4;
 }
-/* @media (max-width: 900px) {
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-} */
-
-/* @media (max-width: 600px) {
-  .features-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
-} */
-
-
 
 /* 4. How It Works Section ki css */
 .how-it-works{
@@ -250,9 +239,11 @@
 }
 
 .process-column h3{
-  text-align: center;
+  text-align: left;
   font-size: 1.5rem;
   font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-left: 0;
   /* margin-bottom: 2.5rem; */
   /* Figma से प्रेरित रंग: मालिक के लिए हल्का भूरा और शेफ के लिए हल्का नीला/हरा हो सकता है */
     color: var(--color-text);
@@ -261,38 +252,42 @@
 /* --- Individual Step Styles --- */
 .process-step{
   display: flex;
-  align-items: flex-start;
-  /* margin-bottom: 2rem; */
-  gap: 1.5rem; /* Space between number and text */
+  align-items: flex-start; 
+  margin-bottom: 2rem;    /* Steps ke beech ka gap */
+  gap: 1rem; /* Space between number and text */
 }
 
 .step-number{
   /* गोलाकार पृष्ठभूमि */
   width: 2rem;
   height: 2rem;
-  border-radius: 999px;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 700;
   flex-shrink: 0; 
   font-size: 1rem;
-  position: relative;
-  top: 5px;
+  /* position: static; */
+  /* top: 5px; */
   background-color: #1f2937; /* Very Light Gray */ 
   border: 1px solid #1f2937; /* Gray-400 */ 
   color: #ffffff; /* Gray-600 */
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .step-content{
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .step-content h4{
  font-size: 1.1rem;
  font-weight: 600; 
- margin-bottom: 0.5rem; 
+ margin: 0 0 4px 0;
+ padding: 0;
  line-height: 1.3; 
 }
 
@@ -301,19 +296,6 @@
   color: #6b7280; /* Gray-500 */
   line-height: 1.4;
 }
-
-/* --- Responsive Adjustments ---
-@media (max-width: 900px){
-  .process-flow-container{
-    flex-direction: column; Stacking columns on smaller screens
-    padding: 0 1rem;
-  }
-
-  .process-column{
-    width: 100%;
-    margin-bottom: 2rem;
-  }
-} */
 
 /* Footer Styling */
 .footer{
@@ -416,9 +398,16 @@
 
 /* 2. Mobile Screens (iPhone, Android, iPad Mini) */
 @media (max-width: 768px) {
-  .navbar { padding: 10px 20px; }
-  .nav-links { gap: 15px; }
-  .nav-links li { font-size: 16px; }
+  .navbar { padding: 10px 15px; align-items: flex-start; /* Isse pura content left side align rahega */ }
+  .nav-links { display: flex; gap: 20px; justify-content: flex-start; width: 100%; padding: 0; margin-top: 10px; margin-left: 5px; font-weight: 500;  }
+  .nav-links li { font-size: 15px; }
+  .nav-logo {font-size: 20px;        /* Logo text thoda chota */
+    gap: 5px;
+    margin-bottom: 0;       /* Extra margin hatayi */
+  }
+  .nav-logo img {
+    width: 60px;   /* Logo image choti ki taki height kam ho jaye */
+  }
 
   .hero { padding: 60px 20px; }
   .hero h1 { font-size: 28px; }
@@ -436,8 +425,8 @@
 
 /* 3. Bahut Chote Phone (Screen width 400px se kam) */
 @media (max-width: 400px) {
-  .nav-links { display: none; } /* Mobile par menu chupa diya takki logo na bhage */
-  .hero h1 { font-size: 24px; }
+  .nav-links { display: flex; gap: 12px;} /* Mobile par menu chupa diya takki logo na bhage */
+  .hero h1 { font-size: 24px;}
 }
 
 
@@ -1344,7 +1333,7 @@ html, body {
  .od-left{
   display:flex;
   align-items:center;
-  gap:16px;
+  gap:20px;
  }
 
  .od-ghost{
@@ -1356,6 +1345,7 @@ html, body {
   gap:8px;
   align-items:center;
   font-weight: 600;
+  font-size: 15px;
  }
 
  .od-brand{
@@ -1381,8 +1371,9 @@ html, body {
  }
 
  .od-welcome{
-   font-size: 14px;
-   color: #555;
+   font-size: 17px;
+   font-weight: 450;
+   color: #333;
  }
 
  .od-avatar{
@@ -1406,20 +1397,23 @@ html, body {
 
  /* main container */
  .od-container{
-   max-width: 1300px;
-   margin: 28px auto;
+   max-width: 900px;
+   margin: 16px auto;
    padding: 0 18px 60px;
  }
-
+ 
  .od-page-title {
   width: 100%;
   text-align: left;
 }
 
- .od-page-title h1 {
-  margin:0;
-  font-size:26px; 
-  font-weight: 600; 
+ .od-page-title h2 {
+  /* margin:0; */
+  font-size:27px; 
+  font-weight:bold; 
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
  }
 
  .od-sub{
@@ -1875,15 +1869,30 @@ margin-bottom: 8px;
 /* ----------- Mobile Large ----------- */
 @media (max-width: 768px) {
   .od-header {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
+    /* flex-direction column ko row kiya taki ek line mein rahe */
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    padding: 10px 15px !important;
+    gap: 0px !important; /* Extra gap hataya */
+    align-items: center !important;
   }
 
-  .od-right {
-    width: 100%;
-    justify-content: space-between;
+  .od-left {
+    width: auto !important; /* Puri width lene se roka */
   }
+  .od-right {
+    width: auto !important; /* Puri width lene se roka */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+  }
+
+  .od-avatar {
+    width: 32px !important; /* Size chef dashboard jaisa chota kiya */
+    height: 32px !important;
+  }
+
 
   .od-page-title h1 {
     font-size: 22px;
@@ -2312,9 +2321,6 @@ margin-bottom: 8px;
 
 
 /* --- Mobile aur Tablet ke liye Responsive --- */
-
-/* --- Mobile aur Tablet ke liye Safe Responsive --- */
-
 @media (max-width: 768px) {
   /* 1. Page ki width ko lock kiya taaki side scroll na ho */
   .dashboard-container {
@@ -2434,11 +2440,12 @@ margin-bottom: 8px;
 .ap-header{
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 18px 24px;
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
   background: #ffffffcc;
   backdrop-filter: blur(6px);
+  gap: 20px; /* Badi screen par button aur title ke beech gap */
 }
 
 .ap-header-title-group{
@@ -2460,9 +2467,12 @@ margin-bottom: 8px;
   padding: 8px 12px;
   border-radius: 8px;
   display: inline-flex;
-  gap: 8px;
+  justify-content: flex-start; /* Elements ko shuruat mein rakhega */
+  gap: 5px;
   align-items: center;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* top container */
@@ -2550,7 +2560,8 @@ margin-bottom: 8px;
 
 .ap-filters{
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  /* flex-wrap: wrap; */
 }
 
 .ap-filters select {
@@ -2558,7 +2569,8 @@ margin-bottom: 8px;
   border-radius: 8px;
   border: 1px solid rgba(15,23,42,0.06);
   background: white;
-  min-width: 110px;
+  min-width: 100px;
+  flex: 1;
   font-size: 14px;
 }
 
@@ -2825,12 +2837,26 @@ margin-bottom: 8px;
 
 /* responsive */
 @media (max-width: 980px) {
+  .ap-header {
+    display: flex;
+    align-items: center; /* Vertical centering */
+    justify-content: flex-start !important;
+    padding: 12px 16px !important;
+    gap: 10px !important; /* Mobile par gap kam kar diya */
+  }
   .ap-top{
      flex-direction: column;
+     align-items: stretch; /* Taaki search bar puri width le */
   }
 
   .ap-top-right{
     width: 100%;
+  }
+
+  /* Choti screen par boxes ko aur flexibility dene ke liye */
+  .ap-filters select {
+    min-width: 90px; /* Sabse choti screen ke liye */
+    font-size: 13px; /* Font thoda chota */
   }
 
   .ap-card{
@@ -2840,6 +2866,44 @@ margin-bottom: 8px;
   .ap-card-right{
     width: 100%;
   }
+  .ap-header {
+    justify-content: flex-start !important; /* Elements ko left se align karega */
+    padding: 12px 16px !important;
+  }
+
+  .ap-page-location {
+    font-size: 18px !important; /* Mobile par thoda chota text better lagta hai */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Agar screen bahut choti ho to text kate nahi */
+  }
+
+  .ap-back {
+    gap: 4px !important;    /* Mobile par gap ekdum kam */
+   padding: 8px 4px !important; /* Side ki faltu padding hatayi */
+   font-size: 14px !important;
+  }
+}
+
+/* --- Special fix for very small widths (Samsung S8+ etc) --- */
+@media (max-width: 400px) {
+  .ap-filters {
+    gap: 6px;
+  }
+  .ap-filters select {
+    padding: 8px 4px; /* Padding kam ki taaki text na kate */
+  }
+ 
+}
+/* Sabse choti screens (iPhone SE / S8+) ke liye */
+@media (max-width: 380px) {
+  .ap-header {
+    gap: 5px !important;
+  }
+  .ap-page-location {
+    font-size: 15px !important;
+  }
+  
 }
 
 /* Yha se PaymentModal.js file code ke liye css hai*/
@@ -2939,7 +3003,13 @@ margin-bottom: 8px;
   font-size: 13px;
   color: #333;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Force one line */
+  overflow-x: auto;  /* Agar bahut bada ho jaye to scroll ho jaye, wrap na ho */
+  scrollbar-width: none; /* Hide scrollbar for clean look */
+}
+
+.pm-stats-row::-webkit-scrollbar {
+  display: none; /* Chrome/Safari ke liye scrollbar hide */
 }
 
 .pm-stats-row span{
@@ -2958,15 +3028,24 @@ margin-bottom: 8px;
   margin-top: 12px;
   display: flex;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Wrap band kiya */
+  overflow-x: auto;  /* Mobile par swipe-able skills better lagti hain agar space kam ho */
+  padding-bottom: 4px; /* Taki scroll smooth lage */
+  scrollbar-width: none;
+}
+
+.pm-skills::-webkit-scrollbar {
+  display: none;
 }
 
 .pm-badge{
+  flex-shrink: 0; /* Badge ko pichakne (squeeze) se rokega */
+  white-space: nowrap;
   background: #f1f1f1;
   color: #374151;
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: 999px; /* Pill shape */
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   border: 1px solid #e5e7eb;
 }
@@ -3124,6 +3203,26 @@ margin-bottom: 8px;
   font-size: 13px;
 }
 
+/* Specific fix for smaller screens (iPhone 12 etc) */
+@media (max-width: 390px) {
+  .pm-stats-row {
+    gap: 8px; /* Gap kam kiya */
+    font-size: 12px; /* Font thoda chota taki ek line mein aa jaye */
+  }
+  .pm-stats-row span{
+    white-space: nowrap; /* Text ko todne se roko */
+  }
+  .pm-avatar-fallback, .pm-avatar {
+    width: 50px; /* Avatar thoda chota */
+    height: 50px;
+  }
+  .pm-meta-info h3 {
+    font-size: 16px; /* Name thoda chota */
+  }
+  .pm-meta-info p {
+    font-size: 13px; /* Role thoda chota */
+  }
+}
 /*Yha se LegalPage.js file code ke liye CSS hai */
 .legal-container{
   background-color: #fdfdfd;

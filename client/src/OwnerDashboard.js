@@ -90,7 +90,7 @@ export default function OwnerDashboard({
 
       <main className="od-container">
         <div className="od-page-title">
-          <h1>Owner Dashboard</h1>
+          <h2>Owner Dashboard</h2>
           <p className="od-sub">Find bakery professionals and manage your hiring</p>
         </div>
 
