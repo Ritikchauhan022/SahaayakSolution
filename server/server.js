@@ -9,6 +9,16 @@ const multer = require('multer'); // Multer ko import kiya
 const cloudinary = require('cloudinary').v2; // 👈 Add this
 const { CloudinaryStorage } = require('multer-storage-cloudinary'); // 👈 Add this
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
+// --- RAZORPAY CONFIGURATION ---
+const Razorpay = require('razorpay');
+
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+ // Check karne ke liye console log
+ console.log("Razorpay Key:", process.env.RAZORPAY_KEY_ID ? "MIL GAYI" : "NAHI MILI");
 
 // ChefModel को यहाँ इम्पोर्ट करना ज़रूरी है!
 const Chef = require('./models/ChefModel');
@@ -47,6 +57,7 @@ const upload = multer({
     storage: storage, // Ab multer cloud par bhejega
     limits: { fileSize: 10 * 1024 * 1024 } // Iska matlab 10MB ki limit  
 }); 
+
 
 
 const io = new Server(server, {
@@ -278,7 +289,7 @@ app.get('/api/status', (req, res) => {
         const chefToReturn = updatedChef.toObject();
         delete chefToReturn.password;
 
-        // 🔥 YAHAN SE CHANGES START HAIN:
+        //  YAHAN SE CHANGES START HAIN:
         // 2. Agar update success hai, toh socket signal bhejo
         const io = req.app.get('io');
         // Hum poora naya data bhej rahe hain taaki App.js bina fetch kiye update ho jaye
@@ -628,30 +639,145 @@ app.get('/api/status', (req, res) => {
     }
  });
 
- // Payment krne ke baad owner ko chef ka number or email mile bo refres krne ke baad bhi nha hte 
- app.post("/api/owner/unlock-chef", async (req, res) => {
-    const {ownerPhone, chefId} = req.body;
+ // --- RAZORPAY ORDER ROUTE ---
+ app.post("/api/payment/create-order", async (req, res) => {
+    try {
+      const {amount} = req.body;
 
+      const options = {
+        amount: amount * 100,
+        currency: "INR",
+        receipt: `receipt_order_${Math.floor(Math.random() * 1000)}`,
+      };
+
+      const order = await razorpay.orders.create(options);
+
+      if (!order) return res.status(500).send("Order creation failed");
+      res.json(order);
+      } catch (error) {
+        console.error("Razorpay Order Error:", error);
+        res.status(500).send(error);
+      }
+          
+   });
+
+  // Payment verify route
+ // Jab payment successful ho jayegi, toh humein check karna padega ki wo asli hai ya nahi
+ app.post("/api/payment/verify", async (req, res) => {
+    const {razorpay_order_id, razorpay_payment_id, razorpay_signature, chefId, ownerId, ownerPhone} = req.body;
+    console.log("DEBUG: Received chefId in Backend:", chefId)
+    // 1. Pehle hi check kar lo chefId hai ya nahi
+    // if (!chefId) {
+    //     return res.status(400).json({ status: "error", message: "Chef ID missing. Payment verified but not saved." });
+    // }
+    const shasum = crypto.createHmac("sha256", process.env.RA_KEY_SECRET || process.env.RAZORPAY_KEY_SECRET);
+    shasum.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+    const digest = shasum.digest("hex");
+
+  if (digest === razorpay_signature) {
+    // Payment Signature sahi hai!
+
+    // 1. DATABASE UPDATE SE PEHLE CHECK (CRITICAL SECURITY)
+    if (!chefId) {
+        console.error("CRITICAL ERROR: Payment verified but chefId is missing from request body!");
+        return res.status(400).json({
+            status: "error",
+            message: "Payment verified but Chef ID missing. Database not updated."
+           });
+        }
+   // Payment Asli Hai! Ab database update yahan karo
    try {
-        // Direct update karein: $addToSet sirf tabhi add karega jab ID nahi hogi
-        const updatedOwner = await Owner.findOneAndUpdate(
-            { phone: ownerPhone },
-            { $addToSet: { unlockedChefs: chefId } },
-            { new: true } // updated owner wapas chahiye
+    // 2. Query decide karo (ID se ya Phone se)
+    let query = {};
+    if (ownerId && mongoose.Types.ObjectId.isValid(ownerId)) {
+        query = { _id: ownerId };
+     } else if (ownerPhone) {
+        query = { phone: ownerPhone };
+    } else {
+        return res.status(400).json({ status: "error", message: "Owner identification missing" });
+    }
+    console.log("Updating Owner with Query:", query);
+
+    // 3. Database Update logic - $addToSet ensure karta hai ki duplicate entry na ho
+    const updatedOwner = await Owner.findOneAndUpdate(
+        query,
+        {
+           $addToSet: {
+              unlockedChefs: {
+                chefId: chefId,
+                unlockedAt: new Date()
+              }
+            }
+        },
+        { new: true }
         );
 
-        if (!updatedOwner) return res.status(404).json({ message: "Owner not found" });
+     if (!updatedOwner) {
+        console.log("Owner not found in DB for query:", query);
+        return res.status(404).json({ status: "error", message: "Owner not found in database" });
+     }
+     console.log("Successfully Unlocked! New List Size:", updatedOwner.unlockedChefs.length);
 
-        res.status(200).json({
-            message: "Chef unlocked successfully",
-            unlockedChefs: updatedOwner.unlockedChefs,
-            updatedOwner: updatedOwner // ye pura bhejo 
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({message: "Server error"});
+     // 4. Response bhejo
+     res.status(200).json({
+        status: "success",
+        message: "Chef Unlocked Successfully",
+        unlockedChefs: updatedOwner.unlockedChefs,
+        updatedUser: updatedOwner
+       });
+
+    } catch (dbErr) {
+        console.error("Database Update Error:", dbErr);
+        res.status(500).json({ status: "error", message: "DB Update Failed", details: dbErr.message });
     }
- });
+    } else {
+        res.status(400).json({ status: "failure", message: "Signature Mismatch" });
+    }
+});
+
+ // Payment krne ke baad owner ko chef ka number or email mile bo refres krne ke baad bhi nha hte 
+//  app.post("/api/owner/unlock-chef", async (req, res) => {
+//     const {ownerPhone, chefId} = req.body;
+
+//    try {
+//     // Hum ek object save karenge jisme chefId aur Time dono ho
+//     const unlockEntry = {
+//         chefId: chefId,
+//         unlockedAt: new Date() // 👈 Ye line time aur date save karegi
+//       };
+
+//     // $addToSet ke saath problem ye hai ki wo poore object ko check karta hai
+//     // Isliye hum pehle check karenge ki ye chef pehle se unlocked toh nahi hai
+//     const owner = await Owner.findOne({ phone: ownerPhone });
+
+//     // Check if already unlocked (ID matching)
+//     const isAlreadyUnlocked = owner.unlockedChefs.some(item =>
+//         (typeof item === 'string' ? item === chefId : item.chefId === chefId)
+//       );
+
+//       let updatedOwner;
+//       if (!isAlreadyUnlocked) {
+//         updatedOwner = await Owner.findOneAndUpdate(
+//             { phone: ownerPhone },
+//            { $push: { unlockedChefs: unlockEntry } }, // 👈 Object push kar rahe hain
+//             { new: true } // updated owner wapas chahiye
+//         );
+//      } else {
+//         updatedOwner = owner;
+//       } 
+
+//         if (!updatedOwner) return res.status(404).json({ message: "Owner not found" });
+
+//         res.status(200).json({
+//             message: "Chef unlocked successfully",
+//             unlockedChefs: updatedOwner.unlockedChefs,
+//             updatedOwner: updatedOwner // ye pura bhejo 
+//         });
+//     } catch (err) {
+//         console.error("Unlock Error:", err);
+//         res.status(500).json({message: "Server error"});
+//     }
+//  });
 
  // app.listen KI JAGAH server.listen use karein
 // server ko shru kra (सबसे नीचे)

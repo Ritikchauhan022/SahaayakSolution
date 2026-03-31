@@ -85,40 +85,59 @@ const handleUnlockContact = (professional) => {
 };
 
 // ye function Backend API ko batayega ki "Bhai, owner ne paise de diye hain, ab chef ka contact dikha do."
-const handlePaymentSuccess = async () => {
-  if (!selectedProfessional || !currentOwnerProfile.phone) return;
+// const handlePaymentSuccess = async () => {
+//   if (!selectedProfessional || !currentOwnerProfile.phone) return;
 
-  try{
-    const response = await fetch(`${API_BASE_URL}/api/owner/unlock-chef`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        ownerPhone: currentOwnerProfile.phone, // Kaun unlock kar raha hai
-        chefId: selectedProfessional.id   // Kisko unlock kar raha hai
-      })
-    });
+//   try{
+//     const response = await fetch(`${API_BASE_URL}/api/owner/unlock-chef`, {
+//       method: "POST",
+//       headers: {"Content-Type": "application/json"},
+//       body: JSON.stringify({
+//         ownerPhone: currentOwnerProfile.phone, // Kaun unlock kar raha hai
+//         chefId: selectedProfessional.id   // Kisko unlock kar raha hai
+//       })
+//     });
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log("Unlock Success! Updated List:", result.unlockedChefs);
+//     if (response.ok) {
+//       const result = await response.json();
+//       console.log("Unlock Success! Updated List:", result.unlockedChefs);
 
-      // Backend se jo list aayi hai use string mein convert karke save karein
-     // Taaki ID matching mein koi panga na ho
-      const updatedList = result.unlockedChefs.map(id => String(id));
-     // 1. Owner ki frontend state update karo taaki contact turant dikh jaye
-     setCurrentOwnerProfile(prev => ({
+//       //  CHANGE: Ab mapping ki zaroorat nahi hai (result.unlockedChefs ab Objects ki list hai)
+//       // Purana line: const updatedList = result.unlockedChefs.map(id => String(id)); //  Ise htaya
+
+//      // 1. Owner ki frontend state update karo taaki contact turant dikh jaye
+//      setCurrentOwnerProfile(prev => ({
+//       ...prev,
+//       unlockedChefs: result.unlockedChefs // Backend se aaya naya Object Array set karo
+//      }));
+
+//      alert("Success! Contact Unlocked.");
+//     }
+//   } catch (err) {
+//     console.error("Payment error:", err);
+//     alert("Something went wrong while unlocking!");
+//   } finally {
+//     setSelectedProfessional(null); //Modal band kar do
+//   }
+// };
+
+// Naya function jo sirf state sync karega
+const syncUnlockedStatus = (updatedList) => {
+  console.log("UI Syncing with new unlocked list:", updatedList);
+  
+  setCurrentOwnerProfile(prev => {
+    // Backend se updatedList ya toh 'updatedUser.unlockedChefs' aayega 
+    // ya seedha array. Humein bas usey state mein dalna hai.
+    const newList = Array.isArray(updatedList) ? updatedList : (updatedList.unlockedChefs || []);
+    
+    return {
       ...prev,
-      unlockedChefs: updatedList // Backend se updated list aayegi
-     }));
-
-     alert("Success! Contact Unlocked.");
-    }
-  } catch (err) {
-    console.error("Payment error:", err);
-    alert("Something went wrong while unlocking!");
-  } finally {
-    setSelectedProfessional(null); //Modal band kar do
-  }
+      unlockedChefs: newList 
+    };
+  });
+  
+  setSelectedProfessional(null); // Modal band
+  alert("Badhai ho! Chef unlock ho gaya."); // Confirmation ke liye
 };
 
 
@@ -465,6 +484,7 @@ const finalSubmissionData = {
   const finalOwnerData = {
  ...initialOwnerData, // ओनर का डमी स्ट्रक्चर लें
  ...userData, // डेटाबेस का असली डेटा इसके ऊपर डालें
+ _id: userData._id,
 
    //मैपिंग: डेटाबेस की Keys को डैशबोर्ड की Keys से मिलाना
     ownerName: userData.ownerName || userData.fullName || "Owner",
@@ -480,6 +500,13 @@ const finalSubmissionData = {
   };
   setCurrentOwnerProfile(finalOwnerData); //ओनर की स्टेट अपडेट करें
  }
+
+  // SABSE LAST MEIN MENE YE LINE ADD KARI (Owner aur Chef dono ke liye)
+  localStorage.setItem("user", JSON.stringify(userData));
+
+  // Taaki reload hone par bhi login bana rahe
+  localStorage.setItem("userType", type);
+ 
 };
 
 
@@ -719,27 +746,19 @@ const shouldShowFooter = footerPages.includes(location.pathname);
       location: chef.city || chef.location || "N/A",
       hourlyRate: chef.salaryExpectation || "0", // Taaki ₹0 na dikhe
       skills: Array.isArray(chef.skills) ? chef.skills : JSON.parse(chef.skills || "[]"),
-      // 🔥 Image Path Fix:
+      //  Image Path Fix:
       avatar: chef.avatarPath && chef.avatarPath.includes('cloudinary.com')
   ? chef.avatarPath
   : (chef.avatarPath ? `${API_BASE_URL}/${chef.avatarPath.replace(/\\/g, '/')}` : null),
       bio: chef.bio || "No bio added",
-      phone: chef.phone || "No Phone", // ✅ Backend se ab phone hi aayega
-      email: chef.email || "No Email", // ✅ Model mein email field hai hi
+      phone: chef.phone || "No Phone", // Backend se ab phone hi aayega
+      email: chef.email || "No Email", //  Model mein email field hai hi
       isAvailable: chef.isAvailable, // राधा की विजिबिलिटी के लिए
       availability: "Immediate"
      }))}
      onUnlockContact={handleUnlockContact}
      currentChefId={currentChefProfile._id || currentChefProfile.id} // अपनी खुद की प्रोफाइल पहचानने के लिए
     />} />
-    {/* <Route path="/professionals/owner" element={<AvailableProfessionals viewerType="owner"
-    // जब 'onBack' कॉल हो, तो 'owner' रोल के लिए नेविगेट करें
-    onBack={() => handleBackToDashboard("owner")}
-    />} />
-    <Route path="/professionals/chef" element={<AvailableProfessionals viewerType="chef" 
-    // जब 'onBack' कॉल हो, तो 'chef' रोल के लिए नेविगेट करें
-    onBack={() => handleBackToDashboard("chef")}
-    />} /> */}
 
     {/* Chef Dashboard - Props yha pass kiye (updated)*/}
     {/* 💡 Chef Dashboard को भी अपडेट करें ताकि वह updated state (update profile matlab) का उपयोग करे */}
@@ -762,8 +781,10 @@ const shouldShowFooter = footerPages.includes(location.pathname);
       {selectedProfessional && (
         <PaymentModal
         professional={selectedProfessional}
+        ownerPhone={currentOwnerProfile.phone} // Ye ensure karo ki phone ja raha hai
+        ownerId={currentOwnerProfile._id}     // Ye bhi add kar do safety ke liye
         onClose={() => setSelectedProfessional(null)}
-        onPaymentSuccess={handlePaymentSuccess}/>
+        onPaymentSuccess={syncUnlockedStatus}/>
       )}
       </>
   );

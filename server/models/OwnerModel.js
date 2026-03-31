@@ -22,7 +22,17 @@ const OwnerSchema = new mongoose.Schema({
       location: { type: String },
       yearEstablished: { type: String },
       profilePic: { type: String }, // फोटो का पाथ स्टोर होगा
-      unlockedChefs: [{type:mongoose.Schema.Types.ObjectId, ref: 'Chef'}] //Ye line add karein esse database ko pata chale ki is owner ne kaunse chefs unlock kiye hain.
+      // Nayi lines (Object store karne ke liye): 
+      unlockedChefs: [{ //Ye line add karein esse database ko pata chale ki is owner ne kaunse chefs unlock kiye hain.
+        chefId: { 
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Chef'
+          },
+          unlockedAt: {
+            type: Date,
+            default: Date.now
+            }
+          }]
     }, { timestamps: true });
 
 module.exports = mongoose.model('Owner', OwnerSchema);

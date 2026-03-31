@@ -105,10 +105,28 @@ const unlockedContacts = externalUnlocked || [];
     });
 
     const isContactUnlocked = (professionalId) => {
-    if (!unlockedContacts) return false;
-    // Ye line ensure karegi ki database wali ID aur card wali ID sahi se match ho
-    return unlockedContacts.some(id => String(id) === String(professionalId));
-    };
+    if (!unlockedContacts || !Array.isArray(unlockedContacts)) return false;
+
+    return unlockedContacts.some(item => {
+        if (!item) return false;
+
+        // 1. Agar item object hai, toh saari possible keys check karo
+        if (typeof item === 'object') {
+            // Hum 'chefId' dhoondenge, agar wo nahi hai toh 'id' dhoondenge
+            const idInList = item.chefId || item.id;
+            
+            // Debugging ke liye (sirf Manu ke liye check karne ke liye)
+            if (String(professionalId).includes("manu_ki_id")) { // Idhar manu ki asli ID daal ke check kar sakte ho
+                 console.log("Checking Match:", idInList, "with", professionalId);
+            }
+
+            return idInList && String(idInList) === String(professionalId);
+        }
+
+        // 2. Agar item sirf string hai (purana format)
+        return String(item) === String(professionalId);
+    });
+};
     const isCurrentChef = (professionalId) => {
         // Sirf tab true hona chahiye jab viewerType 'chef' ho AUR ID match kare
         return viewerType === "chef" && currentChefId && String(currentChefId) === String(professionalId);
