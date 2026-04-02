@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { getAvatarColor } from "./AvatarColor";
 import axios from "axios";
-
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const CONTACT_UNLOCK_AMOUNT = "₹500.00";
 
