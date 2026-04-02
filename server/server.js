@@ -784,3 +784,4 @@ app.get('/api/status', (req, res) => {
 server.listen(PORT, () => {
    console.log(`Server running on http://localhost:${PORT} with WebSockets`);
 });
+// Final deployment check - April 2
