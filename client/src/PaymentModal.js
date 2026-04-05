@@ -52,7 +52,7 @@ const handlePayment = async() => {
  try {
     // 1. Backend se Order ID mangwana
    // Humne backend mein jo /api/payment/create-order banaya tha, use hit karenge
-    const { data } = await axios.post("http://localhost:5000/api/payment/create-order", {
+    const { data } = await axios.post(`${API_BASE_URL}/api/payment/create-order`, {
         amount: 500, // Amount fix hai
         chefId: professional._id // Kise unlock kar rahe hain
       });
@@ -77,7 +77,7 @@ const handlePayment = async() => {
      const ownerPhone = userData?.phone || userData?.data?.phone;
 
      // 2. Backend ko hit karo (Ab hum ID aur Phone dono bhej rahe hain)
-     const verifyRes = await axios.post("http://localhost:5000/api/payment/verify", { 
+     const verifyRes = await axios.post(`${API_BASE_URL}/api/payment/verify`, { 
         razorpay_order_id: response.razorpay_order_id,
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_signature: response.razorpay_signature,
@@ -233,7 +233,7 @@ return (
                     <li>Direct phone number</li>
                     <li>Email address</li>
                     <li>Full profile access</li>
-                    <li>No platform fees</li>
+                    {/* <li>No platform fees</li> */}
                 </ul>
             </div>
 

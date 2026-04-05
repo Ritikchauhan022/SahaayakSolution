@@ -25,7 +25,7 @@ const policies = {
 2. **Data Sharing**: Your contact details are only shared with authorized bakery owners after a successful payment transaction. We do not sell or rent your data to third parties for marketing.
 3. **Data Security**: We use industry-standard security measures and encryption to protect your information from unauthorized access or theft.
 4. **Cookies**: We use basic cookies to improve your browsing experience and remember your login session for a smoother interface.
-5. **Third-Party Services**: We use secure payment gateways (like Razorpay) to process payments. We do not store your credit card or bank details on our servers.
+5. **Third-Party Services**: We use secure payment gateways (like Instamojo) to process payments. We do not store your credit card or bank details on our servers.
 6. **User Rights**: You have the right to request the deletion of your account and personal data from our platform at any time by contacting our support.`,
   terms: `1. **Introduction**: Sahaayak Solution is a platform to discover and connect with bakery professionals.
 2. **User Eligibility**: By using this platform, you confirm that you are at least 18 years of age.
