@@ -38,6 +38,10 @@ useEffect(() => {
 
 // --- ASLI RAZORPAY LOGIC START ---
 const handlePayment = async() => {
+    // 🛑 MAINTENANCE ALERT START: Bas ye lines add kardo
+    alert("Payments are currently under maintenance!");
+    return; // Ye line niche wale kisi bhi code ko chalne nahi degi
+    // 🛑 MAINTENANCE ALERT END
     const userData = JSON.parse(localStorage.getItem("user"));
     // Debugging ke liye pura userData print kiya mene 
     console.log("LocalStorage User Data:", userData);
