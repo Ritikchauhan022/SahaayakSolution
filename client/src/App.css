@@ -1,0 +1,3302 @@
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*Header Section ki css */
+.navbar{
+  display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 12px 65px;
+   /* border-top: 1px solid rgb(184, 172, 172); */
+   /* border-bottom: 1px solid rgb(184, 172, 172); */
+   border-bottom: 1px solid #e5e5e5;
+   background-color: white;
+   flex-wrap: wrap; /* Takki mobile par content niche aa sake */
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 22px;
+  /* color: #000; */
+}
+.nav-logo img{
+   width: 80px;
+   height: auto;
+   object-fit: contain;
+}
+
+.nav-links{
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li{
+  cursor: pointer;
+  font-size: 20px;
+  color: #686060;
+  transition: color 0.3s ease;
+}
+
+.nav-links li:hover{
+    color: #000;
+
+}
+
+/* Hero Section ki css */
+.hero{
+ text-align: center;
+ padding: 100px 20px 60px; 
+ background: linear-gradient(to bottom, 
+    #ffffff, /* from-background */
+    rgba(203, 213, 225, 0.2) /* to-muted/20 */
+  );
+}
+
+.hero h1{
+  font-size: 35px;
+   font-weight: 600;
+   color: #111;
+   margin-bottom: 20px;
+}
+
+.hero p{
+  font-size: 16px;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.hero-buttons{
+  display: flex;
+  justify-content: center;
+   gap: 20px;
+}
+
+.hero-buttons .btn{
+   padding: 12px 24px;
+   border-radius: 8px;
+   border: none;
+   cursor: pointer;
+   font-size: 15px;
+   width: auto;
+}
+
+.hero-buttons .btn.primary{
+   background-color: #111;
+   color: #fff;
+}
+
+.hero-buttons .btn.secondary{
+  background-color: #f5f5f5;
+  color: #111;
+   border: 1px solid #ddd;
+}
+
+/* Why Choose Section ki css */
+.whychoose{
+  text-align: center;
+  padding: 60px 20px;
+   background-color: #fff;
+}
+
+.whychoose h2{
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.whychoose p{
+  font-size: 1rem;
+   color: #666;
+   max-width: 700px;
+   margin: 0 auto 40px;
+   line-height: 1.6;
+}
+
+.features-grid{
+   display: grid;
+   grid-template-columns: repeat(3, 1fr); /* 🔥 fixed 3 columns */
+   gap: 35px 50px; /* vertical aur horizontal gap badhaya */
+   justify-items: center;
+   align-items: stretch;
+   max-width: 1100px; /* ye center alignment ke liye */
+   margin: 0 auto; /* grid ko center me rakhega */
+}
+
+.feature-card{
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px 25px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover{
+  transform: translateY(-6px);
+   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon{
+  font-size: 2rem;
+   margin-bottom: 12px;
+}
+
+.feature-card h3{
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.feature-card p{
+  font-size: 0.95rem;
+   color: #555;
+   line-height: 1.4;
+}
+
+/* 4. How It Works Section ki css */
+.how-it-works{
+  padding: 5rem 0;
+ background-color: #fbfcfe;
+  max-width: 100%; /* puri width li */
+}
+
+.how-it-works-header{
+ text-align: center;
+ margin-bottom: 2rem;
+}
+
+.how-it-works-header h2{
+  font-size: 2.25rem;
+  /* font-weight: 700; */
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.how-it-works-header p{
+  font-size: 1.25rem;
+  color: #6b7280; /* Gray-500 */
+}
+
+/* --- Process Flow Layout --- */
+.process-flow-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem; /* Horizontal spacing for the columns */
+}
+
+.process-column{
+ flex: 1; /* Both columns take equal width */
+  text-align: left;
+}
+
+.process-column h3{
+  text-align: left;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-left: 0;
+  /* margin-bottom: 2.5rem; */
+  /* Figma से प्रेरित रंग: मालिक के लिए हल्का भूरा और शेफ के लिए हल्का नीला/हरा हो सकता है */
+    color: var(--color-text);
+}
+
+/* --- Individual Step Styles --- */
+.process-step{
+  display: flex;
+  align-items: flex-start; 
+  margin-bottom: 2rem;    /* Steps ke beech ka gap */
+  gap: 1rem; /* Space between number and text */
+}
+
+.step-number{
+  /* गोलाकार पृष्ठभूमि */
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  flex-shrink: 0; 
+  font-size: 1rem;
+  /* position: static; */
+  /* top: 5px; */
+  background-color: #1f2937; /* Very Light Gray */ 
+  border: 1px solid #1f2937; /* Gray-400 */ 
+  color: #ffffff; /* Gray-600 */
+  margin-top: 0;
+}
+
+.step-content{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.step-content h4{
+ font-size: 1.1rem;
+ font-weight: 600; 
+ margin: 0 0 4px 0;
+ padding: 0;
+ line-height: 1.3; 
+}
+
+.step-content p{
+  font-size: 0.95rem;
+  color: #6b7280; /* Gray-500 */
+  line-height: 1.4;
+}
+
+/* Footer Styling */
+.footer{
+  background-color: #111; /* Dark professional theme */
+  color: #fff;
+  padding: 60px 20px 20px;
+  margin-top: 80px;
+}
+
+.footer-container{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+}
+
+.footer-logo{
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   margin-bottom: 20px;
+}
+.footer-logo img {
+  width: 36px;
+  height: auto;
+  object-fit: contain;
+}
+
+.footer-brand h3{
+  font-size: 24px;
+  color: #fbbf24; /* Bakery theme se match karta Yellow/Gold color */
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.footer-brand p{
+  color: #9ca3af;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-column h4{
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+
+.footer-column ul{
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li, .footer-column p{
+  color: #9ca3af;
+  font-size: 14px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-column ul li a{
+  color: inherit;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-column ul li:hover, .footer-column ul li a:hover{
+  color: #fff;
+  padding-left: 2px; /* Chota sa slide effect */
+}
+
+
+.footer-bottom{
+  border-top: 1px solid #4b5563; /* Thoda visible border */
+  margin-top: 40px;
+  padding-top: 25px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Mobile Responsive
+@media (max-width: 768px) {
+  .footer-container{
+    grid-template-columns: 1fr 1fr;
+  }
+} */
+
+/* RESPONSIVE FIXES (Har screen ke liye) */
+/* 1. Tablet aur Chote Laptops (iPad Pro/Air) */
+@media (max-width: 1024px) {
+  .navbar { padding: 12px 30px; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+  .footer-container { grid-template-columns: 1fr 1fr; }
+}
+
+/* 2. Mobile Screens (iPhone, Android, iPad Mini) */
+@media (max-width: 768px) {
+  .navbar { padding: 10px 15px; align-items: flex-start; /* Isse pura content left side align rahega */ }
+  .nav-links { display: flex; gap: 20px; justify-content: flex-start; width: 100%; padding: 0; margin-top: 10px; margin-left: 5px; font-weight: 500;  }
+  .nav-links li { font-size: 15px; }
+  .nav-logo {font-size: 20px;        /* Logo text thoda chota */
+    gap: 5px;
+    margin-bottom: 0;       /* Extra margin hatayi */
+  }
+  .nav-logo img {
+    width: 60px;   /* Logo image choti ki taki height kam ho jaye */
+  }
+
+  .hero { padding: 60px 20px; }
+  .hero h1 { font-size: 28px; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .hero-buttons .btn { width: 100%; max-width: 300px; }
+
+  .features-grid { grid-template-columns: 1fr; }
+  .feature-card { width: 100%; max-width: 300px; }
+
+  .process-flow-container { grid-template-columns: 1fr; }
+
+  .footer-container { grid-template-columns: 1fr; text-align: center; }
+  .footer-logo { justify-content: center; }
+}
+
+/* 3. Bahut Chote Phone (Screen width 400px se kam) */
+@media (max-width: 400px) {
+  .nav-links { display: flex; gap: 12px;} /* Mobile par menu chupa diya takki logo na bhage */
+  .hero h1 { font-size: 24px;}
+}
+
+
+/* yha se LoginSignup ki css hai */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.ls-container{
+width: 100%;
+min-height: 100vh;
+background: #f8f9fc;
+padding-bottom: 40px; /* Padding thodi badhayi hai balance ke liye */
+}
+
+.ls-header{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 20px; /* Header mein thodi padding add ki */
+  margin-bottom: 40px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.ls-back-btn{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ls-box {
+   max-width: 420px;
+   width: 90%; /* Mobile par 90% width lega */
+   margin: auto;
+   background: #fff;
+   padding: 30px 25px; /* Padding thodi adjust ki */
+   border-radius: 12px;
+   box-shadow: 0 4px 15px rgba(0,0,0,0.09);
+   text-align: center;
+}
+
+.ls-user-type-icon{
+   width: 70px;
+   height: 70px;
+   margin: auto;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.ls-title{
+  font-size: 22px;
+  margin-top: 12px;
+}
+
+.ls-desc{
+  font-size: 14px;
+   color: #666;
+   margin-bottom: 20px;
+}
+
+.ls-tabs{
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  }
+
+  .ls-tabs button{
+     flex: 1;
+     padding: 12px;
+     background: #f4f4f4;
+     border: none;
+     cursor: pointer;
+     font-weight: 500;
+  }
+
+  .ls-tabs .active{
+    background: #fff;
+    color: #111;
+    font-weight: bold;
+  }
+
+  .ls-error {
+    background: #ffe4e4;
+    color: #c00000;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+
+  .ls-form{
+    text-align: left;
+  }
+
+  .ls-form label{
+    font-size: 14px;
+    font-weight: 600;
+    display: block; /* Label ko block banaya safe layout ke liye */
+  }
+
+  .ls-form input{
+    width: 100%;
+    padding: 12px; /* Thoda comfortable padding mobile ke liye */
+    margin: 7px 0 18px 0;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-sizing: border-box; /* Width issue se bachne ke liye */
+  }
+
+  .ls-password-box{
+    position: relative;
+  }
+
+  .ls-password-box span{
+     position: absolute;
+     right: 12px;
+     top: 15px;
+     cursor: pointer;
+     color: #555;
+  }
+
+  .ls-submit-btn{
+    width: 100%;
+    padding: 12px;
+    background: #2d7dff;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+  }
+  .ls-submit-btn:hover {
+  background: #1a66e6;
+}
+
+  /* --- Browser Default Password Icons Fix --- */
+
+  /* Microsoft Edge ka eye icon hatane ke liye */
+  .ls-password-box input::-ms-reveal,
+  .ls-password-box input::-ms-clear{
+    display: none;
+  }
+
+  /* Chrome aur baki browsers ke auto-fill icons hatane ke liye (Safely) */
+  .ls-password-box input::-webkit-contacts-auto-fill-button,
+  .ls-password-box input::-webkit-credentials-auto-fill-button{
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+  }
+
+  /* RESPONSIVE FIXES (Mobile & Tablet) */
+  @media (max-width: 480px) {
+    .ls-header {
+      margin-bottom: 20px;
+      padding: 10px 15px;
+    }
+
+    .ls-box {
+      width: 92%;
+      padding: 20px 15px; /* Mobile par thoda compact padding */
+      border-radius: 10px;
+    }
+
+    .ls-title{
+      font-size: 20px;
+    }
+
+    .ls-desc{
+      font-size: 13px;
+    }
+
+    .ls-form input{
+      font-size: 16px; /* Mobile par zoom issue rokne ke liye 16px best hai */
+      padding: 10px;
+    }
+
+    .ls-submit-btn{
+      padding: 12px;
+    }
+  }
+
+
+  /*Yha se OwnerInformation.js file ki CSS hai*/
+
+  /* --- Sabse upar Universal Fix --- */
+  * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+ }
+
+   .owner-container{
+    background: #f8f9fa;
+    min-height: 100vh;
+    padding-bottom: 40px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #222;
+   }
+
+  /* Header - Isko sticky rakhte hain */
+   .owner-header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 25px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+   /* border-top: 1px solid rgb(184, 172, 172); */
+   /* border-bottom: 1px solid rgb(184, 172, 172); */
+
+   }
+
+   .back-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+    font-weight: 500;
+   }
+
+   .header-title{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+   }
+
+   .header-icon{
+     color: #4a4aff;
+   }
+
+   /* Card - Same as Chef Card */
+   .owner-card{
+    width: 95%;
+    max-width: 650px;
+    margin: 25px auto;
+    background: #fff;
+    padding: 30px; /* Padding thodi badhayi professional look ke liye */
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 6px 22px rgba(17, 24, 39, 0.03);
+   }
+
+   .owner-title{
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+   }
+
+   .owner-desc{
+    color: #666;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 14px;
+   }
+
+   /* Form */
+   .owner-form label{
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: left;
+    color: #333;
+   }
+
+   .owner-form input,
+   .owner-form select{
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #cfcfcf;
+    outline: none;
+    font-size: 14px;
+    margin-top: 2px;  /*Naya: Label se thoda gap*/
+    margin-bottom: 10px;   /* Thoda kam kiya taaki clean lage */
+    box-sizing: border-box; /* Zaroori: Taaki padding width se bahar na jaye */
+    transition: all 0.2s; /* Smoothness */
+   }
+
+   .owner-form input:focus,
+   .owner-form select:focus{
+    border-color: #4a4aff;
+    box-shadow: 0 0 3px rgba(74, 74, 255, 0.4);
+   }
+
+   .section-title{
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-align: left;
+    display: block;
+    color: #222;
+
+   }
+
+   .grid-2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px; /* Horizontal gap */
+   }
+
+   .password-wrapper{
+     position: relative;
+     width: 100%; /* Ensure full width inside grid */
+   }
+
+   .eye-icon{
+    position: absolute;
+    right: 12px;
+    top: 40%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+   }
+   
+   /* Upload Box */
+   .upload-box{
+    text-align: center;
+    border: 2px dashed #ccc;
+    padding: 30px 20px;
+    border-radius: 12px;
+    background: #fafafa;
+    transition: all 0.2s;
+    margin-top: 8px;
+   }
+
+   .upload-box:hover{
+    border-color: #4a4aff;
+    background: #f5f5ff;
+   }
+
+   .upload-icon{
+    font-size: 30px;
+    color: #555;
+    /* margin-bottom: 10px; */
+   }
+
+   .upload-btn{
+    display: inline-flex !important;
+    width: auto !important;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border: 1px solid #888;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+   }
+  
+   .upload-btn:hover{
+    background: #f0f0ff;
+   }
+
+   /* Buttons */
+   .btn-row{
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+   }
+
+   .primary-btn {
+    flex: 2;
+    padding: 12px;
+    background: #4a4aff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+   }
+   .primary-btn:hover { background: #3636e0; }
+
+   .cancel-btn{
+    flex: 1;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    cursor: pointer;   
+    font-size: 14px;   
+   }
+
+   /* OwnerInformation.css - Browser eye icon fix */
+   .password-wrapper input::-ms-reveal,
+   .password-wrapper input::-ms-clear {
+    display: none;
+   }
+   /* Chrome/Safari ke liye safety */
+   .password-wrapper input::-webkit-contacts-auto-fill-button,
+   .password-wrapper input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+   }
+
+   /* --- Responsive Media Queries --- */
+
+  @media (max-width: 600px) {
+    .owner-header {
+      padding: 12px 15px;
+    }
+
+    .header-title {
+      font-size: 18px;
+    }
+
+  .owner-card {
+    padding: 20px 15px;
+    width: 95%;
+    margin: 15px auto;
+    border: none; /* Mobile par cleaner look */
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .grid-2 {
+   grid-template-columns: 1fr; /* Name/Details ek ke niche ek */
+   gap: 0;
+  }
+
+  .btn-row {
+    flex-direction: column; /* Buttons stack ho jayenge */
+    gap: 10px;
+  }
+
+  .primary-btn, .cancel-btn {
+    width: 100%;
+  }
+
+  .cancel-btn {
+    order: 2; /* Cancel neeche */
+}
+
+.primary-btn {
+  order: 1; /* Save upar */
+}
+  }
+
+
+/*Yha se BasicInformation.css file ka code hai*/
+/* Sabse upar Universal Fix taaki boxes bahar na nikle */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Page layout */
+.bi-container{
+  background: #f8f9fa;
+  padding-bottom: 40px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  min-height: 100vh;
+}
+
+/* Header */
+.bi-header{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 25px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky; /* Header ko top par fix rakhega scroll karte waqt */
+  top: 0;
+  z-index: 100;
+}
+
+.bi-back{
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: none;
+  background: transparent;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.bi-page-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Card */
+.bi-card{
+  width: 95%; /* Mobile par thoda zyada space lega */
+  max-width: 650px;
+  margin: 25px auto;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 30px; /* Thodi zyada padding professional lagti hai */
+  box-shadow: 0 6px 22px rgba(17, 24, 39, 0.03);
+}
+
+.bi-card-header h2{
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.bi-sub{
+  margin-top: 10px;
+  margin-bottom: 25px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Form basics */
+.bi-form label,
+.bi-form .bi-label{
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+.bi-form input[type="text"],
+.bi-form input[type="email"],
+.bi-form input[type="tel"],
+.bi-form select,
+.bi-form textarea{
+  width: 100%;
+  padding: 12px; /* Touch targets bade rakhe hain */
+  margin-top: 2px;  /*Naya: Label se thoda gap*/
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+.bi-form input[type="text"]:focus,
+.bi-form input[type="email"]:focus,
+.bi-form input[type="tel"]:focus,
+.password-wrapper input:focus,
+.bi-form select:focus,
+.bi-form textarea:focus{
+  border-color: #4a4aff;
+  box-shadow: 0 0 3px rgba(74, 74, 255, 0.4);
+}
+.bi-form textarea{
+  resize: none;
+  min-height: 120px;
+}
+
+/* grid 2 columns */
+.bi-grid-2{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  /* margin-bottom: 6px; */
+}
+
+/* Fix Password Field Resizing Issue */
+.password-wrapper{
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input{
+  width: 100%;
+  padding: 10px 12px;
+  padding-right: 42px; /* space for eye icon */
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+ 
+/* Eye icon position fix */
+.password-wrapper .eye-icon{
+  position: absolute;
+  right: 12px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #555;
+}
+
+/* section title */
+.bi-section-title{
+  /* margin: 8px 0 12px; */
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-align: left;
+  display: block;
+}
+
+/* skills row */
+.bi-skill-row{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.bi-skill-row input{
+  flex: 1;
+}
+
+.bi-add-btn{
+  background: #1f6feb;
+  border: none;
+  padding: 8px 12px;
+  height: 42px;  /*Input box ki height ke barabar rakho */
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: 0;
+}
+
+/* skills list chips */
+.bi-skills-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap:8px;
+  margin-bottom: 15px;
+}
+
+.bi-skill-tag{
+  /* display: inline-flex; */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #f0f6ff;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #0b2b66;
+}
+
+.bi-skill-remove{
+  cursor: pointer;
+  color: #666;
+}
+
+
+/* suggested */
+.bi-suggest-title{
+  margin: 10px 0 8px;
+  color: #666;
+  font-size: 13px;
+}
+
+.bi-suggest-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bi-suggest-btn{
+  border: 1px solid #d6dbe6;
+  background: #fff;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.bi-label{
+  margin-top: 16px;
+}
+/* upload box */
+.bi-upload-box{
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  background: #fafafa;
+  transition: all 0.2s;
+  /* position: relative; */
+  margin-top: 8px;
+}
+
+.bi-upload-box:hover{
+  border-color: #4a4aff;
+  background: #f5f5ff;
+}
+
+.bi-upload-icon {
+  font-size: 30px;
+  color: #555;
+}
+
+.bi-upload-text {
+  color: #666;
+   margin: 8px 0 10px;
+}
+
+
+/* file input style: hide default button but show small
+  file chooser (we keep browser choose button next to input) */
+  .bi-upload-box input[type="file"] {
+    margin-top: 6px;
+  }
+
+  /* photo preview */
+  .bi-photo-preview{
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .bi-photo-preview img{
+    width: 100%;
+    max-width: 140px;
+    max-height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+  }
+
+  .bi-upload-btn{
+    display: inline-flex !important;
+    width: auto !important;
+    margin-top: 10px;
+    padding: 10px 18px;
+    border: 1px solid #888;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .bi-upload-btn:hover{
+    background: #f0f0ff;
+  }
+
+  /* error */
+  .bi-error {
+     background: #fff3f2;
+     color: #b72b2b;
+     padding: 10px;
+     border-radius: 8px;
+     margin-top: 10px;
+     margin-bottom: 6px;
+     border: 1px solid #f6caca;
+  }
+
+  /* buttons row */
+  .bi-btn-row{
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;    
+  }
+
+  .bi-primary{
+    flex: 2;
+    padding: 12px;
+     background: #4a4aff;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .bi-primary:hover { background: #3636e0; }
+
+  .bi-secondary{
+    flex: 1;
+    background: #fff;
+    border: 1px solid #aaa;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+/*fallback css */
+  .bi-avatar-fallback-form {
+    width: 80px;
+    height: 80px;
+    background: #6c63ff; /* Dashboard wala theme color */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0 auto 10px auto;
+}
+
+  /* Browser eye icon fix */
+  .password-wrapper input::-ms-reveal,
+  .password-wrapper input::-ms-clear {
+    display: none;
+  }
+
+  /* Chrome/Safari ke liye safety */
+  .password-wrapper input::-webkit-contacts-auto-fill-button,
+  .password-wrapper input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+  }
+
+ /* --- Responsive Media Queries --- */
+
+@media (max-width: 600px) {
+  .bi-header {
+    padding: 12px 15px;
+  }
+
+  .bi-card {
+    padding: 20px 15px;
+    margin: 15px auto;
+    border: none; /* Mobile par border hata kar card ko clean dikhaya */
+    box-shadow: none; /* Mobile par borderless look zyada trendy hai */
+    background: transparent;
+  }
+
+  .bi-grid-2{
+    grid-template-columns: 1fr; /* Name fields ek ke niche ek */
+    gap: 0;
+  }
+
+  .bi-btn-row {
+    flex-direction: column; /* Buttons stack ho jayenge */
+  }
+
+  .bi-primary, .bi-secondary {
+    width: 100%;
+  }
+
+  .bi-secondary {
+    order: 2; /* Cancel button neeche aayega */
+  }
+
+  .bi-primary {
+    order: 1; /* Save button upar aayega */
+  }
+}
+
+
+/*Yha se OwnerDashboard.js file ki CSS hai*/
+html, body {
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+ .od-root{
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  /* background: #f7f8fb; */
+  background: #fff;
+  min-height: 100vh;
+ }
+
+ /* header */
+ .od-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 14px 22px;
+  border-bottom: 1px solid #e6e6f0;
+ }
+
+ .od-left{
+  display:flex;
+  align-items:center;
+  gap:20px;
+ }
+
+ .od-ghost{
+  background: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  display: inline-flex;
+  gap:8px;
+  align-items:center;
+  font-weight: 600;
+  font-size: 15px;
+ }
+
+ .od-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+ }
+
+ .od-brand-icon{
+  font-size: 26px;
+  color: #4a4aff;
+ }
+
+ .od-brand-title{
+  font-weight: 700;
+  font-size: 18px;
+ }
+
+ .od-right{
+  display:flex;
+  gap:12px; 
+  align-items:center;
+ }
+
+ .od-welcome{
+   font-size: 17px;
+   font-weight: 450;
+   color: #333;
+ }
+
+ .od-avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#2563eb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:#ffffff;
+ }
+
+ .od-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+ }
+
+ /* main container */
+ .od-container{
+   max-width: 900px;
+   margin: 16px auto;
+   padding: 0 18px 60px;
+ }
+ 
+ .od-page-title {
+  width: 100%;
+  text-align: left;
+}
+
+ .od-page-title h2 {
+  /* margin:0; */
+  font-size:27px; 
+  font-weight:bold; 
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
+ }
+
+ .od-sub{
+  color: #666;
+  text-align: left;
+  margin-top:6px;
+  margin-bottom: 20px;
+ }
+
+
+ .od-marketplace-card{
+  background: linear-gradient(to right, #e6e6e6, #f9f9f9);
+  border-radius: 12px;
+  border: 3px dotted #bcbcbc;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  display: block;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+ }
+
+ .od-card-content{
+  max-width: 100%;
+  text-align: left; 
+ }
+
+ .od-marketplace-card h3{
+  /* margin: 0 0 8px 0; */
+  font-size: 18px;
+  font-weight: 600;
+   }
+
+ /* tabs */
+ .od-tabs {
+  display:flex;
+  gap:10px;
+  margin:20px 0;
+  /* background-color: grey; */
+  border-radius: 14px;
+ }
+
+ .od-tab{
+  width: 100%;
+  padding:6px 10px;
+  border-radius:15px;
+  /* background:grey; */
+  border:1px solid #eee;
+  cursor:pointer;
+  font-weight:500;
+ }
+
+ .od-tab-active{
+  background:#fff;
+  color:#333;
+  border-color: #4a4aff;
+ }
+ 
+ /* cards */
+.od-section{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  background: #fff;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 30px 0;
+}
+
+.od-overview-container{
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e6e6f0;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.03);
+}
+
+.od-section h2{
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.od-card{
+  background:#fff;
+  border-radius:12px;
+  border:1px solid #e6e6f0;
+  padding:30px;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.03);
+}
+
+.od-search-card{
+  /* display: block; */
+  /* justify-content: initial; */
+  /* align-items: initial; */
+  /* gap:18px; */
+  /* flex-wrap: nowrap; */
+  background: #f7f7f7;
+  border-radius: 12px;
+  border: 1px dotted #e6e6f0;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.03);
+  max-width: 800px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  /* border: none; */
+  /* box-shadow: none; */
+}
+
+.od-card-left{
+  max-width:720px;
+  margin-bottom: 15px;
+}
+
+.od-card-left h2{
+  margin-bottom: 12px;
+}
+
+.od-card-left p {
+margin-top: 8px;
+margin-bottom: 8px;
+}
+
+.od-badge{
+  display:inline-block;
+  padding: 6px 12px;
+  background: #eee;
+  color:#333;
+  border-radius:6px;
+  font-weight:500;
+  font-size: 14px;
+  margin-top:10px;
+}
+
+.od-card-right{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:flex-end;
+  min-width:200px; 
+}
+
+.od-search-icon{
+   width:64px;
+   height:64px;
+   background: #f0f7ff;
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   border-radius:50%;
+   color:#4a4aff;
+   font-size:22px;
+}
+
+.od-primary{
+  background: #000;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  width: 250px;
+  display: inline-block;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.od-search-overlay-icon{
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  /* margin-bottom: 100px; */
+  transform: translateY(-50%);
+  width: 45px;
+  height: 45px;
+  background: #e0e0e0;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #444;
+}
+
+
+/* profile card layout */
+.od-card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px; 
+  padding: 0 15px;
+}
+.od-root,
+.od-container,
+.od-section,
+.od-card,
+.od-profile {
+  max-width: 100%;
+}
+
+
+.od-card-header h3{
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+  margin-left:0;
+}
+
+.od-profile{
+  display:flex;
+  gap:24px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  margin-top: 20px;
+  padding: 0 30px;
+}
+
+.od-profile-left{
+  width:220px; 
+  /* text-align:center; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.od-avatar-large{
+  width:90px; 
+  height:90px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#2563eb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 3px solid #fff;
+}
+
+.od-avatar-large img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.od-avatar-fallback-large{
+  font-size:36px;
+  font-weight:700;
+  color:#ffffff;
+  text-transform: uppercase;
+}
+
+.od-profile-name{
+  font-size:18px;
+  font-weight:700;
+}
+
+.od-location{
+  color:#666;
+  margin-top:6px;
+  display:flex; 
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+}
+
+.od-profile-data-wrap{
+  flex: 1;
+  min-width:0;
+  padding-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding-top: 10px;
+}
+
+.od-block{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Sab kuch left se shuru hoga */
+  text-align: left;
+}
+
+.od-block h4{
+  margin:0 0 6px 0;
+  font-size:15px;
+  font-weight: 700;
+  color: #111;
+  width: 100%; /* Poori width lega taaki right na bhage */
+}
+
+/* Purane .od-block p ki jagah ab ye use hoga */
+.od-detail-item {
+  margin: 8px 0;
+  color: #333; 
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* Icon ki styling */
+.od-detail-item .od-icon {
+  min-width: 18px;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Strong aur span ki styling wahi rahegi */
+.od-detail-item strong {
+  font-weight: 600;
+  color: #222;
+}
+
+.od-detail-item span {
+  color: #444;
+  flex: 1;
+}
+
+
+.od-block p svg{
+  min-width: 18px;
+  font-size: 16px;
+  color: #666;
+  /* margin-top: 4px; */
+} 
+
+.od-block p strong{
+  font-weight: 600;
+  /* margin-right: 8px; */
+  color: #222;
+  display: inline-block;
+ 
+}
+
+/* Text Value (Aasta, Email ID) ki styling */
+.od-block p span,
+.od-block p .value-text{
+  color: #444;
+  flex: 1;
+}
+
+.od-muted{
+  color:#666;
+  font-size:14px;
+  margin-top: 4px;
+}
+
+
+/* outline button */
+.od-outline{
+  border: 1px solid red;
+  background: #fff;
+  padding:8px 16px;
+  border-radius:6px;
+  border:1px solid #d7dbe6;
+  cursor:pointer;
+  display: flex;
+  align-items: center; /* Icon aur text ek line mein honge */
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  height: fit-content;    /* Jitni zaroorat hai utni height */
+
+}
+.od-outline:hover{
+  background: #f5f5f5;
+  border-color: #000;
+}
+
+/* responsive */
+@media (max-width: 800px) {
+  .od-profile { flex-direction:column; }
+  .od-card-right { align-items:center; }
+  .od-container { padding: 0 12px; }
+}
+/* =========================
+   RESPONSIVE FIXES
+   ========================= */
+
+/* ----------- Large Screens (1440px+) ----------- */
+@media (min-width: 1440px) {
+  .od-container {
+    max-width: 1400px;
+  }
+}
+
+/* ----------- Laptop / Small Desktop ----------- */
+@media (max-width: 1200px) {
+  .od-container {
+    max-width: 1100px;
+  }
+
+  .od-profile {
+    gap: 18px;
+  }
+}
+
+/* ----------- Tablet (iPad etc) ----------- */
+@media (max-width: 992px) {
+  .od-header {
+    padding: 12px 16px;
+  }
+
+  .od-brand-title {
+    font-size: 16px;
+  }
+
+  .od-tabs {
+    flex-wrap: wrap;
+  }
+
+  .od-tab {
+    flex: 1 1 45%;
+  }
+
+  .od-profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .od-profile-data-wrap {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .od-block {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .od-card-header h3 {
+    margin-left: 0;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+/* ----------- Mobile Large ----------- */
+@media (max-width: 768px) {
+  .od-header {
+    /* flex-direction column ko row kiya taki ek line mein rahe */
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    padding: 10px 15px !important;
+    gap: 0px !important; /* Extra gap hataya */
+    align-items: center !important;
+  }
+
+  .od-left {
+    width: auto !important; /* Puri width lene se roka */
+  }
+  .od-right {
+    width: auto !important; /* Puri width lene se roka */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+  }
+
+  .od-avatar {
+    width: 32px !important; /* Size chef dashboard jaisa chota kiya */
+    height: 32px !important;
+  }
+
+
+  .od-page-title h1 {
+    font-size: 22px;
+  }
+
+  .od-section {
+    padding: 20px 0;
+  }
+
+  .od-card,
+  .od-search-card,
+  .od-overview-container {
+    padding: 20px;
+  }
+
+  .od-primary {
+    width: 100%;
+  }
+
+  .od-search-overlay-icon {
+    display: none;
+  }
+}
+
+/* ----------- Mobile Small ----------- */
+@media (max-width: 480px) {
+  .od-container {
+    padding: 0 10px 40px;
+  }
+
+  .od-brand-title {
+    font-size: 15px;
+  }
+
+  .od-avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .od-avatar-large {
+    width: 90px;
+    height: 90px;
+  }
+
+  .od-profile-name {
+    font-size: 16px;
+  }
+
+  .od-detail-item {
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .od-tab {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  .od-outline {
+    width: auto;   /* full width nahi */
+    padding:2px px;   /* chhota button */
+    font-size: 13px;
+    border-radius: 6px;
+    justify-content: center;
+  }
+  .od-root {
+  overflow-x: hidden;
+}
+
+.od-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+}
+
+
+
+/*yha se ChefDashboard.js file ke liye css hai*/
+.dashboard-container{
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #222;
+  background: #fcfcfc; /* Halka sa off-white fresh look ke liye */
+  min-height: 100vh;
+  /* padding-bottom: 40px; */
+  /* font-family: Arial, sans-serif; */
+}
+
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 14px 22px;
+  border-bottom: 1px solid #e6e6f0;  
+}
+
+.header-left{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-btn{
+  border: none;
+  background: transparent;
+  color: #333;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.logo{
+  /* font-size: 25px; */
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mini-avatar{
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+.content-box{
+   max-width: 900px;
+   margin: auto;
+   padding: 30px;
+}
+
+.title{
+  font-size: 32px;
+  font-weight: bold;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.subtitle{
+  color: #666;
+  text-align: left;
+  margin-top: 2px;
+  margin-bottom: 20px;
+}
+
+/* Job status */
+.job-status-card{
+  background: #e6e6e6;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.status-left{
+  display: flex;
+   /* gap: 20px; */
+   align-items: flex-start;
+}
+
+.icon-circle {
+  background: #f0f0f0;
+  padding: 12px;
+  margin-right: 15px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+}
+
+.status-heading{
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.btn-toggle{
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.status-heading{
+  text-align: left;
+}
+
+.status-message{
+  margin-top: 5px;
+}
+
+.badge-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  /* text-align: left; */
+}
+
+.btn-watch-profile{
+  background: #fff;
+  color: #000;
+  border: 1px solid #bcbcbc;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.btn-watch-profile:hover{
+  background-color: #e0e0e0;
+}
+
+.badge{
+  background: #22c55e; 
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  /* text-align: left; */
+  /* position: static; */
+  /* transform: translateX(-225px); */
+  /* margin-top: 5px; */
+}
+
+/* Profile section */
+.profile-card{
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+   border: 1px solid #ddd;
+}
+
+.profile-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Button ko upar se align rakhega */
+  margin-bottom: 20px;
+}
+
+.btn-outline {
+  border: 1px solid #333;
+  background: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Icon aur text ek line mein honge */
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  height: fit-content;    /* Jitni zaroorat hai utni height */
+  /* width: auto; */
+}
+
+.btn-outline:hover{
+  background: #f5f5f5;
+  border-color: #000;
+}
+
+.profile-box{
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.main-avatar{
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+}
+
+.name{
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.role {
+  color: gray;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+   gap: 5px;
+}
+
+.rating-icon{
+  color: gold;
+}
+
+.details-grid {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  align-items: start; /* Ye sabko top-left se align rakhega */
+  text-align: left;
+}
+
+.detail-item{
+  display: flex;
+  align-items: center; /* 👈 Isse Icon aur Text ekdum beech se align honge */
+  gap: 10px;  /* Icon aur Text ke beech ki doori */
+  margin-bottom: 15px;
+  text-align: left;
+}
+.detail-icon{
+  flex-shrink: 0;
+  color: #555; /* Icon ka color thoda soft karne ke liye */
+  display: flex;
+  align-items: center;
+  width: 18px; /* Fixed width taaki text ek line mein align ho */
+}
+
+.detail-block h4{
+  margin-bottom: 8px;
+  font-weight: 700;
+  text-align: left;
+  width: 100%;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+  margin-top: 2px;
+  width: 100%;
+  padding: 0; /* Extra padding hatayi */
+}
+
+.skill-tag{
+  background: #f3f4f6; /* Light grey background */
+  color: #111827;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #dee2e6;
+}
+
+.about {
+  font-size: 15px;
+  color: gray;
+  margin-top: 10px;
+}
+
+/* --- Naye Elements jo Logic ke liye zaroori hain --- */
+/* 1. Avatar Fallback Styling (Headers aur Profile ke liye) */
+.mini-avatar-fallback, .main-avatar-fallback {
+  /* background: #4f46e5; Professional Purple Color */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.mini-avatar-fallback {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+.main-avatar-fallback {
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+  font-size: 28px;
+}
+
+/* 2. Status Colors (Taaki Toggle Button mast dikhe) */
+.btn-toggle.btn-start {
+  background: #22c55e; /*Green: Job ki zaroorat hai */
+  color: white;
+}
+
+.btn-toggle.btn-stop {
+  background: #ef4444; /* Red: Ab kaam nahi chahiye */
+  color: white;
+}
+
+/* 3. Icon Circle Colors */
+.icon-circle.active {
+  background: #dcfce7; /* Light Green */
+  color: #16a34a;
+}
+
+.icon-circle.inactive {
+  background: #fee2e2; /* Light Red */
+  color: #dc2626;
+}
+/* 4. Muted Text for empty states */
+.od-muted {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* 5. Tooltip ya small icons ke liye consistency */
+.icon-small {
+  flex-shrink: 0;
+}
+
+
+/* --- Mobile aur Tablet ke liye Responsive --- */
+@media (max-width: 768px) {
+  /* 1. Page ki width ko lock kiya taaki side scroll na ho */
+  .dashboard-container {
+    width: 100% !important;
+    overflow-x: hidden !important; /* Ye side scroll ko rok dega */
+  }
+
+  /* 2. Content box ki fixed padding aur width reset ki */
+  .content-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important; /* 30px se kam karke 15px kiya */
+    box-sizing: border-box !important;
+  }
+
+  /* 3. Header: Logout aur Welcome ko screen ke andar fit kiya */
+  .header {
+    flex-wrap: wrap !important; /* Elements ko ek ke niche ek aane ki jagah di */
+    padding: 10px 15px !important;
+  }
+  
+  .header-left {
+    gap: 10px !important;
+  }
+  .title{
+  font-size: 30px;
+  font-weight: bold;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.subtitle{
+  color: #666;
+  text-align: left;
+  margin-top: 2px;
+  margin-bottom: 20px;
+}
+
+  /* 4. "Stop Looking" Card Fix: Button ko niche dhakela */
+  .job-status-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 15px !important;
+    width: 100% !important;
+  }
+
+  /* 5. Profile Header: Edit Profile button ko set kiya */
+  .profile-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 15px !important;
+  }
+
+  .btn-outline {
+    width: 100% !important; /* Edit Profile button poora bada hoga */
+    justify-content: center;
+  }
+
+  /* 6. Professional Details Grid: Sabko ek ke niche ek kiya */
+  .details-grid {
+    grid-template-columns: 1fr !important; /* 3 columns ko 1 column kiya */
+    gap: 20px !important;
+  }
+
+  /* 7. Skills ko wrap kiya taaki screen se bahar na bhagein */
+  .skills {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
+
+  .skill-tag {
+    margin-bottom: 5px;
+  }
+
+  /* 8. Badge Container ko Grid banao taaki dono buttons ek line mein fit hon */
+  .badge-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Do barabar columns */
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 15px 0 !important;
+  }
+
+  /* 9. Buttons ko ek jaisa professional look do */
+  .badge, .btn-watch-profile {
+   width: 100% !important;
+   height: 35px !important; /* Fix height taaki upar-niche na dikhein */
+   display: flex !important;
+   align-items: center !important;
+   justify-content: center !important;
+   font-size: 14px !important;
+   font-weight: 500 !important;
+   padding: 0 5px !important;
+   margin: 0 !important;
+   border-radius: 6px !important;
+   white-space: nowrap !important; /* Text line break nahi karega */
+  }
+
+  /* 10. Status content ko thoda saaf dikhao */
+  .status-text-content {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+}
+
+/* Yha se AvailableProfessional.js code file ke liye css hai*/
+.ap-root{
+  min-height: 100vh;
+  background: #f6f7fb;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #111827;
+}
+
+/* Header */
+.ap-header{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  background: #ffffffcc;
+  backdrop-filter: blur(6px);
+  gap: 20px; /* Badi screen par button aur title ke beech gap */
+}
+
+.ap-header-title-group{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.ap-page-location{
+  font-size: 25px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.ap-back{
+  background: transparent;
+  border: 1px solid transparent;
+  color: #0f172a;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  justify-content: flex-start; /* Elements ko shuruat mein rakhega */
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* top container */
+.ap-container{
+  max-width: 1200px;
+  margin: 28px auto;
+  padding: 0 20px 60px;
+}
+
+.ap-top{
+  display: flex;
+  gap: 20px;
+  align-items: start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.ap-top-left{
+  flex: 1 1 60%;
+}
+
+.ap-title{
+  font-size: 28px;
+  margin: 0 0 6px;
+  text-align: left;
+}
+
+.ap-desc{
+  margin: 0;
+  color: #6b7280;
+  text-align: left;
+}
+
+/* badges */
+.ap-badges{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.ap-badge{
+  background: #f3f4f6;
+  color: #111827;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+.ap-badge.outline{
+  background: transparent;
+  border: 1px dashed rgba(15,23,42,0.06);
+}
+
+/* search + filters */
+.ap-top-right{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 380px;
+}
+
+.ap-search{
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.03);
+}
+
+.ap-search-icon{
+  margin-right: 10px;
+  color: #9ca3af;
+}
+
+.ap-search input{
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+.ap-filters{
+  display: flex;
+  gap: 8px;
+  /* flex-wrap: wrap; */
+}
+
+.ap-filters select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(15,23,42,0.06);
+  background: white;
+  min-width: 100px;
+  flex: 1;
+  font-size: 14px;
+}
+
+.ap-list {
+  display: grid;
+  gap: 18px;
+}
+
+.ap-card {
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 250px;
+  gap: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.04);
+  align-items: stretch;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+.ap-card--mine{
+  border-color: rgba(59,130,246,0.18);
+  background: rgba(59,130,246,0.03);
+}
+
+.ap-card-left{
+  display: flex;
+  /* flex: 1; */
+  gap: 16px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ap-meta{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ye hta ke dhekna  */
+.ap-title-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.ap-name{
+  /* margin: 0; */
+   font-size: 18px;
+   font-weight: 600;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+
+.ap-pill {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+/* sub */
+.ap-sub{
+  color: #6b7280;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  text-align: left;
+  display: block;
+}
+
+/* ese comment kekke dhekna hai  */
+/* stats grid */
+.ap-stats-grid{
+  display: flex; /* Grid ki jagah Flex */
+  flex-direction: column; /* Sab kuch ek ke niche ek */
+  /* grid-template-columns: repeat(2, minmax(0, 1fr)); */
+  gap: 8px;
+  margin-bottom: 15px;
+  align-items: flex-start; /* Sab kuch left se shuru hoga */
+}
+
+.ap-stat{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+  font-size: 13px;
+  justify-content: flex-start; /* Left alignment */
+}
+
+.ap-block {
+ font-size: 13px;
+ margin-bottom: 15px; 
+ width: 100%; /* Puri width lega */
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start; /* Left align */
+} 
+
+.ap-block-title{
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 4px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.ap-skills{
+  display: flex;  /* Tags ko ek line mein laane ke liye */
+  flex-wrap: wrap;  /* Agar zyada skills hon toh niche wali line mein aa jayein */
+  gap: 8px;               /* YEH HAI MAIN FIX: Biskit aur Tofi ke beech gap ke liye */
+  background: transparent; /* Parent ka background hata do agar individual tags chahiye */
+  padding: 0;
+}
+
+/* Har ek single skill (Biskit, Tofi) ki styling */
+.ap-skill{
+  background: #f3f4f6; /* Light grey background */
+  color: #111827;
+  padding: 4px 10px;      /* Tag ke andar ki space */
+  border-radius: 6px;     /* Rounded corners */
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(15,23,42,0.06);
+  display: inline-block;
+
+}
+
+.ap-skill.outline {
+  background: transparent;
+  border: 1px dashed rgba(15,23,42,0.06);
+}
+
+
+/* right contact card */
+.ap-card-right{
+  width: 260px;
+  flex-shrink: 0;
+  background: #fff;
+  border-left: 1px solid #eee;
+  /* flex-shrink: 0; */
+  /* display: flex; */
+  /* align-items: center; */
+}
+
+
+.ap-contact-card{
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px dashed rgba(15,23,42,0.06);
+  padding: 5px;   /*ese comment krke dheko*/
+  text-align: center;
+}
+
+.ap-contact-top {
+  margin-bottom: 12px;
+}
+
+.ap-lock{
+  font-size: 26px;
+  color: #9ca3af;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.ap-contact-sub{
+  color: #6b7280;
+  font-size: 13px;
+   margin-top: 6px;
+}
+
+/* unlocked */
+.ap-contact-unlocked{
+  text-align: left;
+  background: #f0fdf4;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;  
+}
+
+/* locked */
+.ap-locked-box {
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #6b7280;
+}
+
+/* buttons */
+.ap-contact-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  width: 100%;
+}
+
+.ap-contact-actions .btn-primary{
+  background: #0f172a;
+  color: white;
+  border: none;
+}
+
+.ap-contact-actions .btn-outline{
+  background: transparent;
+  border: 1px solid rgba(15,23,42,0.06);
+  color: #0f172a;
+}
+
+
+/* empty state */
+.ap-empty{
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.ap-empty-icon {
+  font-size: 48px;
+  color: rgba(15,23,42,0.08);
+  margin-bottom: 12px;
+}
+
+/* Marketplace Initial Fallback */
+.ap-avatar-fallback {
+  width: 90px;         /* Size thoda chota kiya taaki card mein fit baithe */
+  height: 90px;
+  min-width: 90px;
+  border-radius: 50%;
+  /* background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;     /* Font size 90px ke hisaab se set kiya */
+  font-weight: bold;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  border: 2px solid #fff; /* White border premium look ke liye */
+
+}
+
+.ap-avatar {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid #fff; /* White border premium look ke liye */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08); /* Halka shadow */
+}
+
+/* responsive */
+@media (max-width: 980px) {
+  .ap-header {
+    display: flex;
+    align-items: center; /* Vertical centering */
+    justify-content: flex-start !important;
+    padding: 12px 16px !important;
+    gap: 10px !important; /* Mobile par gap kam kar diya */
+  }
+  .ap-top{
+     flex-direction: column;
+     align-items: stretch; /* Taaki search bar puri width le */
+  }
+
+  .ap-top-right{
+    width: 100%;
+  }
+
+  /* Choti screen par boxes ko aur flexibility dene ke liye */
+  .ap-filters select {
+    min-width: 90px; /* Sabse choti screen ke liye */
+    font-size: 13px; /* Font thoda chota */
+  }
+
+  .ap-card{
+    flex-direction: column;
+  }
+
+  .ap-card-right{
+    width: 100%;
+  }
+  .ap-header {
+    justify-content: flex-start !important; /* Elements ko left se align karega */
+    padding: 12px 16px !important;
+  }
+
+  .ap-page-location {
+    font-size: 18px !important; /* Mobile par thoda chota text better lagta hai */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Agar screen bahut choti ho to text kate nahi */
+  }
+
+  .ap-back {
+    gap: 4px !important;    /* Mobile par gap ekdum kam */
+   padding: 8px 4px !important; /* Side ki faltu padding hatayi */
+   font-size: 14px !important;
+  }
+}
+
+/* --- Special fix for very small widths (Samsung S8+ etc) --- */
+@media (max-width: 400px) {
+  .ap-filters {
+    gap: 6px;
+  }
+  .ap-filters select {
+    padding: 8px 4px; /* Padding kam ki taaki text na kate */
+  }
+ 
+}
+/* Sabse choti screens (iPhone SE / S8+) ke liye */
+@media (max-width: 380px) {
+  .ap-header {
+    gap: 5px !important;
+  }
+  .ap-page-location {
+    font-size: 15px !important;
+  }
+  
+}
+
+/* Yha se PaymentModal.js file code ke liye css hai*/
+.pm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* Thoda light overlay Figma jaisa */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.pm-modal{
+  background: #fff;
+  width: 440px;
+  max-width: 95%;
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.pm-close{
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Title Alignment */
+.pm-title{
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left; /* Left align like Figma */
+  margin-bottom: 20px;
+  color: #111;
+}
+
+/* Profile Card (The Gray Box) */
+.pm-card{
+  border: 1px solid #e5e5e5;
+  background-color: #fcfcfc; /* Very light gray background */
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.pm-profile{
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.pm-avatar-fallback {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  text-transform: uppercase;
+  flex-shrink: 0; /* Gol shape bigde na */
+}
+
+.pm-avatar{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+/* Name and Role */
+.pm-meta-info h3{
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #111;
+}
+
+.pm-meta-info p{
+  margin: 2px 0 8px 0;
+  color: #6b7280; /* Gray color for role */
+  font-size: 16px;
+}
+
+/* Stats Row (Rating, Location, Price) */
+.pm-stats-row{
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: #333;
+  align-items: center;
+  flex-wrap: nowrap; /* Force one line */
+  overflow-x: auto;  /* Agar bahut bada ho jaye to scroll ho jaye, wrap na ho */
+  scrollbar-width: none; /* Hide scrollbar for clean look */
+}
+
+.pm-stats-row::-webkit-scrollbar {
+  display: none; /* Chrome/Safari ke liye scrollbar hide */
+}
+
+.pm-stats-row span{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pm-rating{
+  color: #f59e0b; /* Golden Star Color */
+  font-weight: 600;
+}
+
+/* Skills Badges */
+.pm-skills{
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap; /* Wrap band kiya */
+  overflow-x: auto;  /* Mobile par swipe-able skills better lagti hain agar space kam ho */
+  padding-bottom: 4px; /* Taki scroll smooth lage */
+  scrollbar-width: none;
+}
+
+.pm-skills::-webkit-scrollbar {
+  display: none;
+}
+
+.pm-badge{
+  flex-shrink: 0; /* Badge ko pichakne (squeeze) se rokega */
+  white-space: nowrap;
+  background: #f1f1f1;
+  color: #374151;
+  padding: 4px 10px;
+  border-radius: 999px; /* Pill shape */
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+}
+
+/* Benefits Section */
+.pm-section{
+  margin-top: 24px;
+  text-align: left;
+}
+
+.pm-section h4{
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pm-section ul{
+  padding-left: 0;
+  list-style: none; /* No default bullets */
+  margin: 0;
+}
+
+.pm-section li{
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pm-section li::before{
+  content: "•"; /* Custom bullet */
+  color: #111;
+  font-weight: bold;
+}
+
+/* Price Box */
+.pm-price{
+  background: #f9fafb; /* Light background like Figma */
+  border: 1px dashed #ccc;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pm-price-label{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* Specific Title Styling */
+.pm-price-title{
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 2px;
+}
+
+.pm-price-subtitle{
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.pm-amount{
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* Action Buttons */
+.pm-actions{
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.pm-btn{
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  /* border: 1px solid #ccc; */
+  /* background: #fff; */
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  color: #374151;
+  /* border: 1px solid #e5e7eb; */
+}
+
+.pm-btn.primary{
+  background: #111;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pm-btn:hover{
+  opacity: 0.9;
+}
+
+.pm-center{
+  text-align: center;
+  padding: 30px 10px;
+}
+
+.pm-spinner{
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #000;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+.pm-success{
+  width: 60px;
+  height: 60px;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  margin: 0 auto 10px;
+}
+
+.pm-error-icon{
+  color: #ef4444;
+  margin-bottom: 10px;
+}
+
+.pm-muted{
+  color: #666;
+  font-size: 13px;
+}
+
+/* Specific fix for smaller screens (iPhone 12 etc) */
+@media (max-width: 390px) {
+  .pm-stats-row {
+    gap: 8px; /* Gap kam kiya */
+    font-size: 12px; /* Font thoda chota taki ek line mein aa jaye */
+  }
+  .pm-stats-row span{
+    white-space: nowrap; /* Text ko todne se roko */
+  }
+  .pm-avatar-fallback, .pm-avatar {
+    width: 50px; /* Avatar thoda chota */
+    height: 50px;
+  }
+  .pm-meta-info h3 {
+    font-size: 16px; /* Name thoda chota */
+  }
+  .pm-meta-info p {
+    font-size: 13px; /* Role thoda chota */
+  }
+}
+/*Yha se LegalPage.js file code ke liye CSS hai */
+.legal-container{
+  background-color: #fdfdfd;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.legal-content-wrapper{
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Sab kuch left se barabar start hoga */
+}
+
+.footer-back-btn{
+  margin-bottom: 20px;
+  cursor: pointer;
+  padding: 10px 24px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background: #fff;
+  font-weight: 600;
+  color: #555;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.footer-back-btn:hover{
+  background-color: #333; /* Hover par dark theme */
+ color: #fff;
+  transform: translateY(-2px); /* Halki si lift */
+}
+
+.legal-title{
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 30px;
+/* Border niche ki jagah thoda left mein dete hain professional look ke liye */
+  padding-left: 15px;
+  border-left: 5px solid #FFD700;
+}
+
+.legal-card{
+  background-color: #fff;
+  padding: 45px;
+  border-radius: 12px;
+  border: 1px solid #efefef; /* Light border card ke liye */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  line-height: 1.9;
+  font-size: 17px;
+  color: #444;
+  width: 100%; /* Card puri width le */
+  text-align: justify;
+  white-space: pre-line; /* Points ko sahi dikhane ke liye */
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .legal-card {
+    padding: 20px;
+    font-size: 15px;
+  }
+  .legal-title{
+    font-size: 28px;
+  }
+  }
+
+  .legal-card strong {
+    color: #1a1a1a; /* Thoda dark color */
+    font-size: 1.05rem; /* Mamuli sa bada size */
+}

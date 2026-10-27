@@ -1,0 +1,207 @@
+import React, { useState } from "react";
+import {
+  FaArrowLeft,
+  FaBuilding,
+  FaMapMarkerAlt,
+  FaSearch,
+  FaEdit,
+  FaPhone,
+  FaEnvelope,
+} from "react-icons/fa";
+import  "./App.css";
+
+export default function OwnerDashboard({
+  onBackToLanding = () => {},
+  onSearchProfessionals = () => {},
+  onEditProfile = () => {},
+  userProfile  // Backend se jo data aa raha hai  //FIX: Prop name ownerProfile se userProfile hona chiye (jesa humne App.js me pass kiya hai)
+}) {
+  // local tab state: 'overview' | 'profile'
+  const [tab, setTab] = useState("overview");
+
+  // 1. BETTER INITIALS LOGIC (Chef Dashboard se match karta hua)
+  const getInitials = (name) => {
+    if (!name) return 'OW';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length > 1) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+      return parts[0][0].toUpperCase();
+    };
+
+    // 2. Data Mapping: Logic ko upar hi settle kar diya chef ki tareh 
+    const profile = {
+      ...userProfile,
+      // Agar ownerName nahi hai toh name lo, varna "Owner"
+      name: userProfile?.ownerName || userProfile?.name || "Owner",
+      businessName: userProfile?.businessName || "My Bakery",
+      bakerywork: userProfile?.bakeryWork || userProfile?.bakerywork || "Bakery Owner",
+      location: userProfile?.location || "Location Not Set",
+      // Email clean check
+      email: userProfile?.email && userProfile.email !== "null" ? userProfile.email : null,
+      phone: userProfile?.phone || "Not provided",
+      yearEstablished: userProfile?.yearEstablished || "N/A",
+      // STRICTOR CHECK: Agar backend se "" ya "null" string aaye, toh usey real null banao
+      // Strictly null agar image nahi hai (fallback trigger karne ke liye)
+      // 🔥 STRICTOR CHECK: Ye line Bob ki dummy image ka bhoot bhagayegi
+  profilePic: (
+    userProfile?.profilePic && 
+    userProfile.profilePic !== "null" && 
+    userProfile.profilePic !== "" &&
+    !userProfile.profilePic.includes("dummy") // Agar koi purana default link aa raha ho toh block karo
+    ) ? userProfile.profilePic : null
+      };
+
+   return(
+    <div className="od-root">
+      <header className="od-header">
+        <div className="od-left">
+          <button className="od-ghost" onClick={onBackToLanding}>
+            <FaArrowLeft/> Logout
+          </button>
+          <div className="od-brand">
+          </div>
+        </div>
+
+        <div className="od-right">
+          {/* Safe Name Display */}
+          <div className="od-welcome">Welcome, {profile.name}</div>
+          <div className="od-avatar">
+            {/* DUMMY IMAGE REMOVED: Sirf asli pic ya fallback */}
+            {/* Check karo ki profilePic real hai ya nahi */}
+           {profile.profilePic && profile.profilePic !== "null" ? (
+              <img src={profile.profilePic}
+               alt="avatar"
+               key={profile.profilePic} // 🔥 KEY ADD KARO: Isse React image change hote hi force update karega
+               onError={(e) => {
+                e.target.style.display = 'none'; // Image chhupao
+                e.target.nextSibling.style.display = 'flex'; // Initials dikhao
+               }}
+               />
+            ) : null}
+            {/* Initials wala div */}
+              <div className="od-avatar-fallback"
+              style={{ display: (profile.profilePic && profile.profilePic !== "null") ? 'none' : 'flex' }}>
+              {getInitials(profile.name)}
+                </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="od-container">
+        <div className="od-page-title">
+          <h2>Owner Dashboard</h2>
+          <p className="od-sub">Find bakery professionals and manage your connections</p>
+        </div>
+
+        <div className="od-tabs">
+          <button className={tab === "overview" ? "od-tab od-tab-active" : "od-tab"}
+          onClick={() => setTab("overview")}>
+           Overview
+          </button>
+          <button className={tab === "profile" ? "od-tab od-tab-active" : "od-tab"}
+          onClick={() => setTab("profile")}>
+            My Profile
+          </button>
+        </div>
+
+        {tab === "overview" && (
+          <section className="od-section od-overview-container">
+            <div className="od-top-content">
+              {/* Find Available Professionals */}
+              <h2><FaSearch/> Find Available Professionals</h2>
+              <p className="od-sub">Browse professional chefs and helpers available in the directory network</p>
+              </div>
+              <div className="od-marketplace-card">
+              <div className="od-card-content">
+                <h3 className="od-market">Explore Professional Directory</h3>
+                <p className="od-unlock">Browse available professionals and pay to unlock their contact details</p>
+                <div className="od-badge">Pay per contact: ₹500</div>
+
+                <button className="od-primary" onClick={onSearchProfessionals}>
+                  Browse Professional Directory
+                </button>
+                </div>
+
+                <div className="od-search-overlay-icon">
+                  <FaSearch />
+                  </div>
+                  </div>
+                  </section>
+        )}
+              
+
+        {tab === "profile" && (
+          <section className="od-section">
+              <div className="od-card-header">
+                <div>
+                  <h3>Your Bakery Profile</h3>
+                  <p className="od-muted">This is how professionals will see your bakery</p>
+                </div>
+                <div>
+                  <button className="od-outline" onClick={onEditProfile}>
+                    <FaEdit/> Edit Profile
+                  </button>
+                </div>
+                </div>
+
+              <div className="od-profile">
+                <div className="od-profile-left">
+                  <div className="od-avatar-large">
+                    {/* DUMMY IMAGE REMOVED: Large version of fallback */}
+                   {profile.profilePic ? (
+                    <img src={profile.profilePic} alt="avatar"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      if(e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                      }}
+                      />
+                   ) : null}
+                    <div className="od-avatar-fallback-large"
+                    style={{ display: profile.profilePic ? 'none' : 'flex' }}>
+                     {getInitials(profile.name)}
+                    </div>
+                  </div>
+
+                  <div className="od-profile-name">{profile.businessName}</div> {/* App.js me businessName hai*/}
+                  <div className="od-muted">{profile.bakerywork}</div>
+                  <div className="od-location"><FaMapMarkerAlt />{profile.location}</div>
+                </div>
+
+                <div className="od-profile-data-wrap">
+                  <div className="od-block">
+                    <h4>Owner Information</h4>
+                    {/* Name Section */}
+                    <div className="od-detail-item">
+                    <strong>Name:</strong> <span>{profile.name}</span> {/* App.js me ownerName hai*/}
+                    </div>
+
+                    {/* Email Section with Null Check */}
+                    {profile.email && profile.email !== "null" && (
+                      <div className="od-detail-item">
+                        <FaEnvelope className="od-icon" />
+                        <span>{profile.email}</span>
+                        </div>
+                    )}
+
+                    {/* Phone Section */}
+                    <div className="od-detail-item">
+                      <FaPhone className="od-icon" />
+                      <span>{profile.phone}</span>
+                    </div>
+                  </div>
+
+                  <div className="od-block">
+                    <h4>Business Details</h4>
+                    <p><strong>Established:</strong> {profile.yearEstablished}</p>
+                  </div>
+
+                </div>
+              </div>
+            {/* </div> */}
+          </section>
+        )}
+      </main>
+    </div>
+   );
+}
