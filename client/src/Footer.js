@@ -43,9 +43,9 @@ const Footer = () => {
            {/* Contact Info */}
            <div className="footer-column">
             <h4>Contact Us</h4>
-            <p>📧 ritikkumar68@gmail.com</p>
+            <p>📧 sahaayaksolution@gmail.com</p>
             <p>📍 Muzaffarnagar, Uttar Pradesh - 251201, India</p>
-            <p>📞 +91 7060476073</p>
+            <p>📞 +91 82735 03704</p>
            </div>
             </div>
             <div className="footer-bottom">
