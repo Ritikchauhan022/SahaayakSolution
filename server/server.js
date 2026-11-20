@@ -10,21 +10,10 @@ const cloudinary = require('cloudinary').v2; // 👈 Add this
 const { CloudinaryStorage } = require('multer-storage-cloudinary'); // 👈 Add this
 const bcrypt = require('bcrypt');
 const crypto = require("crypto");
-// --- RAZORPAY CONFIGURATION ---
-const Razorpay = require('razorpay');
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-  });
- // Check karne ke liye console log
- console.log("Razorpay Key:", process.env.RAZORPAY_KEY_ID ? "MIL GAYI" : "NAHI MILI");
-
-// ChefModel को यहाँ इम्पोर्ट करना ज़रूरी है!
+// ChefModel और OwnerModel को इम्पोर्ट kra
 const Chef = require('./models/ChefModel');
-// ChefModel को इम्पोर्ट किया है
 const Owner = require('./models/OwnerModel');
-
 
 const app = express();
 const server = http.createServer(app); // 👈 Server ko wrap karein
@@ -103,7 +92,7 @@ mongoose.connect(DB_URL)
 .catch(err => {
     console.error('MongoDB connection failed:', err);
     // अगर कनेक्शन फेल हो जाए, तो process.exit(1);
-})
+});
 
 
 // API Root: server ki jaach ke liye
@@ -639,149 +628,114 @@ app.get('/api/status', (req, res) => {
     }
  });
 
- // --- RAZORPAY ORDER ROUTE ---
- app.post("/api/payment/create-order", async (req, res) => {
+ // --- PAYU CONFIGURATION & ROUTES (Replacing Razorpay) ---
+ const PAYU_KEY = process.env.PAYU_KEY;
+ const PAYU_SALT = process.env.PAYU_SALT;
+ const PAYU_ACTION_URL = process.env.PAYU_BASE_URL || "https://secure.payu.in/_payment";
+
+ console.log("PayU Key Status:", PAYU_KEY ? "MIL GAYI" : "NAHI MILI");
+
+ // 1. PayU Init Route (Hash Generate karke Frontend ko bhejna)
+ app.post("/api/payment/payu-init", async (req, res) => {
     try {
-      const {amount} = req.body;
+        const { amount, chefId, ownerId, phone, email, name } = req.body;
 
-      const options = {
-        amount: amount * 100,
-        currency: "INR",
-        receipt: `receipt_order_${Math.floor(Math.random() * 1000)}`,
-      };
-
-      const order = await razorpay.orders.create(options);
-
-      if (!order) return res.status(500).send("Order creation failed");
-      res.json(order);
-      } catch (error) {
-        console.error("Razorpay Order Error:", error);
-        res.status(500).send(error);
-      }
-          
-   });
-
-  // Payment verify route
- // Jab payment successful ho jayegi, toh humein check karna padega ki wo asli hai ya nahi
- app.post("/api/payment/verify", async (req, res) => {
-    const {razorpay_order_id, razorpay_payment_id, razorpay_signature, chefId, ownerId, ownerPhone} = req.body;
-    console.log("DEBUG: Received chefId in Backend:", chefId)
-    // 1. Pehle hi check kar lo chefId hai ya nahi
-    // if (!chefId) {
-    //     return res.status(400).json({ status: "error", message: "Chef ID missing. Payment verified but not saved." });
-    // }
-    const shasum = crypto.createHmac("sha256", process.env.RA_KEY_SECRET || process.env.RAZORPAY_KEY_SECRET);
-    shasum.update(`${razorpay_order_id}|${razorpay_payment_id}`);
-    const digest = shasum.digest("hex");
-
-  if (digest === razorpay_signature) {
-    // Payment Signature sahi hai!
-
-    // 1. DATABASE UPDATE SE PEHLE CHECK (CRITICAL SECURITY)
-    if (!chefId) {
-        console.error("CRITICAL ERROR: Payment verified but chefId is missing from request body!");
-        return res.status(400).json({
-            status: "error",
-            message: "Payment verified but Chef ID missing. Database not updated."
-           });
+        if (!chefId) {
+           return res.status(400).json({ message: "Chef ID is missing." });
         }
-   // Payment Asli Hai! Ab database update yahan karo
-   try {
-    // 2. Query decide karo (ID se ya Phone se)
-    let query = {};
-    if (ownerId && mongoose.Types.ObjectId.isValid(ownerId)) {
-        query = { _id: ownerId };
-     } else if (ownerPhone) {
-        query = { phone: ownerPhone };
-    } else {
-        return res.status(400).json({ status: "error", message: "Owner identification missing" });
-    }
-    console.log("Updating Owner with Query:", query);
 
-    // 3. Database Update logic - $addToSet ensure karta hai ki duplicate entry na ho
-    const updatedOwner = await Owner.findOneAndUpdate(
-        query,
-        {
-           $addToSet: {
-              unlockedChefs: {
-                chefId: chefId,
-                unlockedAt: new Date()
-              }
+        const txnid = "TID_" + new Date().getTime() + "_" + Math.floor(Math.random() * 1000);
+        const productinfo = `UnlockChef_${chefId}`;
+        const amtStr = Number(amount).toFixed(2);
+
+        const udf1 = chefId;
+        const udf2 = ownerId || "";
+        const udf3 = "";
+        const udf4 = "";
+        const udf5 = "";
+
+        // PayU Hash Formula: sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT)
+        const hashString = `${PAYU_KEY}|${txnid}|${amtStr}|${productinfo}|${name}|${email}|${udf1}|${udf2}|${udf3}|${udf4}|${udf5}||||||${PAYU_SALT}`;
+        const hash = crypto.createHash('sha512').update(hashString).digest('hex');
+
+        const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+        const surl = `${backendUrl}/api/payment/payu-verify`;
+        const furl = `${backendUrl}/api/payment/payu-verify`;
+
+        res.status(200).json({
+            key: PAYU_KEY,
+            txnid,
+            amount: amtStr,
+            productinfo,
+            firstname: name,
+            email,
+            phone,
+            hash,
+            surl,
+            furl,
+            actionUrl: PAYU_ACTION_URL,
+            udf1,
+            udf2
+        });
+
+    }catch (error) {
+        console.error("PayU Init Error:", error);
+        res.status(500).json({ message: "Failed to initialize PayU payment", error: error.message });
+    }
+ });
+
+ // 2. PayU Verify & Callback Route
+ app.post("/api/payment/payu-verify", async (req, res) => {
+    try {
+        console.log("PayU Response Received:", req.body);
+        const { status, txnid, amount, productinfo, firstname, email, phone, udf1, udf2 } = req.body;
+
+        const chefId = udf1;
+        const ownerId = udf2;
+
+        if (status === "success") {
+            console.log("PayU Payment Successful for Chef:", chefId);
+
+            let query = {};
+            if (ownerId && mongoose.Types.ObjectId.isValid(ownerId)) {
+                query = { _id: ownerId };
+            } else if (phone) {
+                query = { phone: phone };
             }
-        },
-        { new: true }
-        );
 
-     if (!updatedOwner) {
-        console.log("Owner not found in DB for query:", query);
-        return res.status(404).json({ status: "error", message: "Owner not found in database" });
-     }
-     console.log("Successfully Unlocked! New List Size:", updatedOwner.unlockedChefs.length);
+            if (query) {
+                const updatedOwner = await Owner.findOneAndUpdate(
+                    query,
+                    {
+                        $addToSet: {
+                            unlockedChefs: {
+                                chefId: chefId, 
+                                unlockedAt: new Date()
+                            }
+                         }
+                    },
+                    { new: true }
+                );
 
-     // 4. Response bhejo
-     res.status(200).json({
-        status: "success",
-        message: "Chef Unlocked Successfully",
-        unlockedChefs: updatedOwner.unlockedChefs,
-        updatedUser: updatedOwner
-       });
+                if (updatedOwner) {
+                    console.log("Owner unlocked chef successfully via PayU!");
+                }
+            }
+            
+            return res.redirect(`https://sahaayak-frontend.vercel.app/owner-dashboard?payment=success&chefId=${chefId}`);
+        } else {
+            console.log("PayU Payment Failed or Cancelled");
+            return res.redirect(`https://sahaayak-frontend.vercel.app/owner-dashboard?payment=failed`);
+        }
 
-    } catch (dbErr) {
-        console.error("Database Update Error:", dbErr);
-        res.status(500).json({ status: "error", message: "DB Update Failed", details: dbErr.message });
+    } catch (error) {
+        console.error("PayU Verify Error:", error);
+        res.status(500).send("Payment Verification Error");
     }
-    } else {
-        res.status(400).json({ status: "failure", message: "Signature Mismatch" });
-    }
-});
+ });
 
- // Payment krne ke baad owner ko chef ka number or email mile bo refres krne ke baad bhi nha hte 
-//  app.post("/api/owner/unlock-chef", async (req, res) => {
-//     const {ownerPhone, chefId} = req.body;
 
-//    try {
-//     // Hum ek object save karenge jisme chefId aur Time dono ho
-//     const unlockEntry = {
-//         chefId: chefId,
-//         unlockedAt: new Date() // 👈 Ye line time aur date save karegi
-//       };
 
-//     // $addToSet ke saath problem ye hai ki wo poore object ko check karta hai
-//     // Isliye hum pehle check karenge ki ye chef pehle se unlocked toh nahi hai
-//     const owner = await Owner.findOne({ phone: ownerPhone });
-
-//     // Check if already unlocked (ID matching)
-//     const isAlreadyUnlocked = owner.unlockedChefs.some(item =>
-//         (typeof item === 'string' ? item === chefId : item.chefId === chefId)
-//       );
-
-//       let updatedOwner;
-//       if (!isAlreadyUnlocked) {
-//         updatedOwner = await Owner.findOneAndUpdate(
-//             { phone: ownerPhone },
-//            { $push: { unlockedChefs: unlockEntry } }, // 👈 Object push kar rahe hain
-//             { new: true } // updated owner wapas chahiye
-//         );
-//      } else {
-//         updatedOwner = owner;
-//       } 
-
-//         if (!updatedOwner) return res.status(404).json({ message: "Owner not found" });
-
-//         res.status(200).json({
-//             message: "Chef unlocked successfully",
-//             unlockedChefs: updatedOwner.unlockedChefs,
-//             updatedOwner: updatedOwner // ye pura bhejo 
-//         });
-//     } catch (err) {
-//         console.error("Unlock Error:", err);
-//         res.status(500).json({message: "Server error"});
-//     }
-//  });
-
- // app.listen KI JAGAH server.listen use karein
-// server ko shru kra (सबसे नीचे)
 server.listen(PORT, () => {
    console.log(`Server running on http://localhost:${PORT} with WebSockets`);
 });
-// Final deployment check - April 2
