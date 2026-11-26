@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaArrowLeft,
   FaBuilding,
@@ -7,17 +7,25 @@ import {
   FaEdit,
   FaPhone,
   FaEnvelope,
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaTimes,
 } from "react-icons/fa";
+import axios from "axios";
 import  "./App.css";
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 export default function OwnerDashboard({
   onBackToLanding = () => {},
   onSearchProfessionals = () => {},
   onEditProfile = () => {},
+  onUserSync = null,
   userProfile  // Backend se jo data aa raha hai  //FIX: Prop name ownerProfile se userProfile hona chiye (jesa humne App.js me pass kiya hai)
 }) {
   // local tab state: 'overview' | 'profile'
   const [tab, setTab] = useState("overview");
+  const [paymentBanner, setPaymentBanner] = useState(null); // { type: 'success' | 'error', text: string }
 
   // 1. BETTER INITIALS LOGIC (Chef Dashboard se match karta hua)
   const getInitials = (name) => {
@@ -49,8 +57,68 @@ export default function OwnerDashboard({
     userProfile.profilePic !== "null" && 
     userProfile.profilePic !== "" &&
     !userProfile.profilePic.includes("dummy") // Agar koi purana default link aa raha ho toh block karo
-    ) ? userProfile.profilePic : null
+   ) ? userProfile.profilePic : null
       };
+
+  // 3. PayU Redirect Query Params Handle Karna (?payment=success&chefId=... ya ?payment=failed)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paymentStatus = params.get("payment");
+    const chefId = params.get("chefId");
+
+    if (!paymentStatus) return;
+
+    if (paymentStatus === "success") {
+      setPaymentBanner({
+        type: "success",
+       text: chefId
+       ? `Payment successful! Chef contact unlocked (ID: ${chefId}).`
+       : "Payment successful! Contact details unlocked.",
+      });
+
+      // Latest unlockedChefs sync karne ke liye backend /api/user/sync call
+      const syncOwnerData = async () => {
+        try {
+          const rawUser = JSON.parse(localStorage.getItem("user"));
+          const currentObj = rawUser?.data || rawUser || userProfile || {};
+          const identifier = currentObj?.phone || currentObj?.email || profile?.phone || profile?.email;
+
+          if (identifier && identifier !== "Not provided") {
+            const res = await axios.get(
+             `${API_BASE_URL}/api/user/sync/${encodeURIComponent(identifier)}`
+            );
+            const syncedData = res.data?.data;
+
+            if (syncedData) {
+              if (rawUser && rawUser.data) {
+                rawUser.data = { ...rawUser.data, ...syncedData };
+                localStorage.setItem("user", JSON.stringify(rawUser));
+             } else {
+                localStorage.setItem("user", JSON.stringify(syncedData));
+              }
+
+              if (typeof onUserSync === "function") {
+                onUserSync(syncedData);
+              }
+            }
+
+          }
+        } catch (err) {
+          console.error("Error syncing owner after PayU payment:", err);
+        }
+      };
+
+      syncOwnerData();
+    } else if (paymentStatus === "failed") {
+      setPaymentBanner({
+        type: "error",
+       text: "Payment was cancelled or failed. Please try again.",
+      });
+    }
+
+    // URL se query string clean karna taaki reload par dobara trigger na ho
+    window.history.replaceState({}, "", window.location.pathname);
+  }, []);
 
    return(
     <div className="od-root">
@@ -75,7 +143,9 @@ export default function OwnerDashboard({
                key={profile.profilePic} // 🔥 KEY ADD KARO: Isse React image change hote hi force update karega
                onError={(e) => {
                 e.target.style.display = 'none'; // Image chhupao
-                e.target.nextSibling.style.display = 'flex'; // Initials dikhao
+                if (e.target.nextSibling) {
+                  e.target.nextSibling.style.display = 'flex'; // Initials dikhao
+                }
                }}
                />
             ) : null}
@@ -89,6 +159,50 @@ export default function OwnerDashboard({
       </header>
 
       <main className="od-container">
+        {/* PayU Payment Status Banner */}
+        {paymentBanner && (
+          <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "12px",
+            padding: "12px 16px",
+            borderRadius: "8px",
+            marginBottom: "16px",
+            backgroundColor:
+             paymentBanner.type === "success" ? "#e6f7ed" : "#fdecea",
+            color: paymentBanner.type === "success" ? "#137333" : "#c5221f",
+            border: `1px solid ${
+              paymentBanner.type === "success" ? "#b7e1cd" : "#f5c2c7"
+            }`,
+          }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              {paymentBanner.type === "success" ? (
+                <FaCheckCircle />
+              ) : (
+                <FaExclamationTriangle />
+              )}
+              <span>{paymentBanner.text}</span>
+            </div>
+            <button
+            type="button"
+            onClick={() => setPaymentBanner(null)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "inherit",
+              cursor: "pointer",
+              padding: "4px",
+            }}
+            aria-label="Close payment notification"
+            >
+              <FaTimes />
+            </button>
+          </div>
+        )}
+
         <div className="od-page-title">
           <h2>Owner Dashboard</h2>
           <p className="od-sub">Find bakery professionals and manage your connections</p>
@@ -116,7 +230,7 @@ export default function OwnerDashboard({
               <div className="od-card-content">
                 <h3 className="od-market">Explore Professional Directory</h3>
                 <p className="od-unlock">Browse available professionals and pay to unlock their contact details</p>
-                <div className="od-badge">Pay per contact: ₹500</div>
+                <div className="od-badge">Pay per contact: ₹1</div>
 
                 <button className="od-primary" onClick={onSearchProfessionals}>
                   Browse Professional Directory
@@ -153,8 +267,10 @@ export default function OwnerDashboard({
                     <img src={profile.profilePic} alt="avatar"
                     onError={(e) => {
                       e.target.style.display = 'none';
-                      if(e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                      }}
+                      if(e.target.nextSibling) {
+                        e.target.nextSibling.style.display = 'flex';
+                      }
+                    }}
                       />
                    ) : null}
                     <div className="od-avatar-fallback-large"

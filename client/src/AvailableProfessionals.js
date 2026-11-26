@@ -168,7 +168,7 @@ const unlockedContacts = externalUnlocked || [];
 
  <div className="ap-badges">
     <span className="ap-badge">{filteredProfessionals.length} professionals</span>
-    {viewerType === "owner" && <span className="ap-badge outline"> {formatCurrency(500)} per contact access</span>}
+    {viewerType === "owner" && <span className="ap-badge outline"> {formatCurrency(1)} per contact access</span>}
     {viewerType === "chef" && <span className="ap-badge outline">View Only Directory</span>}
  </div>
  </div>
@@ -360,7 +360,7 @@ const unlockedContacts = externalUnlocked || [];
                                                       
                                                     // Case 3: Agar contact LOCKED hai, toh payment modal wala button dikhao
                                                         <button className="btn btn-primary" onClick={() =>  handleUnlock(professional)} style={{ width: '100%' }}>
-                                                            <FaLock className="btn-icon"/>  Get Contact Details - ₹{formatCurrency(500)}
+                                                            <FaLock className="btn-icon"/>  Get Contact Details - ₹{formatCurrency(1)}
                                                         </button>
                                                     )}
                                           </div>

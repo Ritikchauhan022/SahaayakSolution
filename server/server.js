@@ -52,7 +52,10 @@ const upload = multer({
 const io = new Server(server, {
     cors: {
         // Isse Vercel aur tumhara apna laptop dono allow ho jayenge
-        origin: ["https://sahaayak-frontend.vercel.app", "http://localhost:3000"],
+        origin: [ "https://sahaayaksolution.in",
+            "https://www.sahaayaksolution.in",
+            "https://sahaayak-frontend.vercel.app", 
+            "http://localhost:3000"],
         // origin: "*", // Live hone par ye sabse safe hai testing ke liye
         methods: ["GET", "POST", "PATCH", "PUT"]
     }
@@ -703,7 +706,7 @@ app.get('/api/status', (req, res) => {
                 query = { phone: phone };
             }
 
-            if (query) {
+            if (Object.keys(query).length > 0) {
                 const updatedOwner = await Owner.findOneAndUpdate(
                     query,
                     {
@@ -722,10 +725,10 @@ app.get('/api/status', (req, res) => {
                 }
             }
             
-            return res.redirect(`https://sahaayak-frontend.vercel.app/owner-dashboard?payment=success&chefId=${chefId}`);
+            return res.redirect(`https://sahaayaksolution.in/ownerdashboard?payment=success&chefId=${chefId}`);
         } else {
             console.log("PayU Payment Failed or Cancelled");
-            return res.redirect(`https://sahaayak-frontend.vercel.app/owner-dashboard?payment=failed`);
+            return res.redirect(`https://sahaayaksolution.in/ownerdashboard?payment=failed`);
         }
 
     } catch (error) {

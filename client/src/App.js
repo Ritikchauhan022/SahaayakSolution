@@ -724,6 +724,12 @@ const shouldShowFooter = footerPages.includes(location.pathname);
     onBackToLanding={handleOwnerLogout} // Logout
     onSearchProfessionals={handleSearchProfessionals} // Browse Professionals
     onEditProfile={handleEditProfile} // Edit Profile
+    onUserSync={(syncedData) =>
+      setCurrentOwnerProfile((prev) => ({
+        ...prev,
+        ...syncedData,
+      }))
+    }
     />} />
     {/* Available Professionals Routes */}
     {/* NOTE: हम यहां `viewerType` को URL Params से पढ़ने के बजाय Prop से भेज रहे हैं */}
