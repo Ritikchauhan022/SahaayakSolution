@@ -722,6 +722,7 @@ app.get('/api/status', (req, res) => {
 
                 if (updatedOwner) {
                     console.log("Owner unlocked chef successfully via PayU!");
+                    console.log("Updated Owner:", updatedOwner?.unlockedChefs);
                 }
             }
             
